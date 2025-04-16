@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechZen: Discover. Learn. Innovate.</title>
+    <script src="loader.js"></script>
+<script>
+    // Initialize loader before anything else loads
+    (function() {
+        initLoader('home');
+    })();
+</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<link rel="stylesheet" href="styleshome.css">
+<link rel="icon" href="img-vid/favicon.ico" type="image/x-icon">
+
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="nav-header">
+        <center>
+            <div class="head" style="margin-right: 1000px;">
+            </div>
+    </center>
+
+        <div class="nav-container" >
+            <nav class="nav-links">
+                <div class="logo">
+                    <a href="/home"><img src="logo.jpeg" alt="logo" style="width: 100px; border-radius: 50%;"></a>
+                </div>
+
+                <button class="nav-btn" onclick="location.href='/news'">Tech News</button>
+                <button class="nav-btn" onclick="location.href='/gadgets'">Gadgets</button>
+                <button class="nav-btn" onclick="location.href='/ai'">AI Updates</button>
+                <button class="nav-btn" onclick="location.href='/reviews'">Reviews</button>
+                <button class="nav-btn" onclick="location.href='/selling'">Sell/Buy</button>
+
+
+                <button class="nav-btn" onclick="location.href='/customer'">Tech Service</button>
+                <a href="/subscribe"><button class="subscribe-btn">Subscribe</button></a>                
+                <button class="logout-btn" onclick="logout()">Logout</button>
+
+
+                              </nav>
+            <button class="mobile-menu-btn" title="btnn">
+                <i  class="fas fa-bars"></i>
+            </button>
+        </div>
+
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <video class="hero-video" autoplay loop muted>
+            <source src="img-vid/backvid3.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <center>
+        <div class="hero-content">
+            <h1 class="hero-title">TechZen</h1>
+            <p class="hero-subtitle">Discover. Learn. Innovate.</p>
+            <button> LET' GO !
+            </button>
+                 
+        </div>
+    </center>
+    </section>
+    <div id="chatbot-container" style="max-width: 2000px; max-height: 1200px; " class="sticky-chat">
+        <iframe src="chatbot.html" width="1000px" id="chatbot-frame"  ></iframe>
+    </div>
+
+    
+    
+
+    <!-- Categories -->
+    <section class="categories">
+        <h2>Explore Tech Topics</h2>
+        <div class="category-grid">
+            <a href="ai.html" class="category-card">
+                <img src="img-vid/ai.png" alt="AI Updates">
+                <h3>AI Updates</h3>
+                <p>Latest developments in artificial intelligence and machine learning</p>
+            </a>
+            <a href="gadgets.html" class="category-card">
+                <img src="img-vid/gadgets.png" alt="Gadget Reviews">
+                <h3>Gadget Reviews</h3>
+                <p>In-depth reviews of the latest tech gadgets and innovations</p>
+            </a>
+            <a href="news.html" class="category-card">
+                <img style="margin-bottom: 100px; margin-top: 50px;" src="img-vid/tech.png" alt="Tech News">
+                <h3>Tech News</h3>
+                <p>Breaking news and updates from the tech industry</p>
+            </a>
+
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Latest News -->
+    <section class="latest-news">
+        <h2>Latest News</h2>
+        <div class="news-grid">
+            <div class="news-card">
+                <img src="img-vid/ainews.png" alt="AI News">
+                <div class="news-content">
+                    <span class="news-tag">AI & ML</span>
+                    <h3>Latest AI Breakthroughs</h3>
+                    <p>Exploring recent developments in artificial intelligence and their impact on various industries.</p>
+                    <a href="ai" class="read-more">Read More <span>&rarr;</span></a>
+                </div>
+            </div>
+            <div class="news-card">
+                <img src="img-vid/robots.png" alt="Robotics">
+                <div class="news-content">
+                    <span class="news-tag">Robotics</span>
+                    <h3>Future of Robotics</h3>
+                    <p>Discover the latest advancements in robotics and automation technology.</p>
+                    <a href="robots" class="read-more">Read More <span>&rarr;</span></a>
+                </div>
+            </div>
+            <div class="news-card">
+                <img src="img-vid/web3.png" alt="Web3">
+                <div class="news-content">
+                    <span class="news-tag">Web3</span>
+                    <h3>Web3 Revolution</h3>
+                    <p>Understanding the impact of blockchain and decentralized technologies.</p>
+                    <a href="web3" class="read-more">Read More <span>&rarr;</span></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>TechZen</h3>
+                <p>Your daily source for the latest in technology, innovation, and digital transformation.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><img src="img-vid/facebook.png" alt="Facebook"></a>
+                    <a href="#" class="social-link"><img src="img-vid/twitter.png" alt="Twitter"></a>
+                    <a href="#" class="social-link"><img src="img-vid/linkedin.png" alt="LinkedIn"></a>
+                    <a href="#" class="social-link"><img src="img-vid/instagram.png" alt="Instagram"></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+    
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Stay updated with our latest tech news</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter your email">
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 TechZen. All Rights Reserved.</p>
+        </div>
+    </footer>
+    <script src="chatbot.js"></script>
+
+    <script>
+
+
+
+// document.addEventListener('DOMContentLoaded', function() {
+//     // Hide all content initially
+//     document.body.style.visibility = 'hidden';
+    
+//     // Create and insert tech-themed loader
+//     const loader = document.createElement('div');
+//     loader.id = 'initialLoader';
+//     loader.innerHTML = `
+//         <div class="tech-loader">
+//             <div class="circuit-container">
+//                 <div class="circuit-lines"></div>
+//                 <div class="loading-text">
+//                     <h1>TECHZEN</h1>
+//                     <p>Loading<span class="dot-animation">...</span></p>
+//                 </div>
+//                 <div class="pulse-circle"></div>
+//             </div>
+//         </div>
+//     `;
+//     document.body.prepend(loader);
+//     document.body.style.visibility = 'visible';
+    
+//     // Remove loader after animation
+//     setTimeout(() => {
+//         loader.style.transition = 'opacity 0.8s';
+//         loader.style.opacity = '0';
+//         setTimeout(() => loader.remove(), 800);
+//     }, 2500);
+// });
+
+
+async function logout() {
+    try {
+        const response = await fetch('/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+        });
+
+        if (response.ok) {
+            window.location.href = '/login';
+        } else {
+            throw new Error('Logout failed');
+        }
+    } catch (error) {
+        console.error('Logout error:', error);
+        alert('Failed to logout. Please try again.');
+    }
+}
+
+
+                // Mobile menu toggle functionality
+// Mobile menu toggle functionality
+const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+const navLinks = document.querySelector('.nav-links');
+
+mobileMenuBtn.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+});
+
+// Combined observer for both sections
+const sectionObserverOptions = {
+    root: null,
+    threshold: 0.1
+};
+
+const sectionObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // Check if it's the categories section
+            if (entry.target.classList.contains('categories')) {
+                const categoryCards = entry.target.querySelectorAll('.category-card');
+                categoryCards.forEach(card => card.classList.add('active'));
+            }
+            
+            // Check if it's the news section
+            if (entry.target.classList.contains('latest-news')) {
+                const newsCards = entry.target.querySelectorAll('.news-card');
+                newsCards.forEach(card => card.classList.add('active'));
+            }
+
+            // Unobserve once the animation is triggered
+            observer.unobserve(entry.target);
+        }
+    });
+}, sectionObserverOptions);
+
+// Observe both sections
+document.querySelectorAll('.categories, .latest-news').forEach(section => {
+    sectionObserver.observe(section);
+});
+
+
+    const newsSection = {
+    init() {
+        // Initialize intersection observer
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            },
+            { threshold: 0.3 }
+        );
+
+        // Observe news cards
+        document.querySelectorAll('.news-card').forEach(card => {
+            observer.observe(card);
+            this.addHoverEffect(card);
+        });
+    },
+
+    addHoverEffect(card) {
+        let bounds;
+        let mouseLeaveDelay;
+
+        const mouseMove = (e) => {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            const leftX = mouseX - bounds.x;
+            const topY = mouseY - bounds.y;
+            const center = {
+                x: leftX - bounds.width / 2,
+                y: topY - bounds.height / 2
+            };
+            
+            const distance = Math.sqrt(center.x ** 2 + center.y ** 2);
+            
+            card.style.transform = `
+                perspective(1000px)
+                scale3d(1.07, 1.07, 1.07)
+                rotate3d(
+                    ${center.y / 100},
+                    ${-center.x / 100},
+                    0,
+                    ${Math.log(distance) * 2}deg
+                )
+            `;
+            
+            card.querySelector('.news-content').style.transform = `
+                translate3d(${center.x * 0.1}px, ${center.y * 0.1}px, 0)
+            `;
+        };
+
+        const mouseEnter = () => {
+            bounds = card.getBoundingClientRect();
+            document.addEventListener('mousemove', mouseMove);
+            clearTimeout(mouseLeaveDelay);
+        };
+
+        const mouseLeave = () => {
+            document.removeEventListener('mousemove', mouseMove);
+            mouseLeaveDelay = setTimeout(() => {
+                card.style.transform = '';
+                card.querySelector('.news-content').style.transform = '';
+            }, 100);
+        };
+
+        card.addEventListener('mouseenter', mouseEnter);
+        card.addEventListener('mouseleave', mouseLeave);
+    }
+};
+
+// Initialize on document load
+document.addEventListener('DOMContentLoaded', () => {
+    newsSection.init();
+});
+
+    document.querySelectorAll('.news-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const deltaX = (x - centerX) / centerX;
+        const deltaY = (y - centerY) / centerY;
+        
+        card.style.transform = `
+            perspective(1000px) 
+            rotateX(${deltaY * 10}deg) 
+            rotateY(${deltaX * 10}deg)
+            translateZ(20px)
+        `;
+    });
+    
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+    });
+});
+
+    // Observe the categories section
+    const categoriesSection = document.querySelector('.categories');
+    observer.observe(categoriesSection);
+
+
+    document.querySelectorAll('.category-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const deltaX = (x - centerX) / centerX;
+        const deltaY = (y - centerY) / centerY;
+        
+        card.style.transform = `perspective(1000px) rotateX(${deltaY * 10}deg) rotateY(${deltaX * 10}deg) translateZ(20px)`;
+    });
+    
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const hero = document.querySelector('.hero');
+
+
+    // Parallax effect
+    window.addEventListener('scroll', () => {
+        const scroll = window.pageYOffset;
+        document.querySelector('.hero-content').style.transform = `translateY(${scroll * 0.5}px)`;
+        document.querySelector('.hero-video').style.transform = `translateY(${scroll * 0.15}px)`;
+    });
+});
+
+
+
+
+// Add event listeners for navigation
+document.querySelectorAll('.read-more').forEach(link => {
+    link.addEventListener('click', async (e) => {
+        e.preventDefault();
+        
+        const path = e.target.closest('a').getAttribute('href').replace('.html', '');
+        const sessionId = localStorage.getItem('sessionId');
+
+        try {
+            const response = await fetch(`/${path}`, {
+                headers: {
+                    'Authorization': sessionId
+                }
+            });
+
+            if (response.ok) {
+                window.location.href = `/${path}`;
+            } else {
+                window.location.href = '/login';
+            }
+        } catch (error) {
+            console.error('Navigation error:', error);
+        }
+    });
+});
+
+// Add this after existing code in script section
+
+// Login button handler
+document.querySelector('.loginbtn').addEventListener('click', () => {
+    window.location.href = '/login';
+});
+
+// Update navigation logic
+document.querySelectorAll('.read-more').forEach(link => {
+    link.addEventListener('click', async (e) => {
+        e.preventDefault();
+        
+        const path = e.target.closest('a').getAttribute('href');
+        const sessionId = localStorage.getItem('sessionId');
+
+        if (!sessionId) {
+            window.location.href = '/login';
+            return;
+        }
+
+        try {
+            const response = await fetch(`/${path}`, {
+                headers: {
+                    'Authorization': sessionId
+                }
+            });
+
+            if (response.ok) {
+                window.location.href = `/${path}`;
+            } else {
+                localStorage.removeItem('sessionId');
+                localStorage.removeItem('username');
+                window.location.href = '/login';
+            }
+        } catch (error) {
+            console.error('Navigation error:', error);
+            window.location.href = '/login';
+        }
+    });
+});
+    </script>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pageTitle %></title>
+    <script src="<%= loaderScriptPath %>"></script>
+    <script>
+        (function() {
+            initLoader('home');
+        })();
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="<%= cssPath %>">
+    <link rel="icon" href="<%= faviconPath %>" type="image/x-icon">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="nav-header">
+        <div class="nav-container">
+            <nav class="nav-links" style="margin-left: -90px;">
+                <div class="logo">
+                    <a href="/home"><img src="<%= logoPath %>" alt="<%= siteName %>" style="width: 100px; border-radius: 50%;"></a>
+                </div>
+                <% navLinks.forEach(link => { %>
+                    <button class="nav-btn" onclick="location.href='<%= link.href %>'"><%= link.text %></button>
+                <% }); %>
+
+                <!-- User Profile -->
+                <div class="user-profile">
+                    <div id="username-display">
+                        <i class="fas fa-user-circle"></i>
+                        <span><%= user ? user.username : 'Guest' %></span>
+                    </div>
+                </div>
+
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </nav>
+            <button class="mobile-menu-btn" title="btnn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <video class="hero-video" autoplay loop muted>
+            <source src="<%= heroVideoPath %>" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <center>
+            <div class="hero-content">
+                <h1 class="hero-title"><%= siteName %></h1>
+                <p class="hero-subtitle"><%= heroSubtitle %></p>
+                <button>LET'S GO!</button>
+            </div>
+        </center>
+    </section>
+
+    <!-- Chatbot Iframe -->
+    <div id="chatbot-container" style="max-width: 2000px; max-height: 1200px;" class="sticky-chat">
+        <iframe src="/chatbot" width="1000px" id="chatbot-frame"></iframe>
+    </div>
+
+    <!-- Categories -->
+    <section class="categories-wrapper">
+        <div class="section-background"></div>
+        <section class="categories">
+            <h2>Explore Tech Topics</h2>
+            <div class="category-grid">
+                <% categories.forEach(category => { %>
+                    <a href="<%= category.href %>" class="category-card">
+                        <img src="<%= category.imgSrc %>" alt="<%= category.title %>">
+                        <h3><%= category.title %></h3>
+                        <p><%= category.description %></p>
+                    </a>
+                <% }); %>
+            </div>
+        </section>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Latest News -->
+    <section class="news-wrapper">
+        <div class="section-background"></div>
+        <section class="latest-news">
+            <h2>Latest News</h2>
+            <div class="news-grid">
+                <% newsItems.forEach(item => { %>
+                    <div class="news-card">
+                        <img src="<%= item.imgSrc %>" alt="<%= item.title %>">
+                        <div class="news-content">
+                            <span class="news-tag"><%= item.tag %></span>
+                            <h3><%= item.title %></h3>
+                            <p><%= item.description %></p>
+                            <a href="<%= item.href %>" class="read-more">Read More <span>→</span></a>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </section>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><%= siteName %></h3>
+                <p><%= footerDescription %></p>
+                <div class="social-links">
+                    <% socialLinks.forEach(link => { %>
+                        <a href="<%= link.href %>" class="social-link"><img src="<%= link.icon %>" alt="<%= link.name %>"></a>
+                    <% }); %>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <% footerLinks.forEach(link => { %>
+                        <li><a href="<%= link.href %>"><%= link.text %></a></li>
+                    <% }); %>
+                </ul>
+            </div>
+    
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Stay updated with our latest tech news</p>
+                <form class="newsletter-form" action="<%= newsletterAction %>">
+                    <input type="email" placeholder="Enter your email">
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <%= currentYear %> <%= siteName %>. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            console.log('Mobile menu toggled');
+        });
+
+        // Logout function
+        async function logout() {
+            console.log('Logout function called');
+            try {
+                const response = await fetch('/api/auth/logout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include'
+                });
+                console.log('Logout response status:', response.status);
+                localStorage.removeItem('sessionId');
+                localStorage.removeItem('username');
+                window.location.href = '/login';
+            } catch (error) {
+                console.error('Logout error:', error);
+                window.location.href = '/login';
+            }
+        }
+
+        // Parallax and scroll effects
+        document.addEventListener('DOMContentLoaded', () => {
+            window.addEventListener('scroll', () => {
+                const scroll = window.pageYOffset;
+                document.querySelector('.hero-content').style.transform = `translateY(${scroll * 0.5}px)`;
+                document.querySelector('.hero-video').style.transform = `translateY(${scroll * 0.15}px)`;
+                const categoriesBackground = document.querySelector('.categories-wrapper .section-background');
+                if (categoriesBackground) {
+                    categoriesBackground.style.transform = `translateY(${scroll * 0.05}px)`;
+                }
+                const newsBackground = document.querySelector('.news-wrapper .section-background');
+                if (newsBackground) {
+                    newsBackground.style.transform = `translateY(${scroll * 0.03}px)`;
+                }
+            });
+        });
+
+        // Card animations
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.category-card, .news-card').forEach(card => {
+                card.style.opacity = '1';
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-5px)';
+                    card.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.5)';
+                    card.classList.add('glitch-active');
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'none';
+                    card.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
+                    card.classList.remove('glitch-active');
+                });
+            });
+        });
+
+        // Intersection observer for section animations
+        const sectionObserverOptions = {
+            root: null,
+            threshold: 0.1
+        };
+        const sectionObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.classList.contains('categories')) {
+                        entry.target.querySelectorAll('.category-card').forEach(card => card.classList.add('active'));
+                    }
+                    if (entry.target.classList.contains('latest-news')) {
+                        entry.target.querySelectorAll('.news-card').forEach(card => card.classList.add('active'));
+                    }
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, sectionObserverOptions);
+        document.querySelectorAll('.categories, .latest-news').forEach(section => {
+            sectionObserver.observe(section);
+        });
+
+        // News card hover effects
+        const newsSection = {
+            init() {
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('visible');
+                            }
+                        });
+                    },
+                    { threshold: 0.3 }
+                );
+                document.querySelectorAll('.news-card').forEach(card => {
+                    observer.observe(card);
+                    this.addHoverEffect(card);
+                });
+            },
+            addHoverEffect(card) {
+                let bounds;
+                let mouseLeaveDelay;
+                const mouseMove = (e) => {
+                    const mouseX = e.clientX;
+                    const mouseY = e.clientY;
+                    const leftX = mouseX - bounds.x;
+                    const topY = mouseY - bounds.y;
+                    const center = {
+                        x: leftX - bounds.width / 2,
+                        y: topY - bounds.height / 2
+                    };
+                    const distance = Math.sqrt(center.x ** 2 + center.y ** 2);
+                    card.style.transform = `
+                        perspective(1000px)
+                        scale3d(1.07, 1.07, 1.07)
+                        rotate3d(
+                            ${center.y / 100},
+                            ${-center.x / 100},
+                            0,
+                            ${Math.log(distance) * 2}deg
+                        )
+                    `;
+                    card.querySelector('.news-content').style.transform = `
+                        translate3d(${center.x * 0.1}px, ${center.y * 0.1}px, 0)
+                    `;
+                };
+                const mouseEnter = () => {
+                    bounds = card.getBoundingClientRect();
+                    document.addEventListener('mousemove', mouseMove);
+                    clearTimeout(mouseLeaveDelay);
+                };
+                const mouseLeave = () => {
+                    document.removeEventListener('mousemove', mouseMove);
+                    mouseLeaveDelay = setTimeout(() => {
+                        card.style.transform = '';
+                        card.querySelector('.news-content').style.transform = '';
+                    }, 100);
+                };
+                card.addEventListener('mouseenter', mouseEnter);
+                card.addEventListener('mouseleave', mouseLeave);
+            }
+        };
+        document.addEventListener('DOMContentLoaded', () => {
+            newsSection.init();
+        });
+
+        // Navigation with auth check
+        function setupNavigation() {
+            const navigationTargets = document.querySelectorAll('.read-more, .nav-btn');
+            navigationTargets.forEach(link => {
+                link.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    const path = link.getAttribute('href') || 
+                                 link.getAttribute('onclick').match(/'([^']*)'/)[1];
+                    try {
+                        const response = await fetch('/api/user');
+                        if (response.ok) {
+                            window.location.href = path;
+                        } else {
+                            window.location.href = '/login';
+                        }
+                    } catch (error) {
+                        console.error('Navigation error:', error);
+                        window.location.href = '/login';
+                    }
+                });
+            });
+        }
+        document.addEventListener('DOMContentLoaded', setupNavigation);
+    </script>
+</body>
+</html>

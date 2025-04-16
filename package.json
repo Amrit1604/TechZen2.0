@@ -1,0 +1,41 @@
+{
+  "name": "backendpro",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@google/generative-ai": "^0.23.0",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.3",
+    "compression": "^1.8.0",
+    "connect-redis": "^8.0.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "express-session": "^1.18.1",
+    "fs": "^0.0.1-security",
+    "fs-extra": "^11.3.0",
+    "helmet": "^8.0.0",
+    "http": "^0.0.1-security",
+    "jwt-simple": "^0.5.6",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "mysql": "^2.18.1",
+    "node-fetch": "^2.7.0",
+    "path": "^0.12.7",
+    "redis": "^4.7.0",
+    "session-file-store": "^1.5.0",
+    "socket.io": "^4.8.1",
+    "uuid": "^11.1.0"
+  }
+}

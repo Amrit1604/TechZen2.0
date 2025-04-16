@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="<%= cssPath %>">
+</head>
+<body>
+    <!-- Background Video -->
+    <div class="background-video">
+        <video autoplay muted loop>
+            <source src="<%= videoPath %>" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <header class="header" id="header" data-header>
+        <a href="/" class="logo">
+            <img src="<%= logoPath %>" alt="<%= siteName %>">
+        </a>
+    </header>
+
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+            <form id="signupForm" action="<%= signupAction %>">
+                <h1>Create Account</h1>
+                
+                <div class="form-group">
+                    <input type="text" id="signupUsername" placeholder="Username" required />
+                    <div class="error-message" id="signupUsernameError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <input type="email" id="signupEmail" placeholder="Email" required />
+                    <div class="error-message" id="signupEmailError"></div>
+                </div>
+
+                <div class="form-group password-container">
+                    <input type="password" id="signupPassword" placeholder="Password" required />
+                    <i id="toggleSignupPassword" class="fas fa-eye"></i>
+                    <div class="password-strength">
+                        <div class="password-strength-bar" id="passwordStrengthBar"></div>
+                    </div>
+                    <div class="error-message" id="signupPasswordError"></div>
+                </div>
+
+                <div class="spinner" id="signupSpinner"></div>
+                <button type="submit" id="signupButton">Sign Up</button>
+                <div class="success-message" id="signupSuccess">Account created successfully!</div>
+            </form>
+        </div>
+
+        <div class="form-container sign-in-container">
+            <form id="loginForm" action="<%= loginAction %>">
+                <h1>Sign in</h1>
+                
+                <div class="form-group">
+                    <input type="text" id="loginUsername" placeholder="Username" required />
+                    <div class="error-message" id="loginUsernameError"></div>
+                </div>
+
+                <div class="form-group password-container">
+                    <input type="password" id="loginPassword" placeholder="Password" required />
+                    <i id="togglePassword" class="fas fa-eye"></i>
+                    <div class="error-message" id="loginPasswordError"></div>
+                </div>
+
+                <div class="remember-me">
+                    <input type="checkbox" id="rememberMe">
+                    <label for="rememberMe">Remember me</label>
+                </div>
+
+                <div class="spinner" id="loginSpinner"></div>
+                <button type="submit" id="loginButton">Sign In</button>
+                <div class="success-message" id="loginSuccess">Login successful!</div>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Welcome Back!</h1>
+                    <p>To keep connected with us please login with your personal info</p>
+                    <button class="ghost" id="signIn">Sign In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Hello, Friend!</h1>
+                    <p>Enter your personal details and start your journey with us</p>
+                    <button class="ghost" id="signUp">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // UI Elements
+        const signUpButton = document.getElementById('signUp');
+        const signInButton = document.getElementById('signIn');
+        const container = document.getElementById('container');
+        
+        // Form validation and helpers
+        const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        const validatePassword = (password) => {
+            const minLength = password.length >= 8;
+            const hasUpper = /[A-Z]/.test(password);
+            const hasLower = /[a-z]/.test(password);
+            const hasNumber = /\d/.test(password);
+            const hasSpecial = /[!@#$%^&*]/.test(password);
+            
+            let strength = 0;
+            if (minLength) strength++;
+            if (hasUpper) strength++;
+            if (hasLower) strength++;
+            if (hasNumber) strength++;
+            if (hasSpecial) strength++;
+            
+            return {
+                isValid: minLength && hasUpper && hasLower && hasNumber,
+                strength: (strength / 5) * 100
+            };
+        };
+    
+        // Add loading animation class to buttons
+        const addLoadingState = (button) => {
+            button.disabled = true;
+            button.innerHTML = '<span class="spinner"></span> Processing...';
+        };
+    
+        const removeLoadingState = (button, text) => {
+            button.disabled = false;
+            button.innerHTML = text;
+        };
+    
+        // Form field validation with visual feedback
+        document.getElementById('signupEmail').addEventListener('input', function(e) {
+            const isValid = validateEmail(e.target.value);
+            this.classList.toggle('valid', isValid);
+            this.classList.toggle('invalid', !isValid && e.target.value);
+            
+            const errorDiv = document.getElementById('signupEmailError');
+            if (!isValid && e.target.value) {
+                errorDiv.textContent = 'Please enter a valid email address';
+                errorDiv.style.display = 'block';
+            } else {
+                errorDiv.style.display = 'none';
+            }
+        });
+    
+        document.getElementById('signupPassword').addEventListener('input', function(e) {
+            const { isValid, strength } = validatePassword(e.target.value);
+            const strengthBar = document.getElementById('passwordStrengthBar');
+            const errorDiv = document.getElementById('signupPasswordError');
+            
+            strengthBar.style.width = `${strength}%`;
+            if (strength < 40) strengthBar.style.backgroundColor = '#ff4444';
+            else if (strength < 80) strengthBar.style.backgroundColor = '#ffd700';
+            else strengthBar.style.backgroundColor = '#00c851';
+    
+            if (!isValid && e.target.value) {
+                errorDiv.textContent = 'Password must be at least 8 characters with upper, lower, number';
+                errorDiv.style.display = 'block';
+            } else {
+                errorDiv.style.display = 'none';
+            }
+        });
+    
+        // Signup form submission
+        document.getElementById('signupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('signupUsername').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const submitButton = this.querySelector('button[type="submit"]');
+            
+            // Validate all fields
+            if (!username || !validateEmail(email) || !validatePassword(password).isValid) {
+                alert('Please check all fields are filled correctly');
+                return;
+            }
+            
+            addLoadingState(submitButton);
+            
+            try {
+                const response = await fetch('/api/auth/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.status === 409) {
+                    document.getElementById('signupUsernameError').textContent = 'Username already exists';
+                    document.getElementById('signupUsernameError').style.display = 'block';
+                } else if (response.ok) {
+                    document.getElementById('signupSuccess').style.display = 'block';
+                    setTimeout(() => {
+                        container.classList.remove("right-panel-active");
+                    }, 1500);
+                } else {
+                    throw new Error(data.error || 'Signup failed');
+                }
+            } catch (error) {
+                alert(error.message);
+            } finally {
+                removeLoadingState(submitButton, 'Sign Up');
+            }
+        });
+    
+        // Login form submission
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const submitButton = this.querySelector('button[type="submit"]');
+            
+            addLoadingState(submitButton);
+            
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Remember me functionality
+                    if (document.getElementById('rememberMe').checked) {
+                        localStorage.setItem('rememberedUser', JSON.stringify({ username, password }));
+                    }
+                    
+                    document.getElementById('loginSuccess').style.display = 'block';
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 1000);
+                } else {
+                    document.getElementById('loginPasswordError').textContent = 'Invalid username or password';
+                    document.getElementById('loginPasswordError').style.display = 'block';
+                }
+            } catch (error) {
+                alert('Connection error. Please try again.');
+            } finally {
+                removeLoadingState(submitButton, 'Sign In');
+            }
+        });
+    
+        // Panel switch animation
+        signUpButton.addEventListener('click', () => container.classList.add("right-panel-active"));
+        signInButton.addEventListener('click', () => container.classList.remove("right-panel-active"));
+    
+        // Password visibility toggles
+        ['togglePassword', 'toggleSignupPassword'].forEach(id => {
+            document.getElementById(id).addEventListener('click', function() {
+                const field = this.previousElementSibling;
+                const type = field.type === 'password' ? 'text' : 'password';
+                field.type = type;
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
+            });
+        });
+    
+        // Remember me functionality
+        if (localStorage.getItem('rememberedUser')) {
+            const { username, password } = JSON.parse(localStorage.getItem('rememberedUser'));
+            document.getElementById('loginUsername').value = username;
+            document.getElementById('loginPassword').value = password;
+            document.getElementById('rememberMe').checked = true;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,387 @@
+@import url('https://fonts.cdnfonts.com/css/old-london');
+        @import url('https://fonts.cdnfonts.com/css/im-fell-english-sc');
+
+        :root {
+            --parchment: #f4e4bc;
+            --ink: #2b2b2b;
+            --accent: #8b7355;
+            --gold: #ffd700;
+            --shadow: rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--parchment);
+            color: var(--ink);
+            font-family: 'IM FELL English SC', serif;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.1'/%3E%3C/svg%3E");
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--parchment);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 3px double var(--ink);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-family: 'Old London', serif;
+            font-size: 2.5rem;
+            color: var(--ink);
+            text-decoration: none;
+            text-shadow: 2px 2px 4px var(--shadow);
+            position: relative;
+        }
+
+        .logo::after {
+            content: "EST. 2024";
+            position: absolute;
+            bottom: -10px;
+            right: 0;
+            font-size: 0.8rem;
+            font-family: 'IM FELL English SC', serif;
+        }
+
+        .nav-links a {
+            color: var(--ink);
+            text-decoration: none;
+            margin: 0 1rem;
+            font-size: 1.2rem;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '✦';
+            position: absolute;
+            right: -15px;
+            opacity: 0.5;
+        }
+
+        .hero {
+            margin-top: 80px;
+            padding: 4rem 2rem;
+            text-align: center;
+            background: var(--parchment);
+            border-bottom: 3px double var(--ink);
+        }
+
+        .hero h1 {
+            font-family: 'Old London', serif;
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: var(--ink);
+            text-shadow: 2px 2px 4px var(--shadow);
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .news-section {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+            border-bottom: 2px solid var(--ink);
+            padding-bottom: 1rem;
+        }
+
+        .filter-btn {
+            font-family: 'IM FELL English SC', serif;
+            padding: 0.8rem 1.5rem;
+            border: 1px solid var(--ink);
+            background: var(--parchment);
+            color: var(--ink);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--ink);
+            color: var(--parchment);
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .news-card {
+            background: var(--parchment);
+            border: 2px solid var(--ink);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.1'/%3E%3C/svg%3E");
+            z-index: -1;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border: 1px solid var(--ink);
+            margin-bottom: 1rem;
+            filter: sepia(20%);
+        }
+
+        .card-category {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--ink);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            transform: rotate(-2deg);
+        }
+
+        .card-title {
+            font-family: 'Old London', serif;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            border-bottom: 2px double var(--ink);
+            padding-bottom: 0.5rem;
+        }
+
+        .card-excerpt {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--ink);
+            padding-top: 0.5rem;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(-2deg); }
+            50% { transform: translateY(-5px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(-2deg); }
+        }
+
+        .news-card:hover {
+            animation: float 3s ease-in-out infinite;
+            box-shadow: 0 8px 16px var(--shadow);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .loader-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1a0f2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        .time-turner {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .hourglass {
+            position: absolute;
+            width: 100px;
+            height: 160px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .outer-ring {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border: 4px solid #ffd700;
+            border-radius: 50%;
+            left: 0;
+            top: 0;
+            animation: spin 4s linear infinite;
+        }
+
+        .inner-ring {
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border: 4px solid #ffd700;
+            border-radius: 50%;
+            left: 20px;
+            top: 20px;
+            animation: spin-reverse 3s linear infinite;
+        }
+
+        .sand-top, .sand-bottom {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: #ffd700;
+            left: 20px;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
+        .sand-top {
+            top: 20px;
+            animation: sand-fall 2s linear infinite;
+        }
+
+        .sand-bottom {
+            bottom: 20px;
+            transform: rotate(180deg);
+            animation: sand-rise 2s linear infinite;
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffd700;
+            border-radius: 50%;
+            animation: particle-float 3s infinite;
+        }
+
+        .magical-text {
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Times New Roman', serif;
+            color: #ffd700;
+            font-size: 24px;
+            text-align: center;
+            opacity: 0;
+            animation: text-fade 4s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes spin-reverse {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+
+        @keyframes sand-fall {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(60px); }
+        }
+
+        @keyframes sand-rise {
+            0% { opacity: 0; transform: rotate(180deg) translateY(-60px); }
+            100% { opacity: 1; transform: rotate(180deg) translateY(0); }
+        }
+
+        @keyframes particle-float {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+            100% { transform: translate(100px, -100px) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes text-fade {
+            0%, 100% { opacity: 0; transform: translateX(-50%) scale(0.8); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1); }
+        }
+
+        .old-paper {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at center, transparent 0%, rgba(26, 15, 46, 0.8) 100%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.15'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.1'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .magical-sparks {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .spark {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #ffd700;
+            border-radius: 50%;
+            animation: spark 2s linear infinite;
+        }
+
+        @keyframes spark {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+        }

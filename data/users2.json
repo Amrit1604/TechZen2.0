@@ -1,0 +1,34 @@
+[
+  {
+    "id": "cd63cb14-a672-4916-9a8a-edf9cc879b51",
+    "name": "amrit",
+    "email": "amritjoshi2004@gmail.com",
+    "password": "$2a$10$qjwP40dIX9/Nb8EsFFbRG.ps.JGcbfI6R0PAtvlkmUgBP5xC5X4CK",
+    "accountType": "seller",
+    "createdAt": "2025-03-03T15:45:22.831Z"
+  },
+  {
+    "id": "e76fc93e-0b8f-42e7-a644-383db5824608",
+    "name": "amrit2",
+    "email": "amritjoshi16947@gmail.com",
+    "password": "$2a$10$ZIbkGCPg98YYnEHmRfei3uyHNuQ39G9RrJMCnq3tonk3/K6.X4/s2",
+    "accountType": "buyer",
+    "createdAt": "2025-03-03T15:49:19.502Z"
+  },
+  {
+    "id": "87d6cce3-bef3-4ef6-9622-ff893336ec43",
+    "name": "Joshi",
+    "email": "amritjoshi169457@gmail.com",
+    "password": "$2a$10$j181/d0AKkrtLdYS4Gltk.bBiJSxTdhcKl6DLmuDXZIzDzTHq3b6q",
+    "accountType": "buyer",
+    "createdAt": "2025-03-03T16:13:49.883Z"
+  },
+  {
+    "id": "4d867912-4a74-40c0-b79c-60e870649518",
+    "name": "Khan",
+    "email": "khan2004@gmail.com",
+    "password": "$2a$10$Mvf71IHnopyJoPug1pDS5uX0v0Z1CsHYdXyCbzhrCnyZ6lJv0KCi.",
+    "accountType": "seller",
+    "createdAt": "2025-03-03T16:22:19.346Z"
+  }
+]

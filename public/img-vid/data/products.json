@@ -1,0 +1,110 @@
+[
+  {
+    "id": "7a64080c-2147-4ec9-b563-d320431011bc",
+    "name": "Ben 10 Watch (real)",
+    "description": ".cwbkjechehefhe fhew vhd vs'\r\nc cec hec ec ec",
+    "category": "accessories",
+    "condition": "used",
+    "price": 9999,
+    "quantity": 0,
+    "images": [
+      "/uploads/1741016802544-dd51887f-6806-4e52-86c5-f56e123c3902.jpg"
+    ],
+    "seller": {
+      "id": "cd63cb14-a672-4916-9a8a-edf9cc879b51",
+      "name": "amrit"
+    },
+    "createdAt": "2025-03-03T15:46:42.597Z",
+    "updatedAt": "2025-03-03T15:46:42.597Z"
+  },
+  {
+    "id": "1e798568-d524-4501-b207-02a47f7b3600",
+    "name": "Afghani (Terrorist)",
+    "description": "Dangerous Threat to World\r\nKeep distance\r\nMake him pay for what he did to Americans",
+    "category": "components",
+    "condition": "used",
+    "price": 50,
+    "quantity": 4,
+    "images": [
+      "/uploads/1741019730004-979635b7-4bd7-472e-910a-4a106d0dce8d.jpeg"
+    ],
+    "seller": {
+      "id": "4d867912-4a74-40c0-b79c-60e870649518",
+      "name": "Khan"
+    },
+    "createdAt": "2025-03-03T16:35:30.032Z",
+    "updatedAt": "2025-03-03T16:35:30.034Z"
+  },
+  {
+    "id": "a4b8e29a-4193-42e9-8ec7-bcb6554cf5aa",
+    "name": "Andrew Kaka",
+    "description": "Fake copy of Andrew Tate\r\nuse him wisely \r\n",
+    "category": "accessories",
+    "condition": "refurbished",
+    "price": 60,
+    "quantity": 5,
+    "images": [
+      "/uploads/1741019806756-91c8e03a-1744-4220-a757-2a2b07a40090.jpeg"
+    ],
+    "seller": {
+      "id": "4d867912-4a74-40c0-b79c-60e870649518",
+      "name": "Khan"
+    },
+    "createdAt": "2025-03-03T16:36:46.794Z",
+    "updatedAt": "2025-03-03T16:36:46.796Z"
+  },
+  {
+    "id": "d05578de-70e1-4861-96c8-63322cf2a58c",
+    "name": "Sabal Gang Leader (Caught)",
+    "description": "He is the leader or infamous Sabal Gang \r\nHe was arrested few weeks ago\r\nuseful skills - Shooting",
+    "category": "components",
+    "condition": "used",
+    "price": 100,
+    "quantity": 6,
+    "images": [
+      "/uploads/1741019913712-eb981645-d88b-48a6-a89b-78f48f14d6fb.jpeg"
+    ],
+    "seller": {
+      "id": "4d867912-4a74-40c0-b79c-60e870649518",
+      "name": "Khan"
+    },
+    "createdAt": "2025-03-03T16:38:33.716Z",
+    "updatedAt": "2025-03-03T16:38:33.716Z"
+  },
+  {
+    "id": "0318c242-bf03-4217-91bb-4cde46632b56",
+    "name": "Chaddi Buddy",
+    "description": "Good people\r\nUse them Wisely ",
+    "category": "components",
+    "condition": "like-new",
+    "price": 300,
+    "quantity": 6,
+    "images": [
+      "/uploads/1741020894273-17e472a1-9c60-4ef3-8271-4c82fe33862d.jpeg"
+    ],
+    "seller": {
+      "id": "4d867912-4a74-40c0-b79c-60e870649518",
+      "name": "Khan"
+    },
+    "createdAt": "2025-03-03T16:54:55.314Z",
+    "updatedAt": "2025-03-03T16:54:55.314Z"
+  },
+  {
+    "id": "c898b200-e24a-4881-86ee-73f344044e0a",
+    "name": "Amrit",
+    "description": "good boy",
+    "category": "accessories",
+    "condition": "used",
+    "price": 111,
+    "quantity": 2,
+    "images": [
+      "/uploads/1741060763285-ea27af7c-d3ae-43f8-9ac9-c21a20c2d43b.jpeg"
+    ],
+    "seller": {
+      "id": "23d5fdea-f28f-4e6a-9ce8-1986775242c1",
+      "name": "Ekansh"
+    },
+    "createdAt": "2025-03-04T03:59:23.397Z",
+    "updatedAt": "2025-03-04T03:59:23.397Z"
+  }
+]

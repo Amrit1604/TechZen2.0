@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= siteTitle %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="<%= faviconPath %>" type="image/x-icon">
+    <script src="<%= loaderScriptPath %>"></script>
+    <script>
+        // Initialize loader before anything else loads
+        (function() {
+            initLoader('index');
+        })();
+    </script>
+    <link rel="stylesheet" href="<%= stylesPath %>">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="nav-header">
+        <div class="nav-container">
+            <a href="/" class="logo"><%= siteName %></a>
+            <nav class="nav-links">
+                <% navLinks.forEach(link => { %>
+                    <a href="<%= link.href %>"><%= link.text %></a>
+                <% }); %>
+                <a href="/login">
+                    <button class="loginbtn">LOGIN/SIGNUP</button>
+                </a>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <video class="hero-video" autoplay loop muted>
+            <source src="<%= heroVideoPath %>" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title"><%= siteName %></h1>
+            <p class="hero-subtitle"><%= heroSubtitle %></p>
+            <button class="hero-btn">Get Started</button>
+        </div>
+        <div class="floating-elements"></div>
+    </section>
+    
+    <div class="divider"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><%= siteName %></h3>
+                <p><%= footerDescription %></p>
+                <div class="social-links">
+                    <% socialLinks.forEach(social => { %>
+                        <a href="<%= social.href %>" class="social-link"><img src="<%= social.icon %>" alt="<%= social.name %>"></a>
+                    <% }); %>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <% footerLinks.forEach(link => { %>
+                        <li><a href="<%= link.href %>"><%= link.text %></a></li>
+                    <% }); %>
+                </ul>
+            </div>
+    
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Stay updated with our latest tech news</p>
+                <form class="newsletter-form" action="<%= newsletterAction %>">
+                    <input type="email" placeholder="Enter your email">
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <%= currentYear %> <%= siteName %>. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle functionality
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Combined observer for both sections
+        const sectionObserverOptions = {
+            root: null,
+            threshold: 0.1
+        };
+
+        const sectionObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Check if it's the categories section
+                    if (entry.target.classList.contains('categories')) {
+                        const categoryCards = entry.target.querySelectorAll('.category-card');
+                        categoryCards.forEach(card => card.classList.add('active'));
+                    }
+                    
+                    // Check if it's the news section
+                    if (entry.target.classList.contains('latest-news')) {
+                        const newsCards = entry.target.querySelectorAll('.news-card');
+                        newsCards.forEach(card => card.classList.add('active'));
+                    }
+
+                    // Unobserve once the animation is triggered
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, sectionObserverOptions);
+
+        // Observe both sections
+        document.querySelectorAll('.categories, .latest-news').forEach(section => {
+            sectionObserver.observe(section);
+        });
+
+        const newsSection = {
+            init() {
+                // Initialize intersection observer
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('visible');
+                            }
+                        });
+                    },
+                    { threshold: 0.2 }
+                );
+
+                // Observe news cards
+                document.querySelectorAll('.news-card').forEach(card => {
+                    observer.observe(card);
+                    this.addHoverEffect(card);
+                });
+            },
+
+            addHoverEffect(card) {
+                let bounds;
+                let mouseLeaveDelay;
+
+                const mouseMove = (e) => {
+                    const mouseX = e.clientX;
+                    const mouseY = e.clientY;
+                    const leftX = mouseX - bounds.x;
+                    const topY = mouseY - bounds.y;
+                    const center = {
+                        x: leftX - bounds.width / 2,
+                        y: topY - bounds.height / 2
+                    };
+                    
+                    const distance = Math.sqrt(center.x ** 2 + center.y ** 2);
+                    
+                    card.style.transform = `
+                        perspective(1000px)
+                        scale3d(1.07, 1.07, 1.07)
+                        rotate3d(
+                            ${center.y / 100},
+                            ${-center.x / 100},
+                            0,
+                            ${Math.log(distance) * 2}deg
+                        )
+                    `;
+                    
+                    card.querySelector('.news-content').style.transform = `
+                        translate3d(${center.x * 0.1}px, ${center.y * 0.1}px, 0)
+                    `;
+                };
+
+                const mouseEnter = () => {
+                    bounds = card.getBoundingClientRect();
+                    document.addEventListener('mousemove', mouseMove);
+                    clearTimeout(mouseLeaveDelay);
+                };
+
+                const mouseLeave = () => {
+                    document.removeEventListener('mousemove', mouseMove);
+                    mouseLeaveDelay = setTimeout(() => {
+                        card.style.transform = '';
+                        card.querySelector('.news-content').style.transform = '';
+                    }, 100);
+                };
+
+                card.addEventListener('mouseenter', mouseEnter);
+                card.addEventListener('mouseleave', mouseLeave);
+            }
+        };
+
+        // Initialize on document load
+        document.addEventListener('DOMContentLoaded', () => {
+            newsSection.init();
+        });
+
+        document.querySelectorAll('.news-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const deltaX = (x - centerX) / centerX;
+                const deltaY = (y - centerY) / centerY;
+                
+                card.style.transform = `
+                    perspective(1000px) 
+                    rotateX(${deltaY * 10}deg) 
+                    rotateY(${deltaX * 10}deg)
+                    translateZ(20px)
+                `;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+            });
+        });
+
+        // Observe the categories section
+        const categoriesSection = document.querySelector('.categories');
+        observer.observe(categoriesSection);
+
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const deltaX = (x - centerX) / centerX;
+                const deltaY = (y - centerY) / centerY;
+                
+                card.style.transform = `perspective(1000px) rotateX(${deltaY * 10}deg) rotateY(${deltaX * 10}deg) translateZ(20px)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const hero = document.querySelector('.hero');
+            
+            // Create floating elements
+            for(let i = 0; i < 20; i++) {
+                const element = document.createElement('div');
+                element.className = 'floating-element';
+                element.style.left = `${Math.random() * 100}%`;
+                element.style.top = `${Math.random() * 100}%`;
+                element.style.animationDelay = `${Math.random() * 5}s`;
+                hero.appendChild(element);
+            }
+
+            // Parallax effect
+            window.addEventListener('scroll', () => {
+                const scroll = window.pageYOffset;
+                document.querySelector('.hero-content').style.transform = `translateY(${scroll * 0.5}px)`;
+                document.querySelector('.hero-video').style.transform = `translateY(${scroll * 0.15}px)`;
+            });
+        });
+
+        // Particle System
+        const particleSystem = {
+            particles: [],
+            init() {
+                const canvas = document.createElement('canvas');
+                canvas.style.position = 'fixed';
+                canvas.style.top = '0';
+                canvas.style.left = '0';
+                canvas.style.width = '100%';
+                canvas.style.height = '100%';
+                canvas.style.pointerEvents = 'none';
+                canvas.style.zIndex = '1';
+                document.body.appendChild(canvas);
+                
+                const ctx = canvas.getContext('2d');
+                
+                // Create particles
+                for(let i = 0; i < 50; i++) {
+                    this.particles.push({
+                        x: Math.random() * window.innerWidth,
+                        y: Math.random() * window.innerHeight,
+                        size: Math.random() * 5 + 1,
+                        speedX: Math.random() * 3 - 1.5,
+                        speedY: Math.random() * 3 - 1.5
+                    });
+                }
+                
+                // Animation loop
+                const animate = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    
+                    this.particles.forEach(particle => {
+                        particle.x += particle.speedX;
+                        particle.y += particle.speedY;
+                        
+                        if(particle.x < 0 || particle.x > window.innerWidth) 
+                            particle.speedX *= -1;
+                        if(particle.y < 0 || particle.y > window.innerHeight)
+                            particle.speedY *= -1;
+                        
+                        ctx.beginPath();
+                        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+                        ctx.fill();
+                    });
+                    
+                    requestAnimationFrame(animate);
+                }
+                animate();
+            }
+        };
+
+        // Initialize Custom Cursor
+        function initCustomCursor() {
+            const cursor = document.createElement('div');
+            const follower = document.createElement('div');
+            
+            cursor.classList.add('cursor');
+            follower.classList.add('cursor-follower');
+            
+            document.body.appendChild(cursor);
+            document.body.appendChild(follower);
+            
+            let mouseX = 0;
+            let mouseY = 0;
+            let followerX = 0;
+            let followerY = 0;
+            
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                
+                cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+            });
+            
+            function followCursor() {
+                let diffX = mouseX - followerX;
+                let diffY = mouseY - followerY;
+                
+                followerX += diffX * 0.1;
+                followerY += diffY * 0.1;
+                
+                follower.style.transform = `translate3d(${followerX}px, ${followerY}px, 0)`;
+                requestAnimationFrame(followCursor);
+            }
+
+            followCursor();
+            
+            // Add hover effect for interactive elements
+            const interactiveElements = document.querySelectorAll('a, button, .category-card');
+            interactiveElements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    follower.style.width = '50px';
+                    follower.style.height = '50px';
+                });
+                el.addEventListener('mouseleave', () => {
+                    follower.style.width = '30px';
+                    follower.style.height = '30px';
+                });
+            });
+        }
+
+        // Call the function when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initCustomCursor);
+
+        // Magnetic Effect with Spring Physics
+        class MagneticButton {
+            constructor(el) {
+                this.el = el;
+                this.bound = el.getBoundingClientRect();
+                this.x = 0;
+                this.y = 0;
+                this.spring = { x: 0, y: 0 };
+                this.friction = 0.8;
+                this.tension = 0.6;
+                
+                this.animate = this.animate.bind(this);
+                requestAnimationFrame(this.animate);
+                
+                this.el.addEventListener('mousemove', e => this.onMouseMove(e));
+                this.el.addEventListener('mouseleave', () => this.onMouseLeave());
+            }
+            
+            onMouseMove(e) {
+                const x = e.clientX - this.bound.left - this.bound.width / 2;
+                const y = e.clientY - this.bound.top - this.bound.height / 2;
+                this.x = x * 0.5;
+                this.y = y * 0.5;
+            }
+            
+            onMouseLeave() {
+                this.x = 0;
+                this.y = 0;
+            }
+            
+            animate() {
+                const dx = this.x - this.spring.x;
+                const dy = this.y - this.spring.y;
+                
+                this.spring.x += dx * this.tension;
+                this.spring.y += dy * this.tension;
+                
+                this.spring.x *= this.friction;
+                this.spring.y *= this.friction;
+                
+                this.el.style.transform = `translate3d(${this.spring.x}px, ${this.spring.y}px, 0)`;
+                requestAnimationFrame(this.animate);
+            }
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', () => {
+            particleSystem.init();
+            cursor.init();
+            document.querySelectorAll('.category-card').forEach(el => new MagneticButton(el));
+        });
+
+        // Add event listeners for navigation
+        document.querySelectorAll('.read-more').forEach(link => {
+            link.addEventListener('click', async (e) => {
+                e.preventDefault();
+                
+                const path = e.target.closest('a').getAttribute('href').replace('.html', '');
+                const sessionId = localStorage.getItem('sessionId');
+
+                try {
+                    const response = await fetch(`/${path}`, {
+                        headers: {
+                            'Authorization': sessionId
+                        }
+                    });
+
+                    if (response.ok) {
+                        window.location.href = `/${path}`;
+                    } else {
+                        window.location.href = '/login';
+                    }
+                } catch (error) {
+                    console.error('Navigation error:', error);
+                }
+            });
+        });
+
+        // Login button handler
+        document.querySelector('.loginbtn').addEventListener('click', () => {
+            window.location.href = '/login';
+        });
+
+        // Update navigation logic
+        document.querySelectorAll('.read-more').forEach(link => {
+            link.addEventListener('click', async (e) => {
+                e.preventDefault();
+                
+                const path = e.target.closest('a').getAttribute('href');
+                const sessionId = localStorage.getItem('sessionId');
+
+                if (!sessionId) {
+                    window.location.href = '/login';
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`/${path}`, {
+                        headers: {
+                            'Authorization': sessionId
+                        }
+                    });
+
+                    if (response.ok) {
+                        window.location.href = `/${path}`;
+                    } else {
+                        localStorage.removeItem('sessionId');
+                        localStorage.removeItem('username');
+                        window.location.href = '/login';
+                    }
+                } catch (error) {
+                    console.error('Navigation error:', error);
+                    window.location.href = '/login';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

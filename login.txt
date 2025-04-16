@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="./assets/css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="stylelog.css">
+
+</head>
+<body>
+    <!-- Background Video -->
+    <div class="background-video">
+        <video autoplay muted loop>
+            <source src="logBack.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <header class="header" id="header" data-header>
+        <a href="/" class="logo">
+            <img src="" alt="TECHZEN">
+        </a>
+    </header>
+
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+        <form id="signupForm">
+            <h1>Create Account</h1>
+            
+            <div class="form-group">
+                <input type="text" id="signupUsername" placeholder="Username" required />
+                <div class="error-message" id="signupUsernameError"></div>
+            </div>
+            
+            <div class="form-group">
+                <input type="email" id="signupEmail" placeholder="Email" required />
+                <div class="error-message" id="signupEmailError"></div>
+            </div>
+
+            <div class="form-group password-container">
+                <input type="password" id="signupPassword" placeholder="Password" required />
+                <i id="toggleSignupPassword" class="fas fa-eye"></i>
+                <div class="password-strength">
+                    <div class="password-strength-bar" id="passwordStrengthBar"></div>
+                </div>
+                <div class="error-message" id="signupPasswordError"></div>
+            </div>
+
+            <div class="spinner" id="signupSpinner"></div>
+            <button type="submit" id="signupButton">Sign Up</button>
+            <div class="success-message" id="signupSuccess">Account created successfully!</div>
+        </form>
+    </div>
+
+    <div class="form-container sign-in-container">
+        <form id="loginForm">
+            <h1>Sign in</h1>
+            
+            <div class="form-group">
+                <input type="text" id="loginUsername" placeholder="Username" required />
+                <div class="error-message" id="loginUsernameError"></div>
+            </div>
+
+            <div class="form-group password-container">
+                <input type="password" id="loginPassword" placeholder="Password" required />
+                <i id="togglePassword" class="fas fa-eye"></i>
+                <div class="error-message" id="loginPasswordError"></div>
+            </div>
+
+            <div class="remember-me">
+                <input type="checkbox" id="rememberMe">
+                <label for="rememberMe">Remember me</label>
+            </div>
+
+            <div class="spinner" id="loginSpinner"></div>
+            <button type="submit" id="loginButton">Sign In</button>
+            <div class="success-message" id="loginSuccess">Login successful!</div>
+        </form>
+    </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Welcome Back!</h1>
+                    <p>To keep connected with us please login with your personal info</p>
+                    <button class="ghost" id="signIn">Sign In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Hello, Friend!</h1>
+                    <p>Enter your personal details and start your journey with us</p>
+                    <button class="ghost" id="signUp">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+
+
+const validateEmail = (email) => {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        };
+
+        const validatePassword = (password) => {
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasLowerCase = /[a-z]/.test(password);
+            const hasNumbers = /\d/.test(password);
+            const hasNonalphas = /\W/.test(password);
+            const hasMinLength = password.length >= 8;
+            
+            if (hasUpperCase && hasLowerCase && hasNumbers && hasNonalphas && hasMinLength) {
+                return { strength: 'strong', score: 100 };
+            } else if ((hasUpperCase || hasLowerCase) && hasNumbers && hasMinLength) {
+                return { strength: 'medium', score: 60 };
+            }
+            return { strength: 'weak', score: 30 };
+        };
+
+        // Local Storage Management
+        const storageManager = {
+            saveCredentials: (username, password, remember) => {
+                if (remember) {
+                    localStorage.setItem('rememberedUser', JSON.stringify({
+                        username,
+                        password: btoa(password) // Basic encoding (not secure for production)
+                    }));
+                } else {
+                    localStorage.removeItem('rememberedUser');
+                }
+            },
+
+            getStoredCredentials: () => {
+                const stored = localStorage.getItem('rememberedUser');
+                if (stored) {
+                    const { username, password } = JSON.parse(stored);
+                    return { username, password: atob(password) };
+                }
+                return null;
+            }
+        };
+
+        // Real-time validation
+        document.getElementById('signupPassword').addEventListener('input', function(e) {
+            const password = e.target.value;
+            const strengthResult = validatePassword(password);
+            const strengthBar = document.getElementById('passwordStrengthBar');
+            
+            strengthBar.style.width = `${strengthResult.score}%`;
+            strengthBar.className = 'password-strength-bar ' + strengthResult.strength;
+            
+            const errorDiv = document.getElementById('signupPasswordError');
+            if (password.length < 8) {
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = 'Password must be at least 8 characters long';
+            } else {
+                errorDiv.style.display = 'none';
+            }
+        });
+
+        document.getElementById('signupEmail').addEventListener('input', function(e) {
+            const email = e.target.value;
+            const errorDiv = document.getElementById('signupEmailError');
+            
+            if (!validateEmail(email)) {
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = 'Please enter a valid email address';
+            } else {
+                errorDiv.style.display = 'none';
+            }
+        });
+
+        // Form submissions
+        document.getElementById('signupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('signupUsername').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            
+            // Show spinner
+            document.getElementById('signupSpinner').style.display = 'block';
+            document.getElementById('signupButton').disabled = true;
+
+            try {
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                // Store in localStorage (for demo purposes)
+                localStorage.setItem('users', JSON.stringify({
+                    ...JSON.parse(localStorage.getItem('users') || '{}'),
+                    [username]: { email, password: btoa(password) }
+                }));
+
+                document.getElementById('signupSuccess').style.display = 'block';
+                setTimeout(() => {
+                    container.classList.remove("right-panel-active");
+                }, 1500);
+            } catch (error) {
+                console.error('Signup error:', error);
+                alert('Error creating account.');
+            } finally {
+                document.getElementById('signupSpinner').style.display = 'none';
+                document.getElementById('signupButton').disabled = false;
+            }
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            
+            document.getElementById('loginSpinner').style.display = 'block';
+            document.getElementById('loginButton').disabled = true;
+
+            try {
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                const users = JSON.parse(localStorage.getItem('users') || '{}');
+                const user = users[username];
+
+                if (user && atob(user.password) === password) {
+                    storageManager.saveCredentials(username, password, rememberMe);
+                    document.getElementById('loginSuccess').style.display = 'block';
+                    setTimeout(() => {
+                        window.location.href = '/home';
+                    }, 1500);
+                } else {
+                    throw new Error('Invalid credentials');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                document.getElementById('loginPasswordError').style.display = 'block';
+                document.getElementById('loginPasswordError').textContent = 'Invalid username or password';
+            } finally {
+                document.getElementById('loginSpinner').style.display = 'none';
+                document.getElementById('loginButton').disabled = false;
+            }
+        });
+
+        // Check for stored credentials on page load
+        window.addEventListener('load', () => {
+            const stored = storageManager.getStoredCredentials();
+            if (stored) {
+                document.getElementById('loginUsername').value = stored.username;
+                document.getElementById('loginPassword').value = stored.password;
+                document.getElementById('rememberMe').checked = true;
+            }
+        });
+
+
+    const signUpButton = document.getElementById('signUp');
+    const signInButton = document.getElementById('signIn');
+    const container = document.getElementById('container');
+
+    signUpButton.addEventListener('click', () => {
+        container.classList.add("right-panel-active");
+    });
+
+    signInButton.addEventListener('click', () => {
+        container.classList.remove("right-panel-active");
+    });
+
+    // Handle sign up
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent form submission
+        const username = document.getElementById('signupUsername').value;
+        const password = document.getElementById('signupPassword').value;
+
+        fetch('/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: username, password: password })
+        })
+        .then(response => {
+            if (response.status === 409) {
+                alert('Username already exists.');
+            } else if (response.ok) {
+                alert('Account created successfully! You can now log in.');
+                container.classList.remove("right-panel-active"); // Switch to sign in
+            } else {
+                alert('Error creating account.');
+            }
+        })
+        .catch(error => alert('Error creating account.'));
+    });
+
+// Handle sign in
+document.getElementById('loginForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+
+    try {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password }),
+            credentials: 'same-origin',
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            window.location.href = data.redirect; // Navigate to /home
+        } else if (response.status === 401) {
+            alert('Invalid username or password.');
+        } else {
+            alert('Error logging in.');
+        }
+    } catch (error) {
+        console.error('Error during login:', error);
+        alert('Unable to connect to the server.');
+    }
+});
+
+
+
+    // Password visibility toggle for sign-in
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordField = document.getElementById('loginPassword');
+
+    togglePassword.addEventListener('click', function () {
+        // Toggle the type of the password field
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        
+        // Toggle the icon between eye and eye-slash
+        this.classList.toggle('fa-eye');
+        this.classList.toggle('fa-eye-slash');
+    });
+
+    // Password visibility toggle for sign-up
+    const toggleSignupPassword = document.getElementById('toggleSignupPassword');
+    const signupPasswordField = document.getElementById('signupPassword');
+
+    toggleSignupPassword.addEventListener('click', function () {
+        // Toggle the type of the password field
+        const type = signupPasswordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        signupPasswordField.setAttribute('type', type);
+        
+        // Toggle the icon between eye and eye-slash
+        this.classList.toggle('fa-eye');
+        this.classList.toggle('fa-eye-slash');
+    });
+
+    console.log(localStorage);
+
+    console.log(sessionStorage);
+
+</script>
+
+</body>
+</html>
