@@ -38,11 +38,80 @@ publicRoutes.get('/', (req, res) => {
 });
 
 publicRoutes.get('/ContactUs', (req, res) => {
-  res.render('ContactUs');
+  res.render('ContactUs', {
+    siteTitle: 'TechZen: Contact Us',
+    stylesPath: '/css/styleContact.css',
+    siteName: 'TechZen',
+    navLinks: [
+      { href: '/AboutUs', text: 'ABOUT US' },
+      { href: '/ContactUs', text: 'CONTACT US' },
+      { href: '/blogs', text: 'BLOG' }
+    ],
+    footerDescription: 'Your daily source for the latest in technology, innovation, and digital transformation.',
+    socialLinks: [
+      { href: '#', icon: '/img-vid/facebook.png', name: 'Facebook' },
+      { href: '#', icon: '/img-vid/twitter.png', name: 'Twitter' },
+      { href: '#', icon: '/img-vid/linkedin.png', name: 'LinkedIn' },
+      { href: '#', icon: '/img-vid/instagram.png', name: 'Instagram' }
+    ],
+    footerLinks: [
+      { href: '/AboutUs', text: 'About Us' },
+      { href: '/ContactUs', text: 'Contact' },
+      { href: '#', text: 'Privacy Policy' },
+      { href: '#', text: 'Terms of Service' }
+    ],
+    newsletterAction: '/subscribe',
+    currentYear: new Date().getFullYear()
+  });
 });
 
 publicRoutes.get('/AboutUs', (req, res) => {
-  res.render('AboutUs');
+  res.render('AboutUs', {
+    siteTitle: 'TechZen: About Us',
+    stylesPath: '/css/styleAbout.css',
+    siteName: 'TechZen',
+    navLinks: [
+      { href: '/AboutUs', text: 'ABOUT US' },
+      { href: '/ContactUs', text: 'CONTACT US' },
+      { href: '/blogs', text: 'BLOG' }
+    ],
+    aboutUs: {
+      description: 'Project TechZen represents an innovative platform aimed at keeping users informed and engaged with the latest developments in the technology sector. It provides comprehensive coverage of recent technology news, ensuring that users remain updated on significant advancements within the industry. Furthermore, TechZen offers an extensive selection of the latest gadgets, complete with detailed price comparisons across various online retail platforms, thereby facilitating informed purchasing decisions.'
+    },
+    cultureCards: [
+      { title: 'Vision', description: 'Innovate the future with cutting-edge technology.', image: '/img-vid/vision.png' },
+      { title: 'Mission', description: 'Deliver top-notch digital solutions to our clients.', image: '/img-vid/mission2.png' },
+      { title: 'Motto', description: 'Excellence, Innovation, and Growth.', image: '/img-vid/motto2.png' }
+    ],
+    teamMembers: [
+      { name: 'Amrit Joshi', role: 'Lead Developer', image: '/img-vid/aj.jpeg' },
+      { name: 'Ekansh Dhiman', role: 'Project Manager', image: '/img-vid/ekansh1.jpg' },
+      { name: 'Armaan Gautam', role: 'Cleaning Crew', image: '/img-vid/armaan.jpeg' }
+    ],
+    stats: {
+      totalUsers: '1.2M+',
+      totalUsersRaw: 1200000,
+      countries: '154',
+      satisfactionRate: '98.7%'
+    },
+    footerDescription: 'Your daily source for the latest in technology, innovation, and digital transformation.',
+    socialLinks: [
+      { href: '#', icon: '/img-vid/facebook.png', name: 'Facebook' },
+      { href: '#', icon: '/img-vid/twitter.png', name: 'Twitter' },
+      { href: '#', icon: '/img-vid/linkedin.png', name: 'LinkedIn' },
+      { href: '#', icon: '/img-vid/instagram.png', name: 'Instagram' }
+    ],
+    footerLinks: [
+      { href: '/AboutUs', text: 'About Us' },
+      { href: '/ContactUs', text: 'Contact' },
+      { href: '#', text: 'Privacy Policy' },
+      { href: '#', text: 'Terms of Service' }
+    ],
+    newsletterAction: '/subscribe',
+    newsApiKey: process.env.NEWS_API_KEY || 'YOUR_API_KEY',
+    currentYear: new Date().getFullYear(),
+    user: req.user || null
+  });
 });
 
 publicRoutes.get('/login', (req, res) => {
@@ -58,7 +127,11 @@ publicRoutes.get('/login', (req, res) => {
 });
 
 publicRoutes.get('/admin', (req, res) => {
-  res.render('admin1604');
+  res.render('admin1604', {
+    pageTitle: 'Admin - TechZen',
+    cssPath: '/css/styleadmin.css',
+    siteName: 'TechZen'
+  });
 });
 
 // Protected routes - auth required
@@ -115,56 +188,248 @@ protectedRoutes.get('/home', (req, res) => {
 protectedRoutes.get('/ai', (req, res) => {
   res.render('ai', {
     user: req.user,
-    title: 'TechZen: AI Updates'
+    title: 'TechZen: AI Updates',
+    siteName: 'TechZen',
+    navLinks: [
+      { href: '/news', text: 'Tech News' },
+      { href: '/gadgets', text: 'Gadgets' },
+      { href: '/ai', text: 'AI Updates' },
+      { href: '/blogs', text: 'Blog' },
+      { href: '/selling2', text: 'Sell/Buy' },
+      { href: '/customer', text: 'Tech Service' }
+    ],
+    footerDescription: 'Your daily source for the latest in technology, innovation, and digital transformation.',
+    socialLinks: [
+      { href: '#', icon: '/img-vid/facebook.png', name: 'Facebook' },
+      { href: '#', icon: '/img-vid/twitter.png', name: 'Twitter' },
+      { href: '#', icon: '/img-vid/linkedin.png', name: 'LinkedIn' },
+      { href: '#', icon: '/img-vid/instagram.png', name: 'Instagram' }
+    ],
+    footerLinks: [
+      { href: '/AboutUs', text: 'About Us' },
+      { href: '/ContactUs', text: 'Contact' },
+      { href: '#', text: 'Privacy Policy' },
+      { href: '#', text: 'Terms of Service' }
+    ],
+    newsletterAction: '/subscribe',
+    currentYear: new Date().getFullYear()
   });
 });
 
 protectedRoutes.get('/news', (req, res) => {
   res.render('news', {
     user: req.user,
-    title: 'TechZen: Tech News'
+    title: 'TechZen: Tech News',
+    siteName: 'TechZen',
+    navLinks: [
+      { href: '/news', text: 'Tech News' },
+      { href: '/gadgets', text: 'Gadgets' },
+      { href: '/ai', text: 'AI Updates' },
+      { href: '/blogs', text: 'Blog' },
+      { href: '/selling2', text: 'Sell/Buy' },
+      { href: '/customer', text: 'Tech Service' }
+    ],
+    footerDescription: 'Your daily source for the latest in technology, innovation, and digital transformation.',
+    socialLinks: [
+      { href: '#', icon: '/img-vid/facebook.png', name: 'Facebook' },
+      { href: '#', icon: '/img-vid/twitter.png', name: 'Twitter' },
+      { href: '#', icon: '/img-vid/linkedin.png', name: 'LinkedIn' },
+      { href: '#', icon: '/img-vid/instagram.png', name: 'Instagram' }
+    ],
+    footerLinks: [
+      { href: '/AboutUs', text: 'About Us' },
+      { href: '/ContactUs', text: 'Contact' },
+      { href: '#', text: 'Privacy Policy' },
+      { href: '#', text: 'Terms of Service' }
+    ],
+    newsletterAction: '/subscribe',
+    currentYear: new Date().getFullYear()
   });
 });
 
 protectedRoutes.get('/gadgets', (req, res) => {
   res.render('gadget', {
     user: req.user,
-    title: 'TechZen: Gadgets'
+    title: 'TechZen: Gadgets',
+    siteName: 'TechZen',
+    navLinks: [
+      { href: '/news', text: 'Tech News' },
+      { href: '/gadgets', text: 'Gadgets' },
+      { href: '/ai', text: 'AI Updates' },
+      { href: '/blogs', text: 'Blog' },
+      { href: '/selling2', text: 'Sell/Buy' },
+      { href: '/customer', text: 'Tech Service' }
+    ],
+    footerDescription: 'Your daily source for the latest in technology, innovation, and digital transformation.',
+    socialLinks: [
+      { href: '#', icon: '/img-vid/facebook.png', name: 'Facebook' },
+      { href: '#', icon: '/img-vid/twitter.png', name: 'Twitter' },
+      { href: '#', icon: '/img-vid/linkedin.png', name: 'LinkedIn' },
+      { href: '#', icon: '/img-vid/instagram.png', name: 'Instagram' }
+    ],
+    footerLinks: [
+      { href: '/AboutUs', text: 'About Us' },
+      { href: '/ContactUs', text: 'Contact' },
+      { href: '#', text: 'Privacy Policy' },
+      { href: '#', text: 'Terms of Service' }
+    ],
+    newsletterAction: '/subscribe',
+    currentYear: new Date().getFullYear()
   });
 });
 
 protectedRoutes.get('/blogs', (req, res) => {
   res.render('blog', {
     user: req.user,
-    title: 'TechZen: Blogs'
+    title: 'TechZen: Blogs',
+    siteName: 'TechZen',
+    navLinks: [
+      { href: '/news', text: 'Tech News' },
+      { href: '/gadgets', text: 'Gadgets' },
+      { href: '/ai', text: 'AI Updates' },
+      { href: '/blogs', text: 'Blog' },
+      { href: '/selling2', text: 'Sell/Buy' },
+      { href: '/customer', text: 'Tech Service' }
+    ],
+    footerDescription: 'Your daily source for the latest in technology, innovation, and digital transformation.',
+    socialLinks: [
+      { href: '#', icon: '/img-vid/facebook.png', name: 'Facebook' },
+      { href: '#', icon: '/img-vid/twitter.png', name: 'Twitter' },
+      { href: '#', icon: '/img-vid/linkedin.png', name: 'LinkedIn' },
+      { href: '#', icon: '/img-vid/instagram.png', name: 'Instagram' }
+    ],
+    footerLinks: [
+      { href: '/AboutUs', text: 'About Us' },
+      { href: '/ContactUs', text: 'Contact' },
+      { href: '#', text: 'Privacy Policy' },
+      { href: '#', text: 'Terms of Service' }
+    ],
+    newsletterAction: '/subscribe',
+    currentYear: new Date().getFullYear()
   });
 });
 
 protectedRoutes.get('/customer', (req, res) => {
   res.render('customer', {
     user: req.user,
-    title: 'TechZen: Tech Service'
+    title: 'TechZen: Tech Service',
+    siteName: 'TechZen',
+    navLinks: [
+      { href: '/news', text: 'Tech News' },
+      { href: '/gadgets', text: 'Gadgets' },
+      { href: '/ai', text: 'AI Updates' },
+      { href: '/blogs', text: 'Blog' },
+      { href: '/selling2', text: 'Sell/Buy' },
+      { href: '/customer', text: 'Tech Service' }
+    ],
+    footerDescription: 'Your daily source for the latest in technology, innovation, and digital transformation.',
+    socialLinks: [
+      { href: '#', icon: '/img-vid/facebook.png', name: 'Facebook' },
+      { href: '#', icon: '/img-vid/twitter.png', name: 'Twitter' },
+      { href: '#', icon: '/img-vid/linkedin.png', name: 'LinkedIn' },
+      { href: '#', icon: '/img-vid/instagram.png', name: 'Instagram' }
+    ],
+    footerLinks: [
+      { href: '/AboutUs', text: 'About Us' },
+      { href: '/ContactUs', text: 'Contact' },
+      { href: '#', text: 'Privacy Policy' },
+      { href: '#', text: 'Terms of Service' }
+    ],
+    newsletterAction: '/subscribe',
+    currentYear: new Date().getFullYear()
   });
 });
 
 protectedRoutes.get('/chatbot', (req, res) => {
   res.render('chatbot', {
     user: req.user,
-    title: 'TechZen: Chatbot'
+    title: 'TechZen: Chatbot',
+    siteName: 'TechZen',
+    navLinks: [
+      { href: '/news', text: 'Tech News' },
+      { href: '/gadgets', text: 'Gadgets' },
+      { href: '/ai', text: 'AI Updates' },
+      { href: '/blogs', text: 'Blog' },
+      { href: '/selling2', text: 'Sell/Buy' },
+      { href: '/customer', text: 'Tech Service' }
+    ],
+    footerDescription: 'Your daily source for the latest in technology, innovation, and digital transformation.',
+    socialLinks: [
+      { href: '#', icon: '/img-vid/facebook.png', name: 'Facebook' },
+      { href: '#', icon: '/img-vid/twitter.png', name: 'Twitter' },
+      { href: '#', icon: '/img-vid/linkedin.png', name: 'LinkedIn' },
+      { href: '#', icon: '/img-vid/instagram.png', name: 'Instagram' }
+    ],
+    footerLinks: [
+      { href: '/AboutUs', text: 'About Us' },
+      { href: '/ContactUs', text: 'Contact' },
+      { href: '#', text: 'Privacy Policy' },
+      { href: '#', text: 'Terms of Service' }
+    ],
+    newsletterAction: '/subscribe',
+    currentYear: new Date().getFullYear()
   });
 });
 
 protectedRoutes.get('/selling', (req, res) => {
   res.render('selling', {
     user: req.user,
-    title: 'TechZen: Sell'
+    title: 'TechZen: Sell',
+    siteName: 'TechZen',
+    navLinks: [
+      { href: '/news', text: 'Tech News' },
+      { href: '/gadgets', text: 'Gadgets' },
+      { href: '/ai', text: 'AI Updates' },
+      { href: '/blogs', text: 'Blog' },
+      { href: '/selling2', text: 'Sell/Buy' },
+      { href: '/customer', text: 'Tech Service' }
+    ],
+    footerDescription: 'Your daily source for the latest in technology, innovation, and digital transformation.',
+    socialLinks: [
+      { href: '#', icon: '/img-vid/facebook.png', name: 'Facebook' },
+      { href: '#', icon: '/img-vid/twitter.png', name: 'Twitter' },
+      { href: '#', icon: '/img-vid/linkedin.png', name: 'LinkedIn' },
+      { href: '#', icon: '/img-vid/instagram.png', name: 'Instagram' }
+    ],
+    footerLinks: [
+      { href: '/AboutUs', text: 'About Us' },
+      { href: '/ContactUs', text: 'Contact' },
+      { href: '#', text: 'Privacy Policy' },
+      { href: '#', text: 'Terms of Service' }
+    ],
+    newsletterAction: '/subscribe',
+    currentYear: new Date().getFullYear()
   });
 });
 
 protectedRoutes.get('/selling2', (req, res) => {
   res.render('selling2', {
     user: req.user,
-    title: 'TechZen: Buy & Sell'
+    title: 'TechZen: Buy & Sell',
+    siteName: 'TechZen',
+    navLinks: [
+      { href: '/news', text: 'Tech News' },
+      { href: '/gadgets', text: 'Gadgets' },
+      { href: '/ai', text: 'AI Updates' },
+      { href: '/blogs', text: 'Blog' },
+      { href: '/selling2', text: 'Sell/Buy' },
+      { href: '/customer', text: 'Tech Service' }
+    ],
+    footerDescription: 'Your daily source for the latest in technology, innovation, and digital transformation.',
+    socialLinks: [
+      { href: '#', icon: '/img-vid/facebook.png', name: 'Facebook' },
+      { href: '#', icon: '/img-vid/twitter.png', name: 'Twitter' },
+      { href: '#', icon: '/img-vid/linkedin.png', name: 'LinkedIn' },
+      { href: '#', icon: '/img-vid/instagram.png', name: 'Instagram' }
+    ],
+    footerLinks: [
+      { href: '/AboutUs', text: 'About Us' },
+      { href: '/ContactUs', text: 'Contact' },
+      { href: '#', text: 'Privacy Policy' },
+      { href: '#', text: 'Terms of Service' }
+    ],
+    newsletterAction: '/subscribe',
+    currentYear: new Date().getFullYear()
   });
 });
 

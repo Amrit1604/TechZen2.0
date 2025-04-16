@@ -21,7 +21,7 @@ const { isAuthenticated } = require('./middleware/authMiddleware');
 const authRouter = require('./routes/auth');
 const apiRouter = require('./routes/api');
 const aiRoutes = require('./routes/ai');
-const { router: viewRouter, publicRoutes, protectedRoutes } = require('./routes/views');
+const { router: publicRoutes, protectedRoutes } = require('./routes/views');
 const sellRouter = require('./routes/sell');
 
 // Import socket handler

@@ -1,0 +1,266 @@
+```ejs
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechZen - About Us</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/styleAbout.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <%- include('partials/header') %>
+
+    <!-- Background Video Wrapper -->
+    <div class="video-background">
+        <video autoplay loop muted playsinline>
+            <source src="/img-vid/bgvideo2.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- About Us Section -->
+        <section class="about">
+            <div class="container">
+                <h1><br>About Us</h1>
+                <div class="about-content">
+                    <div class="text">
+                        <h2>Let's Build the Future with Technology</h2>
+                        <p><%= aboutUs.description %></p>
+                    </div>
+                    <img src="/img-vid/tech (1).png" alt="Tech Team">
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Culture Section -->
+        <section class="culture">
+            <div class="container">
+                <h2>Our Fundamental Business</h2>
+                <div class="cards">
+                    <% cultureCards.forEach(card => { %>
+                        <div class="card">
+                            <div class="img-container">
+                                <img src="<%= card.image %>" alt="<%= card.title %> Icon">
+                            </div>
+                            <h3><%= card.title %></h3>
+                            <p><%= card.description %></p>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Section with Live Users Graph -->
+        <section class="analytics fade-in-section">
+            <div class="container">
+                <h2>TechZen Growth Metrics</h2>
+                <p>Watch our community grow in real-time as tech enthusiasts join our platform</p>
+                <div class="stats-container">
+                    <div class="stats-card">
+                        <h3>Daily Active Users</h3>
+                        <div class="chart-container">
+                            <canvas id="usersChart"></canvas>
+                        </div>
+                        <p class="stats-detail">Real-time user activity monitoring</p>
+                    </div>
+                    <div class="stats-overview">
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalUsers"><%= stats.totalUsers %></span>
+                            <span class="stat-label">Total Users</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number"><%= stats.countries %></span>
+                            <span class="stat-label">Countries</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number"><%= stats.satisfactionRate %></span>
+                            <span class="stat-label">Satisfaction Rate</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Meet the Team -->
+        <section class="team">
+            <div class="container">
+                <h2>Meet Our Awesome Team</h2>
+                <div class="team-members">
+                    <% teamMembers.forEach(member => { %>
+                        <div class="member">
+                            <img src="<%= member.image %>" alt="<%= member.name %>">
+                            <h3><%= member.name %></h3>
+                            <p><%= member.role %></p>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <%- include('partials/footer') %>
+    </div>
+
+    <script>
+        // Animation for sections on scroll
+        document.addEventListener("DOMContentLoaded", function() {
+            const fadeSections = document.querySelectorAll('.fade-in-section');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            fadeSections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Initialize users chart
+            initUsersChart();
+        });
+
+        // Dynamic users chart that updates every 10 seconds
+        function initUsersChart() {
+            const ctx = document.getElementById('usersChart').getContext('2d');
+            
+            // Initialize with random data
+            const initialData = {
+                labels: Array.from({length: 12}, (_, i) => `${i+1}h`),
+                datasets: [{
+                    label: 'Active Users',
+                    data: generateRandomData(12),
+                    borderColor: '#00c3ff',
+                    backgroundColor: 'rgba(0, 195, 255, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            };
+            
+            const chart = new Chart(ctx, {
+                type: 'line',
+                data: initialData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#ffffff'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#ffffff'
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    animation: {
+                        duration: 1000
+                    }
+                }
+            });
+            
+            // Update chart every 10 seconds
+            setInterval(() => {
+                // Update data with random variations
+                chart.data.datasets[0].data = generateRandomData(12);
+                
+                // Animate the transition to new data
+                chart.update('active');
+                
+                // Also update total users with small increments for realistic effect
+                updateTotalUsers();
+            }, 10000);
+        }
+
+        // Generate random data for the chart
+        function generateRandomData(length) {
+            // Base value around which the data will fluctuate
+            const baseValue = Math.floor(Math.random() * 3000) + 5000;
+            return Array.from({length}, () => baseValue + Math.floor(Math.random() * 1000) - 500);
+        }
+
+        // Update the total users count randomly
+        let totalUsers = <%= stats.totalUsersRaw %>;
+        function updateTotalUsers() {
+            // Add between 5-20 new users for realistic growth
+            totalUsers += Math.floor(Math.random() * 16) + 5;
+            document.getElementById('totalUsers').textContent = (totalUsers / 1000000).toFixed(1) + 'M+';
+        }
+
+        // Fade-in sections (if any elements have .fade-in class)
+        document.addEventListener("DOMContentLoaded", function() {
+            const sections = document.querySelectorAll(".fade-in");
+            if (sections.length) {
+                function checkScroll() {
+                    sections.forEach(section => {
+                        const sectionTop = section.getBoundingClientRect().top;
+                        if (sectionTop < window.innerHeight - 100) {
+                            section.style.opacity = "1";
+                            section.style.transform = "translateY(0)";
+                        }
+                    });
+                }
+                window.addEventListener("scroll", checkScroll);
+                checkScroll();
+            }
+        });
+
+        // NewsAPI Fetch (only if news-list element exists)
+        document.addEventListener("DOMContentLoaded", function() {
+            const newsContainer = document.querySelector("#news-list");
+            if (newsContainer) {
+                fetch("https://newsapi.org/v2/top-headlines?category=technology&apiKey=<%= newsApiKey %>")
+                    .then(response => {
+                        if (!response.ok) throw new Error('NewsAPI request failed');
+                        return response.json();
+                    })
+                    .then(data => {
+                        data.articles.slice(0, 5).forEach(article => {
+                            let newsItem = document.createElement("div");
+                            newsItem.innerHTML = `<h4>${article.title}</h4><p>${article.description || 'No description available'}</p><a href="${article.url}" target="_blank">Read More</a>`;
+                            newsContainer.appendChild(newnewsItem);
+                        });
+                    })
+                    .catch(error => {
+                        console.error("Error fetching news:", error);
+                        newsContainer.innerHTML = "<p>Unable to load news at this time.</p>";
+                    });
+            }
+        });
+    </script>
+</body>
+</html>
