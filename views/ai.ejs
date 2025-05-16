@@ -1,0 +1,2066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Launch Tracker Pro | TechZen Suite</title>
+    <script src="loader.js"></script>
+<script>
+    // Initialize loader before anything else loads
+    (function() {
+        initLoader('ai');
+    })();
+</script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #06b6d4;
+            --background-color: #0f172a;
+            --techzen-accent: #10b981;
+            --card-color: rgba(255, 255, 255, 0.1);
+            --text-color: #e2e8f0;
+            --navbar-height: 4rem;
+            --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            --gradient-techzen: linear-gradient(135deg, var(--techzen-accent), var(--accent-color));
+            --card-hover-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+
+
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: var(--navbar-height);
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .logo-highlight {
+            color: var(--techzen-accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--techzen-accent);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--techzen-accent);
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .techzen-button {
+            background: var(--gradient-techzen);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .techzen-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Main Content Styles */
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            padding-top: var(--navbar-height);
+        }
+
+/* Replace the header style with this updated version */
+.header {
+    position: relative;
+    padding: 6rem 2rem 4rem;
+    text-align: center;
+    overflow: hidden;
+    color: var(--text-color);
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.7); /* Dark overlay for better text visibility */
+    z-index: 1;
+}
+
+.header-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 0;
+    object-fit: cover;
+}
+
+.header h1, 
+.header p, 
+.header .techzen-badge, 
+.header .search-container {
+    position: relative;
+    z-index: 2; /* Ensure text is above the video */
+}
+
+.header h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    background: -webkit-linear-gradient(#ffffff, #10b981);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+}
+
+        .techzen-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid var(--techzen-accent);
+            color: var(--techzen-accent);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            gap: 0.5rem;
+        }
+
+        .search-container {
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            position: relative;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .search-bar:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+            border-color: var(--techzen-accent);
+        }
+
+        .search-icon {
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    margin-top: -20px;
+    transform: translateY(-50%);
+    color: var(--techzen-accent);
+    pointer-events: none;
+} 
+
+        .filter-options {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: var(--techzen-accent);
+            color: var(--techzen-accent);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--accent-color);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: var(--techzen-accent);
+        }
+
+        .launches-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .launch-card {
+            background: var(--card-color);
+            border-radius: 15px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .launch-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--card-hover-shadow);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .launch-card h3 {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .launch-info {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .company-badge {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--techzen-accent);
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: rgba(37, 99, 235, 0.2);
+            color: var(--text-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            transition: background-color 0.3s;
+        }
+
+        .tag:hover {
+            background: rgba(37, 99, 235, 0.3);
+        }
+
+        .action-buttons {
+            margin-top: auto;
+            padding-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .visit-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .compare-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--techzen-accent);
+            border: 1px solid var(--techzen-accent);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .visit-button:hover, .compare-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .compare-button:hover {
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        /* Trending Section */
+        .trending-section {
+            margin-top: 4rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .trend-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            transition: transform 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .trend-item:hover {
+            transform: scale(1.02);
+            border-color: rgba(16, 185, 129, 0.3);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.1);
+        }
+
+        .trend-icon {
+            background: var(--gradient-techzen);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .trend-content {
+            flex: 1;
+        }
+
+        .trend-badge {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--techzen-accent);
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            margin-top: 0.5rem;
+        }
+
+        .trend-up {
+            color: var(--techzen-accent);
+        }
+
+        .trend-stable {
+            color: var(--text-color);
+        }
+
+        /* Newsletter Section */
+        .newsletter-section {
+            margin-top: 4rem;
+            padding: 3rem 2rem;
+            background: var(--gradient-primary);
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .newsletter-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/api/placeholder/1200/400') center/cover;
+            opacity: 0.1;
+        }
+
+        .newsletter-form {
+            max-width: 500px;
+            margin: 2rem auto 0;
+            display: flex;
+            gap: 1rem;
+            position: relative;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .newsletter-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .newsletter-button {
+            background: var(--techzen-accent);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .newsletter-button:hover {
+            background: #0da271;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+
+
+        .ai-analytics-section {
+            padding: 4rem 2rem;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 20px;
+            margin-top: 4rem;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .analytics-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            transition: all 0.3s;
+        }
+
+        .analytics-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+
+        .analytics-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .refresh-btn {
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(16, 185, 129, 0.1);
+            transition: all 0.3s;
+        }
+
+        .refresh-btn:hover {
+            background: rgba(16, 185, 129, 0.2);
+            transform: rotate(180deg);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            border: 1px solid rgba(16, 185, 129, 0.1);
+        }
+
+        .metric-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--techzen-accent);
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .comparison-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .model-select {
+            flex: 1;
+            padding: 0.75rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        .benchmark-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: var(--techzen-accent);
+            color: white;
+        }
+
+        .performance-chart, .comparison-chart {
+            height: 200px;
+            margin: 1rem 0;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: rgba(15, 23, 42, 0.9);
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h4 {
+            color: var(--techzen-accent);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-section h4::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: var(--techzen-accent);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-section a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-section a:hover {
+            color: var(--techzen-accent);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-color);
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            transition: all 0.3s;
+            font-size: 1.25rem;
+        }
+
+        .social-link:hover {
+            background: var(--techzen-accent);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Animations */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        @keyframes parallax {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+
+        .blink {
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: var(--navbar-height);
+            left: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            z-index: 99;
+            transform: translateY(-100%);
+            transition: transform 0.3s;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .mobile-menu.open {
+            transform: translateY(0);
+        }
+
+        .mobile-menu a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-color);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .mobile-menu a:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-menu a:hover {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--techzen-accent);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-techzen);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 98;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .launches-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .newsletter-button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.75rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .search-container {
+                margin: 1rem auto;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .newsletter-section {
+                padding: 2rem 1rem;
+            }
+        }
+
+
+        /* Add these styles to your existing CSS in the head section */
+
+/* Tech background styles */
+#background {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: var(--background-color);
+    z-index: -1;
+    overflow: hidden;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(16, 185, 129, 0.05) 2%, transparent 12%),
+        radial-gradient(circle at 75% 44%, rgba(6, 182, 212, 0.05) 2%, transparent 10%),
+        radial-gradient(circle at 35% 65%, rgba(37, 99, 235, 0.05) 1%, transparent 8%),
+        linear-gradient(to bottom, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.9));
+    background-size: 50px 50px, 70px 70px, 60px 60px, 100% 100%;
+}
+
+.tech-grid {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(to right, rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+.tech-circuit {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.15;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 800 800'%3E%3Cg fill='none' stroke='%2310b981' stroke-width='1'%3E%3Cpath d='M769 229L1037 260.9M927 880L731 737 520 660 309 538 40 599 295 764 126.5 879.5 40 599-197 493 102 382-31 229 126.5 79.5-69-63'/%3E%3Cpath d='M-31 229L237 261 390 382 603 493 308.5 537.5 101.5 381.5M370 905L295 764'/%3E%3Cpath d='M520 660L578 842 731 737 840 599 603 493 520 660 295 764 309 538 390 382 539 269 769 229 577.5 41.5 370 105 295 -36 126.5 79.5 237 261 102 382 40 599 -69 737 127 880'/%3E%3Cpath d='M520-140L578.5 42.5 731-63M603 493L539 269 237 261 370 105M902 382L539 269M390 382L102 382'/%3E%3Cpath d='M-222 42L126.5 79.5 370 105 539 269 577.5 41.5 927 80 769 229 902 382 603 493 731 737M295-36L577.5 41.5M578 842L295 764M40-201L127 80M102 382L-261 269'/%3E%3C/g%3E%3Cg fill='%2306b6d4'%3E%3Ccircle cx='769' cy='229' r='5'/%3E%3Ccircle cx='539' cy='269' r='5'/%3E%3Ccircle cx='603' cy='493' r='5'/%3E%3Ccircle cx='731' cy='737' r='5'/%3E%3Ccircle cx='520' cy='660' r='5'/%3E%3Ccircle cx='309' cy='538' r='5'/%3E%3Ccircle cx='295' cy='764' r='5'/%3E%3Ccircle cx='40' cy='599' r='5'/%3E%3Ccircle cx='102' cy='382' r='5'/%3E%3Ccircle cx='127' cy='80' r='5'/%3E%3Ccircle cx='370' cy='105' r='5'/%3E%3Ccircle cx='578' cy='42' r='5'/%3E%3Ccircle cx='237' cy='261' r='5'/%3E%3Ccircle cx='390' cy='382' r='5'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.floating-particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--techzen-accent);
+    border-radius: 50%;
+    box-shadow: 0 0 10px 2px rgba(16, 185, 129, 0.5);
+    animation: float-particle 20s infinite linear;
+    opacity: 0.6;
+}
+
+.data-stream {
+    position: absolute;
+    width: 1px;
+    height: 100px;
+    background: linear-gradient(to bottom, transparent, var(--techzen-accent), transparent);
+    animation: data-flow 8s infinite linear;
+    opacity: 0.4;
+}
+
+.tech-node {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(16, 185, 129, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.5);
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+    animation: pulse-node 4s infinite alternate;
+}
+
+@keyframes float-particle {
+    0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0.2;
+    }
+    25% {
+        opacity: 0.6;
+    }
+    50% {
+        transform: translateY(-100vh) translateX(50vw);
+        opacity: 0.2;
+    }
+    75% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(0) translateX(0);
+        opacity: 0.2;
+    }
+}
+
+@keyframes data-flow {
+    0% {
+        transform: translateY(-100px) translateX(0) rotate(var(--rotate, 0deg));
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.4;
+    }
+    90% {
+        opacity: 0.4;
+    }
+    100% {
+        transform: translateY(100vh) translateX(var(--translate-x, 0)) rotate(var(--rotate, 0deg));
+        opacity: 0;
+    }
+}
+
+@keyframes pulse-node {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+    }
+    50% {
+        transform: scale(1.5);
+        box-shadow: 0 0 25px rgba(16, 185, 129, 0.5);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+    }
+}
+    </style>
+
+
+</head>
+<body>
+
+
+    <div id="background"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/home" class="nav-logo">
+            <i class="fas fa-rocket"></i>
+            AI Launch Tracker <span class="logo-highlight">Pro</span>
+        </a>
+        <div class="nav-links">
+            <a href="/news" class="nav-link"><i class="fas fa-satellite"></i> TECH NEWS</a>
+            <a href="/gadgets" class="nav-link"><i class="fas fa-chart-line"></i> GADGETS</a>
+            <a href="/blogs" class="nav-link"><i class="fas fa-plug"></i> BLOG</a>
+            <a href="/customer" class="nav-link"><i class="fas fa-server"></i> TECH SERVICE</a>
+            <a class="techzen-button"><i class="fas fa-out" onclick="logout()"></i> LOGOUT</a>
+
+        </div>
+        <button class="mobile-menu-btn" id="mobile-menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="/news" class="nav-link"><i class="fas fa-satellite"></i> TECH NEWS</a>
+        <a href="/gadgets" class="nav-link"><i class="fas fa-chart-line"></i> GADGETS</a>
+        <a href="/blogs" class="nav-link"><i class="fas fa-plug"></i> BLOG</a>
+        <a href="/customer" class="techzen-button"><i class="fas fa-server"></i> TECH SERVICE</a>
+    </div>
+
+<!-- Header -->
+<header class="header">
+    <video autoplay muted loop class="header-video">
+        <source src="img-vid/aiBack.mp4" type="video/mp4">
+        <!-- Fallback image in case video doesn't load -->
+        <img src="https://images.unsplash.com/photo-1558346648-9757f2fa4474?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="AI Technology">
+    </video>
+    <div class="techzen-badge">
+        <i class="fas fa-robot"></i> Powered by TechZen AI
+    </div>
+    <h1>Track AI Model Launches & Innovations</h1>
+    <p>Stay updated with the latest AI models</p>
+    <div class="search-container">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" class="search-bar" placeholder="Search for AI models, companies, or features..." id="search-input">
+        <div class="filter-options">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="llm">Large Language Models</button>
+            <button class="filter-btn" data-filter="vision">Vision Models</button>
+            <button class="filter-btn" data-filter="multimodal">Multimodal</button>
+            <button class="filter-btn" data-filter="research">Research Only</button>
+        </div>
+    </div>
+</header>
+
+    <!-- Main Content -->
+    <main class="container">
+
+        <!-- Launches Section -->
+<section id="launches">
+    <h2 class="section-title">Latest AI Launches</h2>
+    <div class="launches-grid" id="launches-container">
+        <!-- Current cards -->
+        <div class="launch-card" data-aos="fade-up" data-tags="llm,enterprise">
+            <h3>Claude 3.7 Sonnet</h3>
+            <div class="launch-info">
+                <i class="far fa-calendar-alt"></i> February 19, 2025
+            </div>
+            <div class="company-badge">Anthropic</div>
+            <p>Anthropic's most advanced reasoning model with enhanced task performance and expanded context window.</p>
+            <div class="tags">
+                <span class="tag">LLM</span>
+                <span class="tag">Reasoning</span>
+                <span class="tag">Enterprise</span>
+            </div>
+            <div class="action-buttons">
+                <a href="#" class="visit-button"><i class="fas fa-external-link-alt"></i> Visit Site</a>
+                <a href="#" class="compare-button"><i class="fas fa-chart-bar"></i> Compare</a>
+            </div>
+        </div>
+
+        <div class="launch-card" data-aos="fade-up" data-aos-delay="100" data-tags="multimodal,vision">
+            <h3>GPT-5 Omni</h3>
+            <div class="launch-info">
+                <i class="far fa-calendar-alt"></i> January 25, 2025
+            </div>
+            <div class="company-badge">OpenAI</div>
+            <p>Next-generation multimodal AI with advanced reasoning, real-time data processing, and enhanced visual capabilities.</p>
+            <div class="tags">
+                <span class="tag">Multimodal</span>
+                <span class="tag">Reasoning</span>
+                <span class="tag">Real-time</span>
+            </div>
+            <div class="action-buttons">
+                <a href="https://openai.com/gpt-4" class="visit-button"><i class="fas fa-external-link-alt"></i> Visit Site</a>
+                <a href="#" class="compare-button"><i class="fas fa-chart-bar"></i> Compare</a>
+            </div>
+        </div>
+
+        <div class="launch-card" data-aos="fade-up" data-aos-delay="200" data-tags="vision,research">
+            <h3>Gemini Ultra 2</h3>
+            <div class="launch-info">
+                <i class="far fa-calendar-alt"></i> December 12, 2024
+            </div>
+            <div class="company-badge">Google DeepMind</div>
+            <p>Google's most capable multimodal model with enhanced visual reasoning and specialized domain knowledge.</p>
+            <div class="tags">
+                <span class="tag">Multimodal</span>
+                <span class="tag">Visual Reasoning</span>
+                <span class="tag">Enterprise</span>
+            </div>
+            <div class="action-buttons">
+                <a href="https://deepmind.google/technologies/gemini/" class="visit-button"><i class="fas fa-external-link-alt"></i> Visit Site</a>
+                <a href="#" class="compare-button"><i class="fas fa-chart-bar"></i> Compare</a>
+            </div>
+        </div> <!-- Corrected missing closing div -->
+
+        <div class="launch-card" data-aos="fade-up" data-aos-delay="300" data-tags="vision,multimodal">
+            <h3>DALL·E 4</h3>
+            <div class="launch-info">
+                <i class="far fa-calendar-alt"></i> October 18, 2024
+            </div>
+            <div class="company-badge">OpenAI</div>
+            <p>Next-generation text-to-image model with advanced compositional understanding and photorealism.</p>
+            <div class="tags">
+                <span class="tag">Image Generation</span>
+                <span class="tag">Creative</span>
+                <span class="tag">High Resolution</span>
+            </div>
+            <div class="action-buttons">
+                <a href="https://openai.com/dall-e-3" class="visit-button"><i class="fas fa-external-link-alt"></i> Visit Site</a>
+                <a href="#" class="compare-button"><i class="fas fa-chart-bar"></i> Compare</a>
+            </div>
+        </div>
+
+        <div class="launch-card" data-aos="fade-up" data-aos-delay="400" data-tags="llm,research">
+            <h3>Llama 4</h3>
+            <div class="launch-info">
+                <i class="far fa-calendar-alt"></i> September 5, 2024
+            </div>
+            <div class="company-badge">Meta AI</div>
+            <p>Meta's most capable open-source large language model with improved reasoning and instruction following.</p>
+            <div class="tags">
+                <span class="tag">Open Source</span>
+                <span class="tag">LLM</span>
+                <span class="tag">Reasoning</span>
+            </div>
+            <div class="action-buttons">
+                <a href="https://ai.meta.com/llama/" class="visit-button"><i class="fas fa-external-link-alt"></i> Visit Site</a>
+                <a href="#" class="compare-button"><i class="fas fa-chart-bar"></i> Compare</a>
+            </div>
+        </div>
+
+        <div class="launch-card" data-aos="fade-up" data-aos-delay="500" data-tags="multimodal,research">
+            <h3>Sora 2.0</h3>
+            <div class="launch-info">
+                <i class="far fa-calendar-alt"></i> August 22, 2024
+            </div>
+            <div class="company-badge">OpenAI</div>
+            <p>Advanced text-to-video model with extended duration, improved coherence, and enhanced creative control.</p>
+            <div class="tags">
+                <span class="tag">Video Generation</span>
+                <span class="tag">Creative</span>
+                <span class="tag">High Quality</span>
+            </div> <!-- Corrected misplaced closing div -->
+            <div class="action-buttons">
+                <a href="https://openai.com/sora" class="visit-button"><i class="fas fa-external-link-alt"></i> Visit Site</a>
+                <a href="#" class="compare-button"><i class="fas fa-chart-bar"></i> Compare</a>
+            </div>
+        </div>
+
+
+        <!-- AudioCraft -->
+        <div class="launch-card" data-aos="fade-up" data-aos-delay="300" data-tags="audio,music">
+            <h3>AudioCraft</h3>
+            <div class="launch-info">
+                <i class="far fa-calendar-alt"></i> October 15, 2024
+            </div>
+            <div class="company-badge">Meta AI</div>
+            <p>Advanced AI-powered audio and music generation with high-quality sound synthesis and style control.</p>
+            <div class="tags">
+                <span class="tag">Audio Generation</span>
+                <span class="tag">Music</span>
+                <span class="tag">Sound Design</span>
+            </div>
+            <div class="action-buttons">
+                <a href="https://audiocraft.metademolab.com/" class="visit-button"><i class="fas fa-external-link-alt"></i> Visit Site</a>
+                <a href="#" class="compare-button"><i class="fas fa-chart-bar"></i> Compare</a>
+            </div>
+        </div>
+
+
+
+        <!-- Stable Diffusion XL -->
+        <div class="launch-card" data-aos="fade-up" data-aos-delay="400" data-tags="vision,creative">
+            <h3>Stable Diffusion XL 2.0</h3>
+            <div class="launch-info">
+            <i class="far fa-calendar-alt"></i> August 15, 2024
+            </div>
+            <div class="company-badge">Stability AI</div>
+            <p>Advanced image generation model with improved composition control, photorealism, and artistic style transfer capabilities.</p>
+            <div class="tags">
+            <span class="tag">Image Generation</span>
+            <span class="tag">Creative</span>
+            <span class="tag">Open Source</span>
+            </div>
+            <div class="action-buttons">
+                <a href="https://stability.ai/stable-diffusion" class="visit-button"><i class="fas fa-external-link-alt"></i> Visit Site</a>
+                <a href="#" class="compare-button"><i class="fas fa-chart-bar"></i> Compare</a>
+            </div>
+        </div>
+
+        <!-- Mistral AI -->
+        <div class="launch-card" data-aos="fade-up" data-aos-delay="450" data-tags="llm,research">
+            <h3>Mistral 8x7B</h3>
+            <div class="launch-info">
+            <i class="far fa-calendar-alt"></i> July 30, 2024
+            </div>
+            <div class="company-badge">Mistral AI</div>
+            <p>High-performance language model optimized for efficiency and scalability with improved reasoning capabilities.</p>
+            <div class="tags">
+            <span class="tag">LLM</span>
+            <span class="tag">Efficient</span>
+            <span class="tag">Research</span>
+            </div>
+            <div class="action-buttons">
+                <a href="https://mistral.ai/" class="visit-button"><i class="fas fa-external-link-alt"></i> Visit Site</a>
+                <a href="#" class="compare-button"><i class="fas fa-chart-bar"></i> Compare</a>
+            </div>
+        </div>
+        <!-- DeepSpeed Code AI -->
+        <div class="launch-card" data-aos="fade-up" data-aos-delay="500" data-tags="llm,code">
+            <h3>DeepSpeed Code Assistant</h3>
+            <div class="launch-info">
+            <i class="far fa-calendar-alt"></i> July 15, 2024
+            </div>
+            <div class="company-badge">Microsoft Research</div>
+            <p>High-performance code generation and analysis model optimized for enterprise development workflows and large codebases.</p>
+            <div class="tags">
+            <span class="tag">Code</span>
+            <span class="tag">Development</span>
+            <span class="tag">Enterprise</span>
+            </div>
+            <div class="action-buttons">
+                <a href="https://www.microsoft.com/en-us/research/project/deepspeed/" class="visit-button"><i class="fas fa-external-link-alt"></i> Visit Site</a>
+                <a href="#" class="compare-button"><i class="fas fa-chart-bar"></i> Compare</a>
+            </div>
+         </div>
+    
+
+        <!-- Perceiver AI -->
+        <div class="launch-card" data-aos="fade-up" data-aos-delay="550" data-tags="vision,multimodal">
+            <h3>Perceiver IO</h3>
+            <div class="launch-info">
+            <i class="far fa-calendar-alt"></i> July 1, 2024
+            </div>
+            <div class="company-badge">DeepMind</div>
+            <p>Universal perception model handling multiple input modalities including vision, audio, and point clouds with state-of-the-art performance.</p>
+            <div class="tags">
+            <span class="tag">Multimodal</span>
+            <span class="tag">Perception</span>
+            <span class="tag">Research</span>
+            </div>
+            <div class="action-buttons">
+                <a href="https://deepmind.google/technologies/" class="visit-button"><i class="fas fa-external-link-alt"></i> Visit Site</a>
+                <a href="#" class="compare-button"><i class="fas fa-chart-bar"></i> Compare</a>
+            </div>
+        </div>
+
+
+       <!-- Midjourney v7 -->
+<div class="launch-card" data-aos="fade-up" data-aos-delay="250" data-tags="image,creative">
+    <h3>Midjourney v7</h3>
+    <div class="launch-info">
+        <i class="far fa-calendar-alt"></i> November 30, 2024
+    </div>
+    <div class="company-badge">Midjourney</div>
+    <p>State-of-the-art text-to-image generation with enhanced lighting, realism, and artistic flexibility.</p>
+    <div class="tags">
+        <span class="tag">Image Generation</span>
+        <span class="tag">Creative</span>
+        <span class="tag">Art</span>
+    </div>
+    <div class="action-buttons">
+        <a href="https://www.midjourney.com/" class="visit-button"><i class="fas fa-external-link-alt"></i> Visit Site</a>
+        <a href="#" class="compare-button"><i class="fas fa-chart-bar"></i> Compare</a>
+    </div>
+</div>
+
+
+
+<!-- PaLM 3 -->
+<div class="launch-card" data-aos="fade-up" data-aos-delay="350" data-tags="llm,enterprise">
+    <h3>PaLM 3</h3>
+    <div class="launch-info">
+        <i class="far fa-calendar-alt"></i> September 20, 2024
+    </div>
+    <div class="company-badge">Google DeepMind</div>
+    <p>Google's powerful LLM with enhanced natural language understanding, multimodal capabilities, and enterprise-ready features.</p>
+    <div class="tags">
+        <span class="tag">LLM</span>
+        <span class="tag">Enterprise</span>
+        <span class="tag">Multimodal</span>
+    </div>
+    <div class="action-buttons">
+        <a href="https://ai.google/discover/palm2/" class="visit-button"><i class="fas fa-external-link-alt"></i> Visit Site</a>
+        <a href="#" class="compare-button"><i class="fas fa-chart-bar"></i> Compare</a>
+    </div>
+</div>
+
+<!-- Claude Enterprise -->
+<div class="launch-card" data-aos="fade-up" data-aos-delay="600" data-tags="llm,assistant">
+    <h3>Claude Enterprise</h3>
+    <div class="launch-info">
+        <i class="far fa-calendar-alt"></i> June 15, 2024
+    </div>
+    <div class="company-badge">Anthropic</div>
+    <p>Advanced AI assistant with enhanced reasoning, task completion, and enterprise security features.</p>
+    <div class="tags">
+        <span class="tag">Assistant</span>
+        <span class="tag">Enterprise</span>
+        <span class="tag">Security</span>
+    </div>
+    <div class="action-buttons">
+        <a href="https://www.anthropic.com/claude" class="visit-button"><i class="fas fa-external-link-alt"></i> Visit Site</a>
+        <a href="#" class="compare-button"><i class="fas fa-chart-bar"></i> Compare</a>
+    </div>
+</div>
+
+<!-- NeuroSync AI -->
+<div class="launch-card" data-aos="fade-up" data-aos-delay="650" data-tags="biotech,research">
+    <h3>NeuroSync AI</h3>
+    <div class="launch-info">
+        <i class="far fa-calendar-alt"></i> May 30, 2024
+    </div>
+    <div class="company-badge">BrainCo Labs</div>
+    <p>Revolutionary AI system for brain-computer interfaces with advanced neural signal processing and real-time adaptation capabilities.</p>
+    <div class="tags">
+        <span class="tag">Neuroscience</span>
+        <span class="tag">Medical</span>
+        <span class="tag">BCI</span>
+    </div>
+    <div class="action-buttons">
+        <a href="https://www.braincorp.com/" class="visit-button"><i class="fas fa-external-link-alt"></i> Visit Site</a>
+        <a href="#" class="compare-button"><i class="fas fa-chart-bar"></i> Compare</a>
+    </div>
+</div>
+
+<!-- Quantum Navigator -->
+<div class="launch-card" data-aos="fade-up" data-aos-delay="700" data-tags="quantum,enterprise">
+    <h3>Quantum Navigator</h3>
+    <div class="launch-info">
+        <i class="far fa-calendar-alt"></i> May 15, 2024
+    </div>
+    <div class="company-badge">QuantumTech Solutions</div>
+    <p>Hybrid quantum-classical AI system optimized for complex optimization problems and financial modeling with unprecedented accuracy.</p>
+    <div class="tags">
+        <span class="tag">Quantum</span>
+        <span class="tag">Finance</span>
+        <span class="tag">Enterprise</span>
+    </div>
+    <div class="action-buttons">
+        <a href="https://aws.amazon.com/braket/" class="visit-button"><i class="fas fa-external-link-alt"></i> Visit Site</a>
+        <a href="#" class="compare-button"><i class="fas fa-chart-bar"></i> Compare</a>
+    </div>
+</div>
+
+<!-- EcoSense AI -->
+<div class="launch-card" data-aos="fade-up" data-aos-delay="750" data-tags="climate,research">
+    <h3>EcoSense AI</h3>
+    <div class="launch-info">
+        <i class="far fa-calendar-alt"></i> May 1, 2024
+    </div>
+    <div class="company-badge">GreenTech AI</div>
+    <p>Advanced climate modeling AI system with real-time environmental monitoring and predictive capabilities for sustainability initiatives.</p>
+    <div class="action-buttons">
+        <a href="https://climate.google/" class="visit-button"><i class="fas fa-external-link-alt"></i> Visit Site</a>
+        <a href="#" class="compare-button"><i class="fas fa-chart-bar"></i> Compare</a>
+    </div>
+    <div class="action-buttons">
+        <a href="https://www.microsoft.com/en-us/mesh" class="visit-button"><i class="fas fa-external-link-alt"></i> Visit Site</a>
+        <a href="#" class="compare-button"><i class="fas fa-chart-bar"></i> Compare</a>
+    </div>
+</div>
+
+<!-- HoloForge AI -->
+<div class="launch-card" data-aos="fade-up" data-aos-delay="800" data-tags="ar,creative">
+    <h3>HoloForge AI</h3>
+    <div class="launch-info">
+        <i class="far fa-calendar-alt"></i> April 20, 2024
+    </div>
+    <div class="company-badge">MetaReality Labs</div>
+    <p>Real-time holographic content generation AI with advanced spatial awareness and interactive AR capabilities for immersive experiences.</p>
+    <div class="tags">
+        <span class="tag">Holographic</span>
+        <span class="tag">AR/VR</span>
+        <span class="tag">Interactive</span>
+    </div>
+    <div class="action-buttons">
+        <a href="#" class="visit-button"><i class="fas fa-external-link-alt"></i> Visit Site</a>
+        <a href="#" class="compare-button"><i class="fas fa-chart-bar"></i> Compare</a>
+    </div>
+</div>
+
+
+
+        <!-- No results display -->
+        <div class="no-results" id="no-results" style="display: none;">
+            <i class="fas fa-search fa-3x" style="margin-bottom: 1rem; opacity: 0.5;"></i>
+            <h3>No AI models found</h3>
+            <p>Try adjusting your search or filters to find what you're looking for.</p>
+            <p class="blink"><i class="fas fa-sync-alt"></i> TechZen AI is processing your query...</p>
+        </div>
+    </div> <!-- Closing div for launches-grid -->
+</section>
+
+
+
+        <!-- Trending Section -->
+        <section id="trending" class="trending-section">
+            <h2 class="section-title">Trending in AI</h2>
+            
+            <div class="trend-item" data-aos="fade-right">
+                <div class="trend-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="trend-content">
+                    <h3>Multimodal Models Dominate Market</h3>
+                    <p>Single-purpose AI models are being rapidly replaced by multimodal systems capable of processing text, images, audio, and video simultaneously.</p>
+                    <div class="trend-badge">
+                        <i class="fas fa-arrow-up"></i> Rising Trend
+                    </div>
+                </div>
+            </div>
+            
+            <div class="trend-item" data-aos="fade-right" data-aos-delay="100">
+                <div class="trend-icon">
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <div class="trend-content">
+                    <h3>Local AI Deployment Gaining Traction</h3>
+                    <p>Enterprise customers are increasingly adopting locally-deployed AI solutions for enhanced privacy, security, and reduced latency.</p>
+                    <div class="trend-badge">
+                        <i class="fas fa-arrow-up"></i> Rising Trend
+                    </div>
+                </div>
+            </div>
+            
+            <div class="trend-item" data-aos="fade-right" data-aos-delay="200">
+                <div class="trend-icon">
+                    <i class="fas fa-code-branch"></i>
+                </div>
+                <div class="trend-content">
+                    <h3>Agent-Based AI Systems</h3>
+                    <p>Autonomous AI agents capable of executing complex tasks without human intervention are becoming the new frontier in AI research.</p>
+                    <div class="trend-badge">
+                        <i class="fas fa-arrow-up"></i> Rising Trend
+                    </div>
+                </div>
+            </div>
+            
+            <div class="trend-item" data-aos="fade-right" data-aos-delay="300">
+                <div class="trend-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="trend-content">
+                    <h3>AI Safety Standards Formalization</h3>
+                    <p>Industry and government partnerships are making progress toward establishing unified safety standards for AI development and deployment.</p>
+                    <div class="trend-badge">
+                        <i class="fas fa-equals"></i> Stable Trend
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add these new trend items after the existing trend items in the trending section -->
+
+<div class="trend-item" data-aos="fade-right" data-aos-delay="400">
+    <div class="trend-icon">
+        <i class="fas fa-dna"></i>
+    </div>
+    <div class="trend-content">
+        <h3>Biomimetic AI Architecture</h3>
+        <p>Neural networks inspired by biological systems beyond the brain, incorporating principles from genetic algorithms and evolutionary computing for more adaptable AI systems.</p>
+        <div class="trend-badge">
+            <i class="fas fa-arrow-up"></i> Emerging Trend
+        </div>
+    </div>
+</div>
+
+<div class="trend-item" data-aos="fade-right" data-aos-delay="500">
+    <div class="trend-icon">
+        <i class="fas fa-robot"></i>
+    </div>
+    <div class="trend-content">
+        <h3>Emotional Intelligence in AI</h3>
+        <p>Advanced sentiment analysis and emotional recognition capabilities being integrated into AI systems for more nuanced human-AI interactions and mental health applications.</p>
+        <div class="trend-badge">
+            <i class="fas fa-arrow-up"></i> Rising Trend
+        </div>
+    </div>
+</div>
+
+<div class="trend-item" data-aos="fade-right" data-aos-delay="600">
+    <div class="trend-icon">
+        <i class="fas fa-network-wired"></i>
+    </div>
+    <div class="trend-content">
+        <h3>Quantum-Classical AI Hybrid Systems</h3>
+        <p>Integration of quantum computing principles with classical AI architectures for unprecedented computational capabilities in optimization and simulation tasks.</p>
+        <div class="trend-badge">
+            <i class="fas fa-bolt"></i> Breakthrough Trend
+        </div>
+    </div>
+</div>
+
+<div class="trend-item" data-aos="fade-right" data-aos-delay="700">
+    <div class="trend-icon">
+        <i class="fas fa-globe-americas"></i>
+    </div>
+    <div class="trend-content">
+        <h3>Federated AI Learning Networks</h3>
+        <p>Decentralized AI training systems enabling collaborative model improvement while maintaining data privacy, gaining adoption in healthcare and financial sectors.</p>
+        <div class="trend-badge">
+            <i class="fas fa-arrow-up"></i> Rising Trend
+        </div>
+    </div>
+</div>
+
+        </section>
+
+        <!-- Newsletter Section -->
+        <section class="newsletter-section">
+            <h2>Stay Updated with AI Innovations</h2>
+            <p>Subscribe to our newsletter to receive the latest AI launch notifications, comparison reports, and TechZen integration guides.</p>
+            <form class="newsletter-form">
+                <input type="email" class="newsletter-input" placeholder="Your email address" required>
+                <button type="submit" class="newsletter-button">Subscribe Now</button>
+            </form>
+        </section>
+
+        
+
+<!-- Replace the TechZen Integration section with this -->
+<section id="ai-analytics" class="ai-analytics-section">
+    <h2 class="section-title">AI Model Analytics & Comparison</h2>
+    <p class="section-description">Explore detailed comparisons, performance metrics, and real-time analytics of leading AI models.</p>
+    
+    <div class="analytics-grid">
+        <!-- Real-time Performance Metrics -->
+        <div class="analytics-card" data-aos="fade-up">
+            <div class="analytics-header">
+                <h3><i class="fas fa-chart-line"></i> Real-time Model Performance</h3>
+                <div class="refresh-btn">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+            </div>
+            <div class="performance-chart">
+                <canvas id="performanceChart"></canvas>
+            </div>
+            <div class="metrics-grid">
+                <div class="metric">
+                    <span class="metric-value">99.4%</span>
+                    <span class="metric-label">Accuracy</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-value">12ms</span>
+                    <span class="metric-label">Latency</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-value">2.1M</span>
+                    <span class="metric-label">Requests/hr</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Model Comparison -->
+        <div class="analytics-card comparison-tool" data-aos="fade-up" data-aos-delay="100">
+            <h3><i class="fas fa-code-branch"></i> Model Comparison</h3>
+            <div class="comparison-controls">
+                <select id="model1" class="model-select">
+                    <option value="gpt5">GPT-5 Omni</option>
+                    <option value="claude">Claude 3.7</option>
+                    <option value="palm">PaLM 3</option>
+                    <option value="gemini">Gemini Ultra 2</option>
+                </select>
+                <i class="fas fa-exchange-alt"></i>
+                <select id="model2" class="model-select">
+                    <option value="claude">Claude 3.7</option>
+                    <option value="gpt5">GPT-5 Omni</option>
+                    <option value="palm">PaLM 3</option>
+                    <option value="gemini">Gemini Ultra 2</option>
+                </select>
+            </div>
+            <div class="comparison-chart">
+                <canvas id="comparisonChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Live Benchmarks -->
+        <div class="analytics-card benchmark-card" data-aos="fade-up" data-aos-delay="200">
+            <h3><i class="fas fa-tachometer-alt"></i> Live Benchmarks</h3>
+            <div class="benchmark-tabs">
+                <button class="tab-btn active" data-tab="reasoning">Reasoning</button>
+                <button class="tab-btn" data-tab="vision">Vision</button>
+                <button class="tab-btn" data-tab="code">Code</button>
+            </div>
+            <div class="benchmark-content">
+                <div class="benchmark-grid" id="benchmarkGrid"></div>
+            </div>
+        </div>
+    </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>AI Launch Tracker</h4>
+                <ul>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> About Us</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> Our Team</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> Careers</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> AI Model Database</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> Comparison Tools</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> Integration Guides</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> TechZen Documentation</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>TechZen Suite</h4>
+                <ul>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> TechZen Dashboard</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> TechZen Analytics</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> TechZen Security</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> Enterprise Solutions</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> Help Center</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> FAQs</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> Community Forum</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> Status Page</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="footer-logo">
+                <i class="fas fa-rocket"></i>
+                AI Launch Tracker <span class="logo-highlight">Pro</span>
+            </div>
+            
+            <div class="social-links">
+                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            </div>
+            
+            <p>&copy; 2025 TechZen Technologies. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // Initialize AOS (Animate On Scroll)
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
+            });
+            
+            // Loader Animation
+            setTimeout(function() {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                setTimeout(function() {
+                    loader.style.display = 'none';
+                }, 500);
+            }, 2000);
+            
+            // Create loader particles
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random position and animation
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 50 + Math.random() * 100;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                
+                particle.style.setProperty('--tx', `${tx}px`);
+                particle.style.setProperty('--ty', `${ty}px`);
+                particle.style.left = '50%';
+                particle.style.top = '50%';
+                particle.style.animationDelay = `${Math.random()}s`;
+                particle.style.animationDuration = `${1 + Math.random()}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+            
+            // Mobile Menu Toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('open');
+            });
+            
+            // Search Functionality
+            const searchInput = document.getElementById('search-input');
+            const launchCards = document.querySelectorAll('.launch-card');
+            const noResults = document.getElementById('no-results');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            
+            function filterLaunches() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+                
+                let hasResults = false;
+                
+                launchCards.forEach(card => {
+                    const cardTitle = card.querySelector('h3').textContent.toLowerCase();
+                    const cardDesc = card.querySelector('p').textContent.toLowerCase();
+                    const cardTags = card.getAttribute('data-tags');
+                    
+                    const matchesSearch = cardTitle.includes(searchTerm) || cardDesc.includes(searchTerm);
+                    const matchesFilter = activeFilter === 'all' || cardTags.includes(activeFilter);
+                    
+                    if (matchesSearch && matchesFilter) {
+                        card.style.display = 'flex';
+                        hasResults = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                noResults.style.display = hasResults ? 'none' : 'block';
+            }
+            
+            searchInput.addEventListener('input', filterLaunches);
+            
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    filterLaunches();
+                });
+            });
+            
+            // Back to Top Button
+            const backToTopBtn = document.getElementById('back-to-top');
+            
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Newsletter Form Submission
+            const newsletterForm = document.querySelector('.newsletter-form');
+            
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const emailInput = this.querySelector('input[type="email"]');
+                
+                // Simple validation
+                if (emailInput.value) {
+                    // Here you would typically send the data to your server
+                    alert('Thanks for subscribing! You will receive the latest AI launch updates.');
+                    emailInput.value = '';
+                }
+            });
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Performance Chart
+            const perfCtx = document.getElementById('performanceChart').getContext('2d');
+            new Chart(perfCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Performance Score',
+                        data: [95, 96, 97, 98, 99, 99.4],
+                        borderColor: '#10b981',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            // Comparison Chart
+            const compCtx = document.getElementById('comparisonChart').getContext('2d');
+            new Chart(compCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Reasoning', 'Vision', 'Language', 'Code', 'Speed', 'Accuracy'],
+                    datasets: [{
+                        label: 'Model 1',
+                        data: [95, 88, 92, 85, 90, 94],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.2)'
+                    }, {
+                        label: 'Model 2',
+                        data: [88, 95, 90, 92, 85, 90],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // Initialize benchmark grid
+            const benchmarkData = {
+                reasoning: [
+                    { model: 'GPT-5 Omni', score: 98.5 },
+                    { model: 'Claude 3.7', score: 97.2 },
+                    { model: 'PaLM 3', score: 96.8 }
+                ]
+            };
+
+            function updateBenchmarks(category) {
+                const grid = document.getElementById('benchmarkGrid');
+                grid.innerHTML = benchmarkData[category]
+                    .map(item => `
+                        <div class="benchmark-item">
+                            <span class="model-name">${item.model}</span>
+                            <div class="score-bar">
+                                <div class="score-fill" style="width: ${item.score}%"></div>
+                            </div>
+                            <span class="score-value">${item.score}%</span>
+                        </div>
+                    `).join('');
+            }
+
+            updateBenchmarks('reasoning');
+
+            // Tab switching
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    updateBenchmarks(btn.dataset.tab);
+                });
+            });
+        });
+
+
+
+
+
+
+
+
+// Create animated tech background
+document.addEventListener('DOMContentLoaded', function() {
+    const background = document.getElementById('background');
+    
+    // Add tech grid layer
+    const techGrid = document.createElement('div');
+    techGrid.className = 'tech-grid';
+    background.appendChild(techGrid);
+    
+    // Add circuit pattern
+    const techCircuit = document.createElement('div');
+    techCircuit.className = 'tech-circuit';
+    background.appendChild(techCircuit);
+    
+    // Create floating particles
+    for (let i = 0; i < 20; i++) {
+        createFloatingParticle(background);
+    }
+    
+    // Create data streams
+    for (let i = 0; i < 15; i++) {
+        createDataStream(background);
+    }
+    
+    // Create tech nodes
+    for (let i = 0; i < 8; i++) {
+        createTechNode(background);
+    }
+    
+    function createFloatingParticle(container) {
+        const particle = document.createElement('div');
+        particle.className = 'floating-particle';
+        
+        // Random position
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        
+        // Random size
+        const size = Math.random() * 4 + 2;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Random animation delay
+        particle.style.animationDelay = `${Math.random() * 20}s`;
+        
+        container.appendChild(particle);
+    }
+    
+    function createDataStream(container) {
+        const stream = document.createElement('div');
+        stream.className = 'data-stream';
+        
+        // Random position
+        stream.style.left = `${Math.random() * 100}%`;
+        stream.style.top = `${Math.random() * 50}%`;
+        
+        // Random height
+        stream.style.height = `${Math.random() * 150 + 50}px`;
+        
+        // Random animation properties
+        stream.style.setProperty('--translate-x', `${(Math.random() * 200 - 100)}px`);
+        stream.style.setProperty('--rotate', `${Math.random() * 30 - 15}deg`);
+        stream.style.animationDuration = `${Math.random() * 8 + 4}s`;
+        stream.style.animationDelay = `${Math.random() * 5}s`;
+        
+        container.appendChild(stream);
+    }
+    
+    function createTechNode(container) {
+        const node = document.createElement('div');
+        node.className = 'tech-node';
+        
+        // Random position
+        node.style.left = `${Math.random() * 100}%`;
+        node.style.top = `${Math.random() * 100}%`;
+        
+        // Random animation delay
+        node.style.animationDelay = `${Math.random() * 4}s`;
+        
+        container.appendChild(node);
+    }
+    
+    // Replace data streams and add new ones periodically
+    setInterval(() => {
+        const oldStreams = document.querySelectorAll('.data-stream');
+        if (oldStreams.length > 0) {
+            const randomIndex = Math.floor(Math.random() * oldStreams.length);
+            oldStreams[randomIndex].remove();
+            createDataStream(background);
+        }
+    }, 2000);
+});
+
+
+
+async function logout() {
+    try {
+        const response = await fetch('/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+        });
+
+        if (response.ok) {
+            window.location.href = '/login';
+        } else {
+            throw new Error('Logout failed');
+        }
+    } catch (error) {
+        console.error('Logout error:', error);
+        alert('Failed to logout. Please try again.');
+    }
+}
+
+
+
+    </script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</body>
+</html>

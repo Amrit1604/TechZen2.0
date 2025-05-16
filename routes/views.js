@@ -126,10 +126,10 @@ publicRoutes.get('/login', (req, res) => {
   });
 });
 
-publicRoutes.get('/admin', (req, res) => {
+publicRoutes.get('/admin1604', (req, res) => {
   res.render('admin1604', {
-    pageTitle: 'Admin - TechZen',
-    cssPath: '/css/styleadmin.css',
+    pageTitle: 'Admin Support Dashboard',
+    title: 'Admin Support Dashboard',
     siteName: 'TechZen'
   });
 });
@@ -218,9 +218,10 @@ protectedRoutes.get('/ai', (req, res) => {
 
 protectedRoutes.get('/news', (req, res) => {
   res.render('news', {
-    user: req.user,
     title: 'TechZen: Tech News',
     siteName: 'TechZen',
+    logoPath: '/img-vid/logo.jpeg',
+    faviconPath: '/img-vid/favicon.ico',
     navLinks: [
       { href: '/news', text: 'Tech News' },
       { href: '/gadgets', text: 'Gadgets' },
@@ -243,39 +244,26 @@ protectedRoutes.get('/news', (req, res) => {
       { href: '#', text: 'Terms of Service' }
     ],
     newsletterAction: '/subscribe',
-    currentYear: new Date().getFullYear()
+    currentYear: new Date().getFullYear(),
+    user: req.user || null
   });
 });
 
 protectedRoutes.get('/gadgets', (req, res) => {
-  res.render('gadget', {
-    user: req.user,
-    title: 'TechZen: Gadgets',
-    siteName: 'TechZen',
-    navLinks: [
-      { href: '/news', text: 'Tech News' },
-      { href: '/gadgets', text: 'Gadgets' },
-      { href: '/ai', text: 'AI Updates' },
-      { href: '/blogs', text: 'Blog' },
-      { href: '/selling2', text: 'Sell/Buy' },
-      { href: '/customer', text: 'Tech Service' }
-    ],
-    footerDescription: 'Your daily source for the latest in technology, innovation, and digital transformation.',
-    socialLinks: [
-      { href: '#', icon: '/img-vid/facebook.png', name: 'Facebook' },
-      { href: '#', icon: '/img-vid/twitter.png', name: 'Twitter' },
-      { href: '#', icon: '/img-vid/linkedin.png', name: 'LinkedIn' },
-      { href: '#', icon: '/img-vid/instagram.png', name: 'Instagram' }
-    ],
-    footerLinks: [
-      { href: '/AboutUs', text: 'About Us' },
-      { href: '/ContactUs', text: 'Contact' },
-      { href: '#', text: 'Privacy Policy' },
-      { href: '#', text: 'Terms of Service' }
-    ],
-    newsletterAction: '/subscribe',
-    currentYear: new Date().getFullYear()
-  });
+  try {
+    console.log('Rendering basic gadgets test page');
+    
+    // Render with minimal variables
+    res.render('gadgets', {
+      user: req.user || null,
+      title: 'TechZen - Gadget Reviews'
+    });
+    
+  } catch (error) {
+    console.error('Error rendering gadgets page:', error);
+    // Send a plain response for easier debugging
+    res.status(500).send('Error: ' + error.message);
+  }
 });
 
 protectedRoutes.get('/blogs', (req, res) => {
@@ -435,7 +423,7 @@ protectedRoutes.get('/selling2', (req, res) => {
 
 // Central route handler
 router.use((req, res, next) => {
-  if (['/login', '/', '/ContactUs', '/AboutUs', '/admin'].includes(req.path)) {
+  if (['/login', '/', '/ContactUs', '/AboutUs', '/admin' , '/admin1604'].includes(req.path)) {
     publicRoutes(req, res, next);
   } else {
     protectedRoutes(req, res, next);

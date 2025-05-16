@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wardiere Inc. - Blog</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* Apply Poppins to all text */
+* {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+        body {
+            background-color: #1a1033;
+            color: white;
+        }
+
+        .sign-up-btn {
+            background-color: white;
+            color: #1a1033;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 5%;
+        }
+
+        h1 {
+            font-size: 3rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .blog-card {
+            background-color: #242b4b;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .blog-content {
+            padding: 1.5rem;
+        }
+
+        .tag {
+            background-color: #242b4b;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .date {
+            color: #a99fd6;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .blog-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .read-more {
+            color: #a99fd6;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .read-more:hover {
+            color: white;
+        }
+        /* Navbar */
+        .nav-header {
+        background: rgba(18, 18, 18, 0.8);
+        backdrop-filter: blur(10px);
+        padding: 1rem;
+        position: fixed;
+        width: 100%;
+        z-index: 1000;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        box-sizing: border-box;
+        }
+        
+        .nav-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+        position: relative;
+        }
+        
+        .logo {
+        font-size: 1.8rem;
+        font-weight: bold;
+        background: linear-gradient(45deg, #3a86ff, #ff006e);
+        -webkit-background-clip: text;
+        color: transparent;
+        animation: logoGlow 3s ease-in-out infinite;
+        }
+        
+        .nav-links {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+        }
+        
+        .nav-links a {
+        color: #fff;
+        text-decoration: none;
+        position: relative;
+        padding: 0.5rem 0;
+        }
+        
+        .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #3a86ff, #ff006e);
+        transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+        width: 100%;
+        }
+        
+        .subscribe-btn {
+        background: linear-gradient(45deg, #3a86ff, #ff006e);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 25px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        }
+        
+        .subscribe-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+        );
+        transition: left 0.7s ease;
+        }
+        
+        .subscribe-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(58, 134, 255, 0.4);
+        }
+        
+        .subscribe-btn:hover::before {
+        left: 100%;
+        }
+        
+        
+        
+        @keyframes logoGlow {
+        0%, 100% {
+        filter: drop-shadow(0 0 2px rgba(58, 134, 255, 0.5))
+               drop-shadow(0 0 5px rgba(58, 134, 255, 0.3));
+        }
+        50% {
+        filter: drop-shadow(0 0 5px rgba(58, 134, 255, 0.8))
+               drop-shadow(0 0 10px rgba(58, 134, 255, 0.5));
+        }
+        }
+
+        .logout-btn {
+    position: relative;
+    background: linear-gradient(90deg,#ff006e, #3a86ff);
+    color: white;
+    border: none;
+    padding: 11px 30px;  /* Increased size */
+    border-radius: 30px;  /* Slightly rounded corners */
+    font-size: 16px;  /* Larger font */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.logout-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.7s ease;
+}
+
+.logout-btn:hover {
+    background: #0056b3;  /* Darker blue for hover */
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(58, 134, 255, 0.4);
+}
+
+.logout-btn:hover::before {
+    left: 100%;  /* Gradient effect on hover */
+}
+
+@keyframes logoGlow {
+    0%, 100% {
+        filter: drop-shadow(0 0 2px rgba(58, 134, 255, 0.5)) drop-shadow(0 0 5px rgba(58, 134, 255, 0.3));
+    }
+    50% {
+        filter: drop-shadow(0 0 5px rgba(58, 134, 255, 0.8)) drop-shadow(0 0 10px rgba(58, 134, 255, 0.5));
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+        
+        
+        .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        color: #FFF;
+        font-size: 2rem;
+        cursor: pointer;
+        z-index: 1001;
+        transition: transform 0.3s ease;
+        margin-left: -100px;
+        padding: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+        .nav-container {
+        padding: 0 1rem;
+        }
+        
+        .nav-links {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: rgba(18, 18, 18, 0.95);
+        flex-direction: column;
+        padding: 2rem;
+        clip-path: circle(0% at 100% 0);
+        transition: clip-path 0.5s ease-in-out;
+        opacity: 0;
+        }
+        
+        .nav-links.active {
+        clip-path: circle(150% at 100% 0);
+        opacity: 1;
+        }
+        
+        .mobile-menu-btn {
+        display: block;
+        position: relative;
+        margin-left: -1000px;
+        
+        }
+        }
+
+        /* Footer */
+.footer {
+background: linear-gradient(to right, #0f0f0f, #1a1a1a);
+color: #E2E8F0;
+padding: 4rem 2rem 2rem;
+position: relative;
+overflow: hidden;
+}
+
+.footer::before {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 1px;
+background: linear-gradient(90deg, transparent, #3a86ff, transparent);
+}
+
+.footer-content {
+max-width: 1200px;
+margin: 0 auto;
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+gap: 3rem;
+}
+
+.footer-section {
+animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.footer-section h3 {
+color: #fff;
+font-size: 1.5rem;
+margin-bottom: 1.5rem;
+position: relative;
+}
+
+.footer-section h3::after {
+content: '';
+position: absolute;
+left: 0;
+bottom: -8px;
+width: 40px;
+height: 2px;
+background: #3a86ff;
+}
+
+.social-links {
+display: flex;
+gap: 1rem;
+margin-top: 1.5rem;
+}
+
+.social-link {
+width: 40px;
+height: 40px;
+border-radius: 50%;
+background: rgba(255,255,255,0.1);
+display: flex;
+align-items: center;
+justify-content: center;
+transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.social-link:hover {
+transform: translateY(-5px);
+background: #3a86ff;
+}
+
+.social-link img {
+width: 20px;
+height: 20px;
+}
+
+.footer-links {
+list-style: none;
+padding: 0;
+}
+
+.footer-links li {
+margin-bottom: 0.8rem;
+}
+
+.footer-links a {
+color: #E2E8F0;
+text-decoration: none;
+transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+color: #3a86ff;
+}
+
+.newsletter-form {
+display: flex;
+gap: 1rem;
+}
+
+.newsletter-form input {
+flex: 1;
+padding: 0.8rem;
+border: none;
+border-radius: 5px;
+background: rgba(255,255,255,0.1);
+color: #fff;
+}
+
+.newsletter-form button {
+padding: 0.8rem 1.5rem;
+border: none;
+border-radius: 5px;
+background: #3a86ff;
+color: #fff;
+cursor: pointer;
+transition: transform 0.3s ease;
+}
+
+.newsletter-form button:hover {
+transform: translateY(-2px);
+}
+
+.footer-bottom {
+text-align: center;
+margin-top: 3rem;
+padding-top: 2rem;
+border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+@media (max-width: 768px) {
+.footer-content {
+grid-template-columns: 1fr;
+}
+
+.newsletter-form {
+flex-direction: column;
+}
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+.social-icons {
+    margin-top: 10px;
+}
+
+.social-icons a {
+    color: #000;
+    margin: 0 10px;
+    font-size: 24px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+    color: #0073e6; /* Change this color to whatever you prefer */
+}
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.video-background video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    color: white;
+    text-align: center;
+    font-size: 2rem;
+    padding-top: 20vh;
+}
+/* Dropdown */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background: white;
+    padding: 10px;
+    list-style: none;
+    top: 30px;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/* Hero Section */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 50px;
+    background: rgba(36, 43, 75, 0.6); /* Tint with transparency */
+    backdrop-filter: blur(10px); /* Blurred effect */
+    border-radius: 15px; /* Optional: rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow */
+}
+
+/* Hero Text */
+.hero-text h2 {
+    font-size: 30px;
+    color: #fff;
+}
+
+.hero-text h3 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ddd;
+}
+
+/* Hero Image */
+.hero-image img {
+    width: 400px;
+    height: 250px;
+    border-radius: 10px;
+}
+/* Gradient Background Animation */
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Smooth Fade-in on Page Load */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(-45deg, #02021b, #141e30, #243b55);
+    background-size: 300% 300%;
+    color: white;
+    animation: fadeIn 1s ease-in-out, gradientBG 8s infinite ease-in-out;
+}
+
+/* Navbar */
+nav {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 15px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    position: relative;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Animated Underline */
+nav ul li a::after {
+    content: "";
+    display: block;
+    height: 2px;
+    width: 0%;
+    background: #00aaff;
+    transition: width 0.3s ease-in-out;
+}
+
+nav ul li a:hover {
+    color: #00aaff;
+}
+
+nav ul li a:hover::after {
+    width: 100%;
+}
+
+/* Header */
+header {
+    text-align: center;
+    padding: 50px 20px;
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: slideDown 1s forwards;
+}
+
+/* Pulsating Glow Effect */
+.glow-text {
+    font-size: 36px;
+    animation: glow 1.5s infinite alternate ease-in-out;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 5px #00aaff, 0 0 10px #00aaff;
+    }
+    to {
+        text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff;
+    }
+}
+
+/* Blog Cards */
+.blog-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 20px;
+    gap: 20px;
+}
+
+.blog-card {
+    background: #111;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transform: scale(1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 1s forwards;
+}
+
+/* Smooth Zoom-in & Zoom-out on Hover */
+.blog-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 8px 16px rgba(0, 170, 255, 0.6);
+}
+
+/* Blog Card Images */
+.blog-card img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* Blog Card Headings */
+.blog-card h2 {
+    font-size: 22px;
+    margin: 10px 0;
+    color: #00aaff;
+    transition: color 0.3s ease-in-out;
+}
+
+.blog-card h2:hover {
+    color: #ffcc00;
+}
+
+/* Read More Button */
+.read-more {
+    background: #00aaff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: transform 0.2s ease-in-out, background 0.3s;
+}
+
+/* Button Hover Effect */
+.read-more:hover {
+    transform: scale(1.1);
+    background: #ffcc00;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #000;
+    color: white;
+    margin-top: 30px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 1s forwards;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.hidden {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.visible {
+    display: block !important;
+    opacity: 1;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.read-more {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.read-more:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+
+
+
+    </style>
+</head>
+<body>
+   <!-- Navbar -->
+   <header class="nav-header">
+    <div class="nav-container">
+        <a href="/home" class="logo">TechZen</a>
+        <nav class="nav-links">
+            <a href="/news">Tech News</a>
+            <a href="/gadgets">Gadgets</a>
+            <a href="/ai">AI Updates</a>
+            <a href="/reviews">Reviews</a>
+            <button class="subscribe-btn">Subscribe</button>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+                          </nav>
+        <button class="mobile-menu-btn">
+            <i  class="fas fa-bars"></i>
+        </button>
+    </div>
+</header>
+
+<div class="video-background">
+    <video autoplay loop muted playsinline>
+        <source src="bgvideo1.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="content">
+        <h1>Welcome to TechZen</h1>
+        <p>Your go-to source for the latest tech and AI updates.</p>
+    </div>
+</div>
+
+    <div class="container">
+
+        <section class="hero">
+            <div class="hero-text">
+                <h2><br>Tech.</h2>
+                <h3>The Future of Artificial Intelligence:<br>Trends and Implications.</h3>
+                <p>The latest insights into AI advancements and their impact.</p>
+            </div>
+            <div class="hero-image">
+                <img src="vrAI.jpg" alt="VR AI Technology">
+            </div>
+        </section>
+        <h1>Read the Blog</h1>
+
+       
+
+        <div class="blog-grid">
+            <div class="blog-card">
+                <img src="https://www.webprecious.com/wp-content/uploads/2024/05/Types-of-AI.jpg" alt="WFH" class="blog-image">
+                <div class="blog-content">
+                    <span class="tag">#trends</span>
+                    <div class="date">July 22, 2028</div>
+                    <h2 class="blog-title">WFH's the New Normal</h2>
+                    <a href="#" class="read-more" onclick="toggleContent(event, 'fullPost1')">Read full post →</a>
+        
+                    <div id="fullPost1" class="hidden">
+                        <p>Since the COVID-19 pandemic, remote work has transformed from a temporary measure to a permanent shift in many industries...</p>
+                        <h3>🔹 Benefits of Remote Work</h3>
+                        <ul>
+                            <li>🚀 Increased productivity and flexibility</li>
+                            <li>🏡 Better work-life balance</li>
+                            <li>⏳ No commute, more time saved</li>
+                        </ul>
+                        <h3>🔸 Challenges of Remote Work</h3>
+                        <ul>
+                            <li>❌ Communication barriers</li>
+                            <li>🛑 Lack of in-person collaboration</li>
+                            <li>🔒 Cybersecurity concerns</li>
+                        </ul>
+                        <p>Many companies now prefer hybrid models, balancing in-office work and remote flexibility...</p>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="blog-card">
+                <img src="https://undetectable.ai/blog/wp-content/uploads/2024/11/most-common-type-of-ai-used.jpg" alt="Company News" class="blog-image">
+                <div class="blog-content">
+                    <span class="tag">#news</span>
+                    <div class="date">July 15, 2028</div>
+                    <h2 class="blog-title">What's New with the Company</h2>
+                    <a href="#" class="read-more" onclick="toggleContent(event, 'fullPost2')">Read full post →</a>
+        
+                    <div id="fullPost2" class="hidden">
+                        <p>🚀 Our company has launched a new AI-driven product to enhance automation in the workplace...</p>
+                        <h3>🔹 Innovations</h3>
+                        <ul>
+                            <li>🤖 AI-powered analytics</li>
+                            <li>📈 Enhanced efficiency tools</li>
+                            <li>🔍 Improved data security</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="blog-card">
+                <img src="https://vofox.com/wp-content/uploads/2024/12/different-types-of-AI-in-2025.png" alt="AI Implementation" class="blog-image">
+                <div class="blog-content">
+                    <span class="tag">#ai</span>
+                    <div class="date">July 08, 2028</div>
+                    <h2 class="blog-title">How to Implement AI Into Your Work</h2>
+                    <a href="#" class="read-more" onclick="toggleContent(event, 'fullPost3')">Read full post →</a>
+        
+                    <div id="fullPost3" class="hidden">
+                        <p>💡 AI implementation can streamline workflow efficiency, reduce errors, and improve productivity...</p>
+                        <h3>🔹 Steps to Implement AI</h3>
+                        <ul>
+                            <li>📊 Analyze your work processes</li>
+                            <li>🛠️ Identify areas where AI can help</li>
+                            <li>🔄 Test and refine AI integration</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="blog-card">
+                <img src="https://img.freepik.com/free-photo/close-up-anthropomorphic-robot-working-computer_23-2150865895.jpg?t=st=1741154301~exp=1741157901~hmac=3d97ec98e704639bcbb68da0a8452cf0090d8e29b0fa430f6b2e01572429e360&w=1800" alt="Robot AI" class="blog-image">
+                <div class="blog-content">
+                    <span class="tag">#robot</span>
+                    <div class="date">July 18, 2028</div>
+                    <h2 class="blog-title">Robots Set to Move Beyond Factories as AI Advances</h2>
+                    <a href="#" class="read-more" onclick="toggleContent(event, 'fullPost4')">Read full post →</a>
+        
+                    <div id="fullPost4" class="hidden">
+                        <p>🤖 With advancements in AI, robots are moving beyond industrial automation into service-based industries...</p>
+                        <h3>🔹 Areas Where Robots Are Expanding</h3>
+                        <ul>
+                            <li>🏥 Healthcare assistance</li>
+                            <li>🍔 Food industry automation</li>
+                            <li>🛒 Retail and logistics</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="blog-card">
+                <img src="https://img.freepik.com/free-photo/businessman-working-futuristic-office_23-2151003702.jpg?uid=R185016635&ga=GA1.1.2083999398.1740664923" alt="Humanoid Robots" class="blog-image">
+                <div class="blog-content">
+                    <span class="tag">#automation</span>
+                    <div class="date">July 03, 2028</div>
+                    <h2 class="blog-title">Humanoid Robots Enter the Workforce</h2>
+                    <a href="#" class="read-more" onclick="toggleContent(event, 'fullPost5')">Read full post →</a>
+        
+                    <div id="fullPost5" class="hidden">
+                        <p>🤯 Humanoid robots are no longer a futuristic dream—they’re becoming a reality in workplaces...</p>
+                        <h3>🔹 Key Advancements</h3>
+                        <ul>
+                            <li>🦾 AI-driven decision-making</li>
+                            <li>💬 Natural language interaction</li>
+                            <li>⚡ Efficient task automation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="blog-card">
+                <img src="https://img.freepik.com/free-photo/businessman-touching-brain-working-artificial-intelligence_587448-4855.jpg?uid=R185016635&ga=GA1.1.2083999398.1740664923" alt="Humanoid Robots" class="blog-image">
+                <div class="blog-content">
+                    <span class="tag">#tech</span>
+                    <div class="date">July 19, 2028</div>
+                    <h2 class="blog-title">Technology to inter-relate with metaverse</h2>
+                    <a href="#" class="read-more" onclick="toggleContent(event, 'fullPost6')">Read full post →</a>
+        
+                    <div id="fullPost6" class="hidden">
+                        <p>🤯 Humanoid robots are no longer a futuristic dream—they’re becoming a reality in workplaces...</p>
+                        <h3>🔹 Key Advancements</h3>
+                        <ul>
+                            <li>🦾 AI-driven decision-making</li>
+                            <li>💬 Natural language interaction</li>
+                            <li>⚡ Efficient task automation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    
+    <script>
+        $(document).ready(function() {
+            // Add hover effect to blog cards
+            $('.blog-card').hover(
+                function() {
+                    $(this).css('cursor', 'pointer');
+                },
+                function() {
+                    $(this).css('cursor', 'default');
+                }
+            );
+
+            // Handle card click
+            $('.blog-card').click(function() {
+                const title = $(this).find('.blog-title').text();
+                console.log(Opening blog post: ${title});
+                // Add your navigation logic here
+            });
+
+            // Smooth scroll for navigation links
+            $('a[href^="#"]').click(function(e) {
+                e.preventDefault();
+                const target = $(this.hash);
+                if (target.length) {
+                    $('html, body').animate({
+                        scrollTop: target.offset().top
+                    }, 500);
+                }
+            });
+        });
+    </script>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>TechZen</h3>
+                <p>Your daily source for the latest in technology, innovation, and digital transformation.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+    
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Stay updated with our latest tech news</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter your email">
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 TechZen. All Rights Reserved.</p>
+        </div>
+    </footer>
+    <script>
+        function toggleContent(event, postId) {
+    event.preventDefault();
+    var content = document.getElementById(postId);
+    var link = event.target;
+    
+    if (content.classList.contains("visible")) {
+        content.classList.remove("visible");
+        content.classList.add("hidden");
+        link.textContent = "Read full post →";
+    } else {
+        content.classList.remove("hidden");
+        content.classList.add("visible");
+        link.textContent = "Hide post ↑";
+    }
+}
+
+    </script>
+</body>
+</html>

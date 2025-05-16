@@ -1,4 +1,3 @@
-```ejs
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,260 +6,424 @@
     <title>TechZen - About Us</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="/css/styleAbout.css">
+    <link rel="stylesheet" href="css/styleAbout.css">
+
 </head>
 <body>
+
     <!-- Navbar -->
-    <%- include('partials/header') %>
+    <header class="nav-header">
+        <div class="nav-container">
+            <a href="/" class="logo">TechZen</a>
+            <nav class="nav-links">
+                <a href="/aboutUs">ABOUT US </a>
+                <a href="/ContactUs">CONTACT US</a>
+                <a href="/blogs">BLOG</a>
+                <a href="/login">
+                    <button class="loginbtn">LOGIN/SIGNUP</button>
+                </a>
+                
 
-    <!-- Background Video Wrapper -->
-    <div class="video-background">
-        <video autoplay loop muted playsinline>
-            <source src="/img-vid/bgvideo2.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <div class="video-overlay"></div>
+            <button class="mobile-menu-btn">
+                <i  class="fas fa-bars"></i>
+            </button>
+        </nav>
+        </div>
+    </header>
+
+<!-- Background Video Wrapper -->
+<div class="video-background">
+    <video autoplay loop muted playsinline>
+        <source src="img-vid/bgvideo2.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="video-overlay"></div>
+</div>
+
+<!-- Main Content (placed above the video) -->
+<div class="content">
+    <!-- About Us Section -->
+    <section class="about">
+        <div class="container">
+            <h1><br>About Us</h1>
+            <div class="about-content">
+                <div class="text">
+                    <h2>Let's Build the Future with Technology</h2>
+                    <p>Project TechZen represents an innovative platform aimed at keeping users informed and engaged with the latest developments in the technology sector. It provides comprehensive coverage of recent technology news, ensuring that users remain updated on significant advancements within the industry. Furthermore, TechZen offers an extensive selection of the latest gadgets, complete with detailed price comparisons across various online retail platforms, thereby facilitating informed purchasing decisions.
+                    </p>
+                </div>
+                <img src="img-vid/tech (1).png" alt="Tech Team">
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Culture Section -->
+    <section class="culture">
+        <div class="container">
+            <h2>Our Fundamental Business</h2>
+            <div class="cards">
+                <div class="card">
+                    <div class="img-container">
+                        <img src="img-vid/vision.png" alt="Vision Icon">
+                    </div>
+                    <h3>Vision</h3>
+                    <p>Innovate the future with cutting-edge technology.</p>
+                </div>
+                <div class="card">
+                    <div class="img-container">
+                        <img src="img-vid/mission2.png" alt="Mission Icon">
+                    </div>
+                    <h3>Mission</h3>
+                    <p>Deliver top-notch digital solutions to our clients.</p>
+                </div>
+                <div class="card">
+                    <div class="img-container">
+                        <img src="img-vid/motto2.png" alt="Motto Icon">
+                    </div>
+                    <h3>Motto</h3>
+                    <p>Excellence, Innovation, and Growth.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analytics Section with Live Users Graph -->
+<section class="analytics fade-in-section">
+    <div class="container">
+        <h2>TechZen Growth Metrics</h2>
+        <p>Watch our community grow in real-time as tech enthusiasts join our platform</p>
+        <div class="stats-container">
+            <div class="stats-card">
+                <h3>Daily Active Users</h3>
+                <div class="chart-container">
+                    <canvas id="usersChart"></canvas>
+                </div>
+                <p class="stats-detail">Real-time user activity monitoring</p>
+            </div>
+            <div class="stats-overview">
+                <div class="stat-item">
+                    <span class="stat-number" id="totalUsers">1.2M+</span>
+                    <span class="stat-label">Total Users</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">154</span>
+                    <span class="stat-label">Countries</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">98.7%</span>
+                    <span class="stat-label">Satisfaction Rate</span>
+                </div>
+            </div>
+        </div>
     </div>
+</section>
 
-    <!-- Main Content -->
-    <div class="content">
-        <!-- About Us Section -->
-        <section class="about">
-            <div class="container">
-                <h1><br>About Us</h1>
-                <div class="about-content">
-                    <div class="text">
-                        <h2>Let's Build the Future with Technology</h2>
-                        <p><%= aboutUs.description %></p>
-                    </div>
-                    <img src="/img-vid/tech (1).png" alt="Tech Team">
+
+
+
+
+
+    <!-- Meet the Team -->
+    <section class="team">
+        <div class="container">
+            <h2>Meet Our Awesome Team</h2>
+            <div class="team-members">
+                <div class="member">
+                    <img src="img-vid/aj.jpeg" alt="Team Member 1">
+                    <h3>Amrit Joshi</h3>
+                    <p>Lead Developer</p>
+                </div>
+                <div class="member">
+                    <img src="img-vid/ekansh1.jpg" alt="Team Member 2">
+                    <h3>Ekansh Dhiman</h3>
+                    <p>Project Manager</p>
+                </div>
+                <div class="member">
+                    <img src="img-vid/armaan.jpeg" alt="Team Member 3">
+                    <h3>Armaan Gautam</h3>
+                    <p>Cleaning Crew</p>
                 </div>
             </div>
-        </section>
-
-        <!-- Our Culture Section -->
-        <section class="culture">
-            <div class="container">
-                <h2>Our Fundamental Business</h2>
-                <div class="cards">
-                    <% cultureCards.forEach(card => { %>
-                        <div class="card">
-                            <div class="img-container">
-                                <img src="<%= card.image %>" alt="<%= card.title %> Icon">
-                            </div>
-                            <h3><%= card.title %></h3>
-                            <p><%= card.description %></p>
-                        </div>
-                    <% }) %>
+        </div>
+    </section>
+     <!-- Footer -->
+     <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>TechZen</h3>
+                <p>Your daily source for the latest in technology, innovation, and digital transformation.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><img src="img-vid/facebook.png" alt="Facebook"></a>
+                    <a href="#" class="social-link"><img src="img-vid/twitter.png" alt="Twitter"></a>
+                    <a href="#" class="social-link"><img src="img-vid/linkedin.png" alt="LinkedIn"></a>
+                    <a href="#" class="social-link"><img src="img-vid/instagram.png" alt="Instagram"></a>
                 </div>
             </div>
-        </section>
-
-        <!-- Analytics Section with Live Users Graph -->
-        <section class="analytics fade-in-section">
-            <div class="container">
-                <h2>TechZen Growth Metrics</h2>
-                <p>Watch our community grow in real-time as tech enthusiasts join our platform</p>
-                <div class="stats-container">
-                    <div class="stats-card">
-                        <h3>Daily Active Users</h3>
-                        <div class="chart-container">
-                            <canvas id="usersChart"></canvas>
-                        </div>
-                        <p class="stats-detail">Real-time user activity monitoring</p>
-                    </div>
-                    <div class="stats-overview">
-                        <div class="stat-item">
-                            <span class="stat-number" id="totalUsers"><%= stats.totalUsers %></span>
-                            <span class="stat-label">Total Users</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number"><%= stats.countries %></span>
-                            <span class="stat-label">Countries</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number"><%= stats.satisfactionRate %></span>
-                            <span class="stat-label">Satisfaction Rate</span>
-                        </div>
-                    </div>
-                </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
             </div>
-        </section>
-
-        <!-- Meet the Team -->
-        <section class="team">
-            <div class="container">
-                <h2>Meet Our Awesome Team</h2>
-                <div class="team-members">
-                    <% teamMembers.forEach(member => { %>
-                        <div class="member">
-                            <img src="<%= member.image %>" alt="<%= member.name %>">
-                            <h3><%= member.name %></h3>
-                            <p><%= member.role %></p>
-                        </div>
-                    <% }) %>
-                </div>
+    
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Stay updated with our latest tech news</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter your email">
+                    <button type="submit">Subscribe</button>
+                </form>
             </div>
-        </section>
+        </div>
 
-        <!-- Footer -->
-        <%- include('partials/footer') %>
-    </div>
+    </footer>
+</div>
+
+   
 
     <script>
-        // Animation for sections on scroll
-        document.addEventListener("DOMContentLoaded", function() {
-            const fadeSections = document.querySelectorAll('.fade-in-section');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, { threshold: 0.1 });
-            
-            fadeSections.forEach(section => {
-                observer.observe(section);
-            });
-            
-            // Initialize users chart
-            initUsersChart();
-        });
 
-        // Dynamic users chart that updates every 10 seconds
-        function initUsersChart() {
-            const ctx = document.getElementById('usersChart').getContext('2d');
-            
-            // Initialize with random data
-            const initialData = {
-                labels: Array.from({length: 12}, (_, i) => `${i+1}h`),
-                datasets: [{
-                    label: 'Active Users',
-                    data: generateRandomData(12),
-                    borderColor: '#00c3ff',
-                    backgroundColor: 'rgba(0, 195, 255, 0.1)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.4
-                }]
-            };
-            
-            const chart = new Chart(ctx, {
-                type: 'line',
-                data: initialData,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            labels: {
-                                color: '#ffffff'
-                            }
-                        },
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: false,
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            },
-                            ticks: {
-                                color: '#ffffff'
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                color: '#ffffff'
-                            }
-                        }
-                    },
-                    interaction: {
-                        intersect: false,
-                        mode: 'index'
-                    },
-                    animation: {
-                        duration: 1000
-                    }
+
+
+            // Animation for sections on scroll
+    document.addEventListener("DOMContentLoaded", function() {
+        const fadeSections = document.querySelectorAll('.fade-in-section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
                 }
             });
-            
-            // Update chart every 10 seconds
-            setInterval(() => {
-                // Update data with random variations
-                chart.data.datasets[0].data = generateRandomData(12);
-                
-                // Animate the transition to new data
-                chart.update('active');
-                
-                // Also update total users with small increments for realistic effect
-                updateTotalUsers();
-            }, 10000);
-        }
-
-        // Generate random data for the chart
-        function generateRandomData(length) {
-            // Base value around which the data will fluctuate
-            const baseValue = Math.floor(Math.random() * 3000) + 5000;
-            return Array.from({length}, () => baseValue + Math.floor(Math.random() * 1000) - 500);
-        }
-
-        // Update the total users count randomly
-        let totalUsers = <%= stats.totalUsersRaw %>;
-        function updateTotalUsers() {
-            // Add between 5-20 new users for realistic growth
-            totalUsers += Math.floor(Math.random() * 16) + 5;
-            document.getElementById('totalUsers').textContent = (totalUsers / 1000000).toFixed(1) + 'M+';
-        }
-
-        // Fade-in sections (if any elements have .fade-in class)
-        document.addEventListener("DOMContentLoaded", function() {
-            const sections = document.querySelectorAll(".fade-in");
-            if (sections.length) {
-                function checkScroll() {
-                    sections.forEach(section => {
-                        const sectionTop = section.getBoundingClientRect().top;
-                        if (sectionTop < window.innerHeight - 100) {
-                            section.style.opacity = "1";
-                            section.style.transform = "translateY(0)";
+        }, { threshold: 0.1 });
+        
+        fadeSections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        // Initialize users chart
+        initUsersChart();
+    });
+    
+    // Dynamic users chart that updates every 10 seconds
+    function initUsersChart() {
+        const ctx = document.getElementById('usersChart').getContext('2d');
+        
+        // Initialize with random data
+        const initialData = {
+            labels: Array.from({length: 12}, (_, i) => `${i+1}h`),
+            datasets: [{
+                label: 'Active Users',
+                data: generateRandomData(12),
+                borderColor: '#00c3ff',
+                backgroundColor: 'rgba(0, 195, 255, 0.1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4
+            }]
+        };
+        
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: initialData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            color: '#ffffff'
                         }
-                    });
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#ffffff'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#ffffff'
+                        }
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
+                animation: {
+                    duration: 1000
                 }
-                window.addEventListener("scroll", checkScroll);
-                checkScroll();
             }
         });
+        
+        // Update chart every 10 seconds
+        setInterval(() => {
+            // Update data with random variations
+            chart.data.datasets[0].data = generateRandomData(12);
+            
+            // Animate the transition to new data
+            chart.update('active');
+            
+            // Also update total users with small increments for realistic effect
+            updateTotalUsers();
+        }, 10000);
+    }
+    
+    // Generate random data for the chart
+    function generateRandomData(length) {
+        // Base value around which the data will fluctuate
+        const baseValue = Math.floor(Math.random() * 3000) + 5000;
+        return Array.from({length}, () => baseValue + Math.floor(Math.random() * 1000) - 500);
+    }
+    
+    // Update the total users count randomly
+    let totalUsers = 1200000; // Start at 1.2M
+    function updateTotalUsers() {
+        // Add between 5-20 new users for realistic growth
+        totalUsers += Math.floor(Math.random() * 16) + 5;
+        document.getElementById('totalUsers').textContent = (totalUsers / 1000000).toFixed(1) + 'M+';
+    }
 
-        // NewsAPI Fetch (only if news-list element exists)
-        document.addEventListener("DOMContentLoaded", function() {
-            const newsContainer = document.querySelector("#news-list");
-            if (newsContainer) {
-                fetch("https://newsapi.org/v2/top-headlines?category=technology&apiKey=<%= newsApiKey %>")
-                    .then(response => {
-                        if (!response.ok) throw new Error('NewsAPI request failed');
-                        return response.json();
-                    })
-                    .then(data => {
-                        data.articles.slice(0, 5).forEach(article => {
-                            let newsItem = document.createElement("div");
-                            newsItem.innerHTML = `<h4>${article.title}</h4><p>${article.description || 'No description available'}</p><a href="${article.url}" target="_blank">Read More</a>`;
-                            newsContainer.appendChild(newnewsItem);
-                        });
-                    })
-                    .catch(error => {
-                        console.error("Error fetching news:", error);
-                        newsContainer.innerHTML = "<p>Unable to load news at this time.</p>";
-                    });
-            }
-        });
+
+
+
+        document.querySelector(".btn").addEventListener("mouseover", function () {
+    this.style.backgroundColor = "#0077cc";
+});
+document.querySelector(".btn").addEventListener("mouseleave", function () {
+    this.style.backgroundColor = "#00c3ff";
+});
+
+
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    const sections = document.querySelectorAll(".fade-in");
+
+    function checkScroll() {
+        sections.forEach(section => {
+            const sectionTop = section.getBoundingClientRect().top;
+            if (sectionTop < window.innerHeight - 100) {
+                section.style.opacity = "1";
+                section.style.transform = "translateY(0)";
+            }
+        });
+    }
+
+    window.addEventListener("scroll", checkScroll);
+    checkScroll(); // Run on load
+
+    // Smooth Scroll for Social Media Icons
+    document.querySelectorAll(".social-icons a").forEach(link => {
+        link.addEventListener("click", function(event) {
+            event.preventDefault();
+            const target = document.querySelector(this.getAttribute("href"));
+            if (target) {
+                window.scrollTo({
+                    top: target.offsetTop,
+                    behavior: "smooth"
+                });
+            }
+        });
+    });
+});
+document.addEventListener("DOMContentLoaded", function() {
+    // Dark Mode Toggle
+    const toggleMode = document.querySelector(".toggle-mode");
+    toggleMode.addEventListener("click", function() {
+        document.body.classList.toggle("light-mode");
+        this.textContent = document.body.classList.contains("light-mode") ? "Dark Mode" : "Light Mode";
+    });
+
+    // Live Visitor Counter (Dummy Counter)
+    let counter = localStorage.getItem("visitorCount") || 1;
+    document.querySelector(".counter").textContent = `Visitors: ${counter}`;
+    localStorage.setItem("visitorCount", ++counter);
+
+    // Chatbot Button
+    document.querySelector(".chatbot-button").addEventListener("click", function() {
+        alert("Chatbot Coming Soon! 🚀");
+    });
+});
+document.addEventListener("DOMContentLoaded", function () {
+    // Dark Mode Toggle
+    document.querySelector(".toggle-mode").addEventListener("click", function () {
+        document.body.classList.toggle("light-mode");
+        this.textContent = document.body.classList.contains("light-mode") ? "Dark Mode" : "Light Mode";
+    });
+
+    // Visitor Counter
+    let counter = localStorage.getItem("visitorCount") || 1;
+    document.querySelector(".counter").textContent = `Visitors: ${counter}`;
+    localStorage.setItem("visitorCount", ++counter);
+
+    // Chatbot
+    const chatbotBtn = document.querySelector(".chatbot-button");
+    const chatbotContainer = document.querySelector(".chatbot-container");
+    chatbotBtn.addEventListener("click", () => {
+        chatbotContainer.style.display = chatbotContainer.style.display === "block" ? "none" : "block";
+    });
+
+    document.querySelector("#chatbot-send").addEventListener("click", function () {
+        let userText = document.querySelector("#chatbot-input").value.toLowerCase().trim();
+        let responses = {
+            "hello": "Hi there! How can I assist you?",
+            "latest tech news": "Check our news section below!",
+            "bye": "Goodbye! Have a great day!"
+        };
+        alert(`Chatbot: ${responses[userText] || "I'm still learning! Visit TechZen for more."}`);
+    });
+
+    // Newsletter Popup - Appears after 5s
+    setTimeout(() => {
+        document.querySelector(".newsletter-popup").style.display = "block";
+    }, 5000);
+
+    document.querySelector("#close-newsletter").addEventListener("click", function () {
+        document.querySelector(".newsletter-popup").style.display = "none";
+    });
+
+    // Fetch Latest Tech News (Using NewsAPI)
+    fetch("https://newsapi.org/v2/top-headlines?category=technology&apiKey=YOUR_API_KEY")
+        .then(response => response.json())
+        .then(data => {
+            const newsContainer = document.querySelector("#news-list");
+            data.articles.slice(0, 5).forEach(article => {
+                let newsItem = document.createElement("div");
+                newsItem.innerHTML = `<h4>${article.title}</h4><p>${article.description}</p><a href="${article.url}" target="_blank">Read More</a>`;
+                newsContainer.appendChild(newsItem);
+            });
+        })
+        .catch(error => console.error("Error fetching news:", error));
+});
+
+    </script>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>© 2025 TechZen. All Rights Reserved.</p>
+        </div>
+    </footer>
+
 </body>
 </html>

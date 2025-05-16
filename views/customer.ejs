@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%= title || "TechZen - Tech Support" %></title>
+    <meta name="description" content="TechZen customer support chat - Get instant help with technical issues">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/images/favicon.ico">
+    <style>
+:root {
+    --primary: #0ea5e9;
+    --primary-dark: #0284c7;
+    --secondary: #64748b;
+    --success: #22c55e;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --background: #0f172a;
+    --surface: #1e293b;
+    --surface-dark: #151e2d;
+    --text: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --border: #2d3748;
+    --glow: rgba(14, 165, 233, 0.15);
+    --grid-size: 20px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    background: var(--background);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Tech Background Pattern */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        linear-gradient(90deg, var(--background) 20px, transparent 1%) center,
+        linear-gradient(var(--background) 20px, transparent 1%) center,
+        rgba(14, 165, 233, 0.1);
+    background-size: var(--grid-size) var(--grid-size);
+    opacity: 0.2;
+    z-index: 0;
+    animation: gridMove 30s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: var(--grid-size) var(--grid-size); }
+}
+
+.app {
+    background: var(--surface);
+    width: 90%;
+    max-width: 800px;
+    border-radius: 16px;
+    box-shadow: 0 0 40px var(--glow);
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    border: 1px solid var(--border);
+}
+
+.app::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), transparent);
+}
+
+.screen {
+    display: none;
+    padding: 2rem;
+    background: var(--surface-dark);
+}
+
+.screen.active {
+    display: block;
+    animation: fadeScale 0.3s ease-out;
+}
+
+@keyframes fadeScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.join-screen {
+    text-align: center;
+}
+
+.join-screen h2 {
+    color: var(--text);
+    margin-bottom: 2rem;
+    font-size: 2em;
+    position: relative;
+    display: inline-block;
+}
+
+.join-screen h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+
+.form {
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    letter-spacing: 1px;
+}
+
+.form input, .form textarea {
+    width: 100%;
+    max-width: 300px;
+    padding: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--text);
+    transition: all 0.3s ease;
+    margin: 0 auto;
+    display: block;
+}
+
+.form input:focus, .form textarea:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 20px var(--glow);
+}
+
+.chat-screen {
+    display: none;
+    flex-direction: column;
+    height: 600px;
+    background: var(--surface);
+}
+
+.chat-screen.active {
+    display: flex;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem;
+    background: var(--surface-dark);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+}
+
+.header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--primary), transparent);
+}
+
+.logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    background: var(--surface-dark);
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) var(--surface-dark);
+}
+
+.message {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 12px;
+    max-width: 80%;
+    position: relative;
+    animation: messageSlide 0.3s ease-out;
+}
+
+@keyframes messageSlide {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.my-message {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    margin-left: auto;
+    border-bottom-right-radius: 4px;
+}
+
+.admin-message {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-bottom-left-radius: 4px;
+}
+
+.system-message {
+    background: rgba(100, 116, 139, 0.1);
+    color: var(--text-secondary);
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+    border: 1px solid var(--border);
+    font-style: italic;
+}
+
+.message .name {
+    font-size: 0.8em;
+    margin-bottom: 0.5rem;
+    opacity: 0.8;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.typebox {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--surface-dark);
+    border-top: 1px solid var(--border);
+}
+
+.typebox input {
+    flex: 1;
+    padding: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--text);
+    transition: all 0.3s ease;
+}
+
+.typebox input:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 20px var(--glow);
+}
+
+button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+button:hover::before {
+    left: 100%;
+}
+
+button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px var(--glow);
+}
+
+.resolution-buttons {
+    padding: 1rem;
+    gap: 1rem;
+    justify-content: center;
+    background: var(--surface-dark);
+    border-top: 1px solid var(--border);
+    display: flex;
+}
+
+.resolution-btn {
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.resolution-btn.success {
+    background: var(--success);
+}
+
+.resolution-btn.danger {
+    background: var(--danger);
+}
+
+#end-chat {
+    background: var(--secondary);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(8px);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--surface);
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    border: 1px solid var(--border);
+    box-shadow: 0 0 40px var(--glow);
+    animation: modalAppear 0.3s ease-out;
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.modal-buttons {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+#chat-status {
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+}
+
+@media (max-width: 600px) {
+    .app {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+    }
+
+    .chat-screen {
+        height: 100vh;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 1rem;
+    }
+}
+
+.back-button {
+    background-color: #ef4444;
+}
+
+.back-button:hover {
+    background: #4b5563;
+}
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="screen join-screen active">
+            <div class="form">
+                <h2>Customer Support</h2>
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="username" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label>Issue</label>
+                    <textarea id="issue" placeholder="Describe your issue" rows="4" required></textarea>
+                </div>
+                <button id="start-chat">Start Chat</button> <br> <br> <br>
+                <button id="back-to-home" class="back-button">Back to Home</button>
+            </div>
+        </div>
+
+        <div class="screen chat-screen">
+            <div class="header">
+                <div class="logo">Customer Support</div>
+                <div class="status" id="chat-status">Connecting to support...</div>
+            </div>
+            <div class="messages"></div>
+            <div class="typebox">
+                <input type="text" id="message-input" placeholder="Type your message...">
+                <button id="send-message">Send</button>
+            </div>
+            <div class="resolution-buttons">
+                <button id="issue-resolved" class="resolution-btn success">
+                    Issue Resolved 👍
+                </button>
+                <button id="issue-unresolved" class="resolution-btn danger">
+                    Issue Not Resolved 👎
+                </button>
+                <button id="end-chat" class="resolution-btn">End Chat</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="feedback-modal" class="modal">
+        <div class="modal-content">
+            <h3>Would you like to start a new chat?</h3>
+            <p>Your previous chat was marked as unresolved.</p>
+            <div class="modal-buttons">
+                <button id="start-new-chat" class="resolution-btn success">Start New Chat</button>
+                <button id="close-modal" class="resolution-btn danger">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let userInfo = {};
+        let chatEnded = false;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const socket = io();
+
+            // Back button handler
+            document.querySelector('#back-to-home').addEventListener('click', function() {
+                window.location.href = '/home';
+            });
+
+            // Start chat handler
+            document.querySelector('#start-chat').addEventListener('click', function() {
+                const username = document.querySelector('#username').value.trim();
+                const email = document.querySelector('#email').value.trim();
+                const issue = document.querySelector('#issue').value.trim();
+
+                if (!username || !email || !issue) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+                if (!validateEmail(email)) {
+                    alert('Please enter a valid email address.');
+                    return;
+                }
+
+                userInfo = { username, email, issue };
+                socket.emit('startCustomerChat', userInfo);
+                document.querySelector('.join-screen').classList.remove('active');
+                document.querySelector('.chat-screen').classList.add('active');
+                
+                // Show system message
+                showMessage('system', 'Connecting to a support agent...');
+                
+                // Show resolution buttons after connection
+                setTimeout(() => {
+                    document.querySelector('.resolution-buttons').style.display = 'flex';
+                }, 1000);
+            });
+
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+
+            // Message handling
+            function sendMessage() {
+                if (chatEnded) return;
+                
+                const messageInput = document.querySelector('#message-input');
+                const message = messageInput.value.trim();
+                if (!message) return;
+
+                showMessage('my', {
+                    username: userInfo.username,
+                    message: message
+                });
+
+                socket.emit('customerMessage', {
+                    ...userInfo,
+                    message
+                });
+
+                messageInput.value = '';
+            }
+
+            document.querySelector('#send-message').addEventListener('click', sendMessage);
+            document.querySelector('#message-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            // Resolution buttons handlers
+            document.querySelector('#issue-resolved').addEventListener('click', function() {
+                if (!chatEnded) {
+                    socket.emit('issueResolved', {
+                        username: userInfo.username,
+                        status: 'resolved'
+                    });
+                    showFeedbackMessage('Thank you for your feedback! Chat will close in 3 seconds.');
+                    chatEnded = true;
+                    disableChat();
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000);
+                }
+            });
+
+            document.querySelector('#issue-unresolved').addEventListener('click', function() {
+                if (!chatEnded) {
+                    socket.emit('issueUnresolved', {
+                        username: userInfo.username,
+                        status: 'unresolved'
+                    });
+                    document.getElementById('feedback-modal').style.display = 'flex';
+                    chatEnded = true;
+                    disableChat();
+                }
+            });
+
+            document.querySelector('#end-chat').addEventListener('click', function() {
+    if (!chatEnded) {
+        socket.emit('endCustomerChat', {
+            username: userInfo.username,
+            status: 'left'  // or any status you want to track
+        });
+        showFeedbackMessage('Chat ended. Thank you for using our support.');
+        chatEnded = true;
+        disableChat();
+    }
+});
+
+            // End chat handler
+            document.querySelector('#end-chat').addEventListener('click', function() {
+                showMessage('system', 'Please provide feedback before ending the chat.');
+            });
+
+            // Modal handlers
+            document.querySelector('#start-new-chat').addEventListener('click', function() {
+                document.getElementById('feedback-modal').style.display = 'none';
+                window.location.reload();
+            });
+
+            document.querySelector('#close-modal').addEventListener('click', function() {
+                document.getElementById('feedback-modal').style.display = 'none';
+                window.location.reload();
+            });
+
+            // Socket event handlers
+            socket.on('adminMessage', function(data) {
+                if (!chatEnded) {
+                    showMessage('admin', data);
+                }
+            });
+
+            socket.on('chatStatus', function(status) {
+                document.querySelector('#chat-status').textContent = status;
+            });
+
+            socket.on('chatHistory', function(messages) {
+                const messageContainer = document.querySelector('.messages');
+                messageContainer.innerHTML = '';
+                messages.forEach(msg => {
+                    showMessage(msg.type, msg);
+                });
+            });
+
+            // Helper functions
+            function showMessage(type, message) {
+                const messagesContainer = document.querySelector('.messages');
+                const el = document.createElement('div');
+                
+                if (type === 'system') {
+                    el.setAttribute('class', 'message system-message');
+                    el.textContent = message;
+                } else if (type === 'my') {
+                    el.setAttribute('class', 'message my-message');
+                    el.innerHTML = `
+                        <div class="name">You</div>
+                        <div class="text">${message.message}</div>
+                    `;
+                } else if (type === 'admin') {
+                    el.setAttribute('class', 'message admin-message');
+                    el.innerHTML = `
+                        <div class="name">Support Agent</div>
+                        <div class="text">${message.message}</div>
+                    `;
+                }
+
+                messagesContainer.appendChild(el);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+
+            function showFeedbackMessage(message) {
+                const statusEl = document.querySelector('#chat-status');
+                statusEl.textContent = message;
+                statusEl.style.color = '#28a745';
+            }
+
+            function disableChat() {
+                document.querySelector('#message-input').disabled = true;
+                document.querySelector('#send-message').disabled = true;
+                document.querySelector('#issue-resolved').disabled = true;
+                document.querySelector('#issue-unresolved').disabled = true;
+                document.querySelector('#end-chat').disabled = true;
+            }
+        });
+    </script>
+</body>
+</html>

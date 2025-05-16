@@ -8,8 +8,11 @@ function generateSessionId() {
 
 function createSession(userData) {
   const sessionId = generateSessionId();
-  sessions.set(sessionId, userData);
-  console.log('Session created:', sessionId);
+  sessions.set(sessionId, {
+    userId: userData.userId || userData._id, // Store user ID correctly
+    username: userData.username,
+    email: userData.email
+  });
   return sessionId;
 }
 

@@ -3,8 +3,13 @@ const http = require('http');
 const socketIO = require('socket.io');
 const path = require('path');
 const session = require('express-session');
-const FileStore = require('session-file-store')(session);
+const MongoStore = require('connect-mongo');
+const connectDB = require('./config/db');
+
 require('dotenv').config();
+
+// Connect to MongoDB first
+connectDB();
 
 // Import middleware
 const { 
@@ -44,18 +49,19 @@ const io = socketIO(server);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Session configuration
+// Session configuration with MongoDB store
 app.use(session({
   secret: process.env.SESSION_SECRET || 'your-secret-key',
   resave: false,
   saveUninitialized: false,
-  store: new FileStore({
-    path: './sessions',
-    ttl: 86400
+  store: MongoStore.create({ 
+    mongoUrl: process.env.MONGODB_URI || 'mongodb://localhost:27017/TechZen', 
+    collectionName: 'Users',
+    ttl: 86400, // 1 day in seconds
+    autoRemove: 'native'
   }),
   cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 }
 }));
-
 // Apply middleware
 setupBodyParsers(app);
 setupCookieParser(app);
@@ -70,6 +76,14 @@ app.use((req, res, next) => {
   console.log('Session ID:', req.sessionID);
   console.log('Session Data:', req.session);
   console.log('User:', req.user);
+  next();
+});
+
+// Make user data available to templates
+app.use((req, res, next) => {
+  if (req.session && req.session.user) {
+    res.locals.user = req.session.user;
+  }
   next();
 });
 
@@ -95,7 +109,12 @@ app.use('/api/sell', sellRouter);
 // ChatBot route
 app.use('/', aiRoutes);
 
-// Protected view routes
+app.use((req, res, next) => {
+  res.locals.user = req.user || null;
+  next();
+});
+
+// Protected view routes - redirect to login if not authenticated
 const protectedPaths = ['/home', '/ai', '/news', '/gadgets', '/blogs', '/customer', '/chatbot', '/selling', '/selling2'];
 protectedPaths.forEach(path => {
   app.get(path, isAuthenticated, (req, res, next) => {
@@ -113,6 +132,44 @@ app.get('/api/user', isAuthenticated, (req, res) => {
     res.status(401).json({ error: 'Not authenticated' });
   }
 });
+
+// // Testing route for MongoDB connection
+// app.get('/test-db', async (req, res) => {
+//   try {
+//     const User = require('./models/User');
+//     const users = await User.find().limit(5);
+//     res.json({ success: true, count: users.length, users });
+//   } catch (err) {
+//     res.status(500).json({ success: false, error: err.message });
+//   }
+// });
+
+// app.get('/create-test-user', async (req, res) => {
+//   try {
+//     const User = require('./models/User');
+    
+//     // Check if test user already exists
+//     const existingUser = await User.findOne({ username: 'testuser' });
+    
+//     if (existingUser) {
+//       return res.json({ success: true, message: 'Test user already exists', user: existingUser });
+//     }
+    
+//     // Create a new test user
+//     const newUser = new User({
+//       username: 'testuser',
+//       email: 'testuser@example.com',
+//       password: 'password123'  // This will be hashed by the pre-save hook
+//     });
+    
+//     await newUser.save();
+//     res.json({ success: true, message: 'Test user created', user: newUser });
+//   } catch (err) {
+//     console.error('Error creating test user:', err);
+//     res.status(500).json({ success: false, error: err.message });
+//   }
+// });
+
 
 // Socket setup
 if (setupCustomerSockets) {

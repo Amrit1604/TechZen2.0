@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title || "Advanced AI Assistant" %></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/stylechat.css">
+</head>
+<body>
+    <div class="chat-container" id="chat-container">
+        <div class="chat-header">
+            <h3>
+                <i class="fas fa-robot"></i>
+                AI Assistant
+            </h3>
+            <div class="header-buttons">
+                <button class="header-button" id="size-toggle">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <button class="header-button" id="close-chat">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="quick-actions">
+            <button class="quick-action-btn" data-question="What are the latest AI developments?">
+                <i class="fas fa-robot"></i> Latest AI News
+            </button>
+            <button class="quick-action-btn" data-question="What are the trending tech gadgets?">
+                <i class="fas fa-mobile-alt"></i> Latest Gadgets
+            </button>
+            <button class="quick-action-btn" data-question="What's happening in the tech industry?">
+                <i class="fas fa-newspaper"></i> Tech News
+            </button>
+            <button class="quick-action-btn" data-question="What are the top programming languages in 2024?">
+                <i class="fas fa-code"></i> Coding Trends
+            </button>
+        </div>
+        <div class="chat-messages" id="chat-messages"></div>
+        <div class="chat-input">
+            <input 
+                type="text" 
+                id="user-input" 
+                placeholder="Ask me anything about technology..."
+                aria-label="Chat input">
+            <button id="send-message">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <button id="chat-toggle" class="chat-button">
+        <i class="fas fa-comments"></i>
+        AI Chat
+    </button>
+
+    <!-- <script defer src="/js/chatbot.js"></script> -->
+    <script>
+     // Removed API key and API functionality
+        let isProcessing = false;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const chatContainer = document.getElementById("chat-container");
+            const chatToggle = document.getElementById("chat-toggle");
+            const closeChat = document.getElementById("close-chat");
+            const sizeToggle = document.getElementById("size-toggle");
+            const sendMessageButton = document.getElementById("send-message");
+            const userInput = document.getElementById("user-input");
+            const quickActionButtons = document.querySelectorAll(".quick-action-btn");
+
+            // Size toggle functionality
+            let isExpanded = false;
+            sizeToggle.addEventListener("click", () => {
+                isExpanded = !isExpanded;
+                chatContainer.classList.toggle("expanded");
+                sizeToggle.innerHTML = isExpanded ? 
+                    '<i class="fas fa-compress"></i>' : 
+                    '<i class="fas fa-expand"></i>';
+                
+                // Scroll messages to bottom after resize
+                const messagesContainer = document.getElementById("chat-messages");
+                setTimeout(() => {
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }, 300); // Match transition duration
+            });
+
+            // Initialize with a welcome message
+            appendMessage(
+                `Welcome! I'm your AI assistant. I can help you with:
+                • Latest technology news and updates
+                • AI developments and trends
+                • Gadget reviews and recommendations
+                • Programming and development
+                • Tech industry insights
+                
+                Feel free to ask anything or use the quick action buttons above!`,
+                "bot-message"
+            );
+
+            // Quick action buttons
+            quickActionButtons.forEach(button => {
+                button.addEventListener("click", () => {
+                    const question = button.dataset.question;
+                    userInput.value = question;
+                    sendMessage();
+                });
+            });
+
+            // Chat toggle
+            chatToggle.addEventListener("click", () => {
+                chatContainer.classList.add("active");
+                chatContainer.style.display = "flex";
+                chatToggle.style.display = "none";
+                userInput.focus();
+            });
+
+            closeChat.addEventListener("click", () => {
+                chatContainer.classList.remove("active");
+                chatContainer.style.display = "none";
+                chatToggle.style.display = "block";
+            });
+
+            // Message handlers
+            sendMessageButton.addEventListener("click", sendMessage);
+            userInput.addEventListener("keypress", (e) => {
+                if (e.key === "Enter") sendMessage();
+            });
+
+            // Input validation
+            userInput.addEventListener("input", () => {
+                sendMessageButton.disabled = userInput.value.trim() === "";
+            });
+        });
+
+        function formatBotResponse(text) {
+            // Convert markdown elements to proper HTML
+            return text
+                // Headers
+                .replace(/^(#+)(.*)/gm, (_, hashes, content) => {
+                    const level = Math.min(hashes.length, 6);
+                    return `<h${level}>${content.trim()}</h${level}>`;
+                })
+                // Bold text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                // Italic text
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                // Unordered lists
+                .replace(/(?:^|\n)[•\-*] (.*)/g, '<li>$1</li>')
+                .replace(/(<li>.*<\/li>)+/gs, '<ul>$&</ul>')
+                // Ordered lists
+                .replace(/(?:^|\n)\d+\. (.*)/g, '<li>$1</li>')
+                .replace(/(<li>.*<\/li>)+/gs, '<ol>$&</ol>')
+                // Code blocks
+                .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+                // Inline code
+                .replace(/`([^`]+)`/g, '<code>$1</code>')
+                // Links
+                .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>')
+                // Paragraphs
+                .split('\n\n').map(para => `<p>${para}</p>`).join('')
+                // Math expressions
+                .replace(/\$(.*?)\$/g, '<span class="math">$1</span>');
+        }
+
+        function appendMessage(text, className) {
+            const messageContainer = document.getElementById("chat-messages");
+            const messageElement = document.createElement("div");
+            messageElement.classList.add("message", className);
+            
+            if (className === "bot-message") {
+                messageElement.innerHTML = formatBotResponse(text);
+                // Render Math equations after insertion
+                setTimeout(() => {
+                    renderMath();
+                }, 50);
+            } else {
+                messageElement.textContent = text;
+            }
+            
+            messageContainer.appendChild(messageElement);
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
+
+        // Add Math rendering support
+        function renderMath() {
+            const mathElements = document.querySelectorAll('.math');
+            mathElements.forEach(element => {
+                const tex = element.textContent;
+                try {
+                    element.innerHTML = katex.renderToString(tex, {
+                        throwOnError: false
+                    });
+                } catch (e) {
+                    console.error('KaTeX error:', e);
+                }
+            });
+        }
+
+        // Add KaTeX CSS for math rendering
+        const katexCSS = document.createElement('link');
+        katexCSS.rel = 'stylesheet';
+        katexCSS.href = 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css';
+        document.head.appendChild(katexCSS);
+
+        function showTypingIndicator() {
+            const messageContainer = document.getElementById("chat-messages");
+            const typingIndicator = document.createElement("div");
+            typingIndicator.classList.add("typing-indicator");
+            typingIndicator.innerHTML = `
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            `;
+            messageContainer.appendChild(typingIndicator);
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
+
+        function sendMessage() {
+    const userInput = document.getElementById("user-input");
+    const message = userInput.value.trim();
+    if (!message) return;
+
+    appendMessage(message, "user-message");
+    userInput.value = "";
+    userInput.focus();
+
+    showTypingIndicator();
+    
+    // Make AJAX call to chatbot endpoint
+    fetch('/chatbot', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: message })
+    })
+    .then(response => response.json())
+    .then(data => {
+        const typingIndicator = document.querySelector(".typing-indicator");
+        if (typingIndicator) {
+            typingIndicator.remove();
+        }
+        
+        if (data.success) {
+            appendMessage(data.message, "bot-message");
+        } else {
+            appendMessage("Sorry, I couldn't process your request.", "bot-message");
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        const typingIndicator = document.querySelector(".typing-indicator");
+        if (typingIndicator) {
+            typingIndicator.remove();
+        }
+        appendMessage("Sorry, there was an error processing your request.", "bot-message");
+    });
+}
+
+        // Add pulse animation to chat button
+        function addPulseAnimation() {
+            const chatButton = document.getElementById("chat-toggle");
+            chatButton.style.animation = "pulse 2s infinite";
+        }
+
+        // Add custom styles for pulse animation
+        const style = document.createElement("style");
+        style.textContent = `
+            @keyframes pulse {
+                0% {
+                    box-shadow: 0 0 0 0 rgba(0, 247, 255, 0.4);
+                }
+                70% {
+                    box-shadow: 0 0 0 10px rgba(0, 247, 255, 0);
+                }
+                100% {
+                    box-shadow: 0 0 0 0 rgba(0, 247, 255, 0);
+                }
+            }
+
+            .message a {
+                color: var(--primary-color);
+                text-decoration: none;
+                border-bottom: 1px solid var(--primary-color);
+            }
+
+            .message a:hover {
+                border-bottom: 2px solid var(--primary-color);
+            }
+
+            .chat-container.active {
+                display: flex;
+                animation: slideIn 0.3s ease-out;
+            }
+
+            @keyframes slideIn {
+                from {
+                    transform: translateY(100px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Start pulse animation when page loads
+        addPulseAnimation();
+
+
+
+
+
+
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+
+</body>
+</html>

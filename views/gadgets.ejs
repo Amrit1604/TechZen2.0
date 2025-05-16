@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechZen - Gadget Reviews</title>
+
+    <!-- <link rel="stylesheet" href="public/css/stylegad2.css"> -->
+   
+    
+    <style>
+
+:root {
+    --primary: #00ff8c;
+    --secondary: #091E80;
+    --dark: #151823;
+    --light: #EAEAEA;
+    --glass: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, var(--dark), #1a1f35);
+    color: var(--light);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Neon text effect */
+.neon-text {
+    text-shadow: 0 0 5px var(--primary),
+                 0 0 10px var(--primary),
+                 0 0 20px var(--primary);
+    animation: neonPulse 2s infinite;
+}
+
+@keyframes neonPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+/* Enhanced Hero Section */
+.gadgets-hero {
+    position: relative;
+    min-height: 60vh;
+    padding: 4rem 2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                url('https://img.freepik.com/premium-photo/flat-lay-black-gadgets-electronics-black-background_14117-672123.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+.gadgets-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 40%, rgba(0, 255, 140, 0.1) 45%, transparent 50%);
+    animation: scanLine 3s linear infinite;
+}
+
+@keyframes scanLine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.gadgets-hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    opacity: 0;
+    transform: translateY(-50px);
+    animation: fadeInDown 1s forwards;
+}
+
+.gadgets-hero p {
+    font-size: 1.2rem;
+    opacity: 0;
+    transform: translateY(50px);
+    animation: fadeInUp 1s forwards 0.5s;
+}
+
+/* Glass morphism category tabs */
+.category-tabs {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.category-tab {
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.category-tab::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+.category-tab:hover::before {
+    left: 100%;
+}
+
+.category-tab:hover,
+.category-tab.active {
+    background: var(--primary);
+    color: var(--dark);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 255, 140, 0.3);
+}
+
+/* Enhanced Featured Gadget Section */
+.featured-gadget {
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    transform: translateY(20px);
+    opacity: 0;
+    animation: fadeInUp 1s forwards;
+}
+
+.gadget-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+}
+
+.gadget-image:hover {
+    transform: scale(1.02);
+}
+
+.gadget-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.gadget-image:hover img {
+    transform: scale(1.1);
+}
+
+.rating-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--primary);
+    color: var(--dark);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: bold;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.search-container {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 0.5rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.search-container input {
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0.5rem;
+    color: var(--light);
+    width: 200px;
+}
+
+.search-container input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.search-container button {
+    border: none;
+    background: var(--primary);
+    color: var(--dark);
+    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search-container button:hover {
+    background: #00cc70;
+    transform: translateX(2px);
+}
+
+.gadget-specs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.spec-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.spec-item:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.spec-item h4 {
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Enhanced Reviews Grid */
+.reviews-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    opacity: 0;
+    animation: fadeIn 1s forwards 1s;
+}
+
+.review-card {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .featured-gadget {
+        grid-template-columns: 1fr;
+    }
+
+    .gadgets-hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .category-tabs {
+        padding: 1rem;
+    }
+
+    .category-tab {
+        padding: 0.8rem 1.5rem;
+    }
+}
+
+
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+.gadgets-grid {
+max-width: 1200px;
+margin: 3rem auto;
+padding: 2rem;
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+gap: 2rem;
+opacity: 0;
+animation: fadeIn 1s forwards;
+}
+
+.gadget-card {
+background: var(--glass);
+backdrop-filter: blur(10px);
+border-radius: 15px;
+overflow: hidden;
+border: 1px solid rgba(255, 255, 255, 0.1);
+transition: all 0.3s ease;
+cursor: pointer;
+}
+
+.gadget-card:hover {
+transform: translateY(-10px);
+box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.gadget-card img {
+width: 100%;
+height: 200px;
+object-fit: cover;
+border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gadget-card-content {
+padding: 1.5rem;
+}
+
+.gadget-card-title {
+font-size: 1.2rem;
+margin-bottom: 0.5rem;
+color: var(--primary);
+}
+
+.gadget-card-rating {
+display: inline-block;
+background: var(--primary);
+color: var(--dark);
+padding: 0.3rem 0.8rem;
+border-radius: 20px;
+font-size: 0.9rem;
+margin-bottom: 1rem;
+}
+
+.gadget-card-price {
+font-size: 1.1rem;
+color: var(--light);
+margin-bottom: 0.5rem;
+}
+
+.quick-specs {
+font-size: 0.9rem;
+color: rgba(255, 255, 255, 0.7);
+margin-top: 0.5rem;
+}
+
+.modal {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.8);
+z-index: 1000;
+backdrop-filter: blur(5px);
+}
+
+.modal-content {
+position: relative;
+max-width: 1000px;
+margin: 2rem auto;
+background: var(--dark);
+border-radius: 20px;
+padding: 2rem;
+border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.close-modal {
+position: absolute;
+top: 1rem;
+right: 1rem;
+background: var(--primary);
+color: var(--dark);
+width: 30px;
+height: 30px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+
+.close-modal:hover {
+transform: rotate(90deg);
+}
+
+@keyframes fadeIn {
+to {
+opacity: 1;
+}
+}
+
+
+.logout-btn {
+    position: relative;
+    background: linear-gradient(90deg,#ff006e, #3a86ff);
+    color: white;
+    border: none;
+    padding: 11px 30px;  /* Increased size */
+    border-radius: 30px;  /* Slightly rounded corners */
+    font-size: 16px;  /* Larger font */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.logout-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.7s ease;
+}
+
+.logout-btn:hover {
+    background: #0056b3;  /* Darker blue for hover */
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(58, 134, 255, 0.4);
+}
+
+.logout-btn:hover::before {
+    left: 100%;  /* Gradient effect on hover */
+}
+
+@keyframes logoGlow {
+    0%, 100% {
+        filter: drop-shadow(0 0 2px rgba(58, 134, 255, 0.5)) drop-shadow(0 0 5px rgba(58, 134, 255, 0.3));
+    }
+    50% {
+        filter: drop-shadow(0 0 5px rgba(58, 134, 255, 0.8)) drop-shadow(0 0 10px rgba(58, 134, 255, 0.5));
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* Navbar */
+.nav-header {
+    background: rgba(18, 18, 18, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 1rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-sizing: border-box;
+    }
+    
+    .nav-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    position: relative;
+    }
+    
+    .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    background: linear-gradient(45deg, #3a86ff, #ff006e);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: logoGlow 3s ease-in-out infinite;
+    }
+    
+    .nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    }
+    
+    .nav-links a {
+    color: #fff;
+    text-decoration: none;
+    position: relative;
+    padding: 0.5rem 0;
+    }
+    
+    .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #3a86ff, #ff006e);
+    transition: width 0.3s ease;
+    }
+    
+    .nav-links a:hover::after {
+    width: 100%;
+    }
+    
+    .subscribe-btn {
+    background: linear-gradient(45deg, #3a86ff, #ff006e);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    }
+    
+    .subscribe-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+    );
+    transition: left 0.7s ease;
+    }
+    
+    .subscribe-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(58, 134, 255, 0.4);
+    }
+    
+    .subscribe-btn:hover::before {
+    left: 100%;
+    }
+    
+    
+    
+    @keyframes logoGlow {
+    0%, 100% {
+    filter: drop-shadow(0 0 2px rgba(58, 134, 255, 0.5))
+           drop-shadow(0 0 5px rgba(58, 134, 255, 0.3));
+    }
+    50% {
+    filter: drop-shadow(0 0 5px rgba(58, 134, 255, 0.8))
+           drop-shadow(0 0 10px rgba(58, 134, 255, 0.5));
+    }
+    }
+    
+    
+    .mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: #FFF;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 1001;
+    transition: transform 0.3s ease;
+    margin-left: -100px;
+    padding: 0.5rem;
+    }
+    
+    @media (max-width: 768px) {
+    .nav-container {
+    padding: 0 1rem;
+    }
+    
+    .nav-links {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: rgba(18, 18, 18, 0.95);
+    flex-direction: column;
+    padding: 2rem;
+    clip-path: circle(0% at 100% 0);
+    transition: clip-path 0.5s ease-in-out;
+    opacity: 0;
+    }
+    
+    .nav-links.active {
+    clip-path: circle(150% at 100% 0);
+    opacity: 1;
+    }
+    
+    .mobile-menu-btn {
+    display: block;
+    position: relative;
+    margin-left: -1000px;
+    
+    }
+    }
+
+
+    
+/* Footer */
+.footer {
+    background: linear-gradient(to right, #0f0f0f, #1a1a1a);
+    color: #E2E8F0;
+    padding: 4rem 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+    }
+    
+    .footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #3a86ff, transparent);
+    }
+    
+    .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+    }
+    
+    .footer-section {
+    animation: fadeInUp 0.6s ease-out forwards;
+    }
+    
+    .footer-section h3 {
+    color: #fff;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    }
+    
+    .footer-section h3::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 40px;
+    height: 2px;
+    background: #3a86ff;
+    }
+    
+    .social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    }
+    
+    .social-link {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, background 0.3s ease;
+    }
+    
+    .social-link:hover {
+    transform: translateY(-5px);
+    background: #3a86ff;
+    }
+    
+    .social-link img {
+    width: 20px;
+    height: 20px;
+    }
+    
+    .footer-links {
+    list-style: none;
+    padding: 0;
+    }
+    
+    .footer-links li {
+    margin-bottom: 0.8rem;
+    }
+    
+    .footer-links a {
+    color: #E2E8F0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+    color: #3a86ff;
+    }
+    
+    .newsletter-form {
+    display: flex;
+    gap: 1rem;
+    }
+    
+    .newsletter-form input {
+    flex: 1;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    }
+    
+    .newsletter-form button {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    background: #3a86ff;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    }
+    
+    .newsletter-form button:hover {
+    transform: translateY(-2px);
+    }
+    
+    .footer-bottom {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    @media (max-width: 768px) {
+    .footer-content {
+    grid-template-columns: 1fr;
+    }
+    
+    .newsletter-form {
+    flex-direction: column;
+    }
+    }
+
+
+/* Center the table and ensure proper spacing */
+.container {
+    max-width: 80%;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #242b4b; /* Slightly lighter than the background for contrast */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+/* Table Styling */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.table th {
+    background-color: #2d3555;
+    font-weight: bold;
+}
+
+/* Select Dropdown Styling */
+select.form-control {
+    background-color: #242b4b;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+select.form-control:focus {
+    outline: none;
+    border-color: #4c6ef5;
+}
+
+/* Image Styling */
+td > img {
+    width: 100%;
+    height: 250px;
+    object-fit: contain;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+/* Styling for Product Details */
+td[id^="price"],
+td[id^="desc"],
+td[id^="brand"] {
+    font-weight: bold;
+    color: #f8f9fa;
+    background-color: #1e253f;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        max-width: 95%;
+        padding: 15px;
+    }
+
+    .table th,
+    .table td {
+        padding: 10px;
+    }
+
+    td > img {
+        height: 200px;
+    }
+}
+#price-comparison {
+    background-color: #02021b;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+#price-comparison input {
+    width: 80%;
+    padding: 8px;
+    margin: 5px 0;
+}
+
+#price-comparison button {
+    background-color: #0a84ff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+#price-comparison button:hover {
+    background-color: #0066cc;
+}
+.buy-btn {
+    background-color: #ff9900;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.buy-btn:hover {
+    background-color: #cc7a00;
+}
+
+.best-deal-btn {
+    background-color: #00cc66;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.best-deal-btn:hover {
+    background-color: #00994d;
+}
+.background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+.bg-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1; /* Puts the video behind other elements */
+    opacity: 0.3; /* Adjust transparency to make content readable */
+}
+
+/* Ensure the gadgets grid and other content remain above */
+.gadgets-grid {
+    position: relative;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.6); /* Optional: add a dark overlay */
+    padding: 20px;
+    border-radius: 10px;
+    
+}
+
+        
+    </style>
+    
+
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="nav-header">
+        <div class="nav-container">
+            <a href="/" class="logo">TechZen</a>
+            <nav class="nav-links">
+                <a href="news.html">Tech News</a>
+                <a href="gadgets.html">Gadgets</a>
+                <a href="ai.html">AI Updates</a>
+                <a href="reviews.html">Reviews</a>
+                <button class="subscribe-btn">Subscribe</button>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+                              </nav>
+            <button class="mobile-menu-btn">
+                <i  class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+
+    <div id="header"></div>
+
+    <section class="gadgets-hero">
+        <h1 class="neon-text">Expert Gadget Reviews</h1>
+        <p>Comprehensive reviews and comparisons of the latest tech gadgets</p>
+    </section>
+
+    <div class="category-tabs">
+        <div class="category-tab active" data-category="smartphones">Smartphones</div>
+        <div class="category-tab" data-category="laptops">Laptops</div>
+        <div class="category-tab" data-category="wearables">Wearables</div>
+        <div class="category-tab" data-category="smartHome">Smart Home</div>
+    </div>  
+    <!-- Background Video -->
+<video autoplay muted loop class="bg-video">
+    <source src="bgvideo2.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
+
+    <section class="gadgets-grid" id="gadgets-grid">
+        <div class="gadget-image">
+            <img src="" alt="Featured Gadget">
+            <div class="rating-badge"></div>
+            <div class="search-container">
+                <input type="text" id="gadget-search" placeholder="Search gadgets..." aria-label="Search gadgets">
+                <button id="search-btn">🔍</button>
+            </div>
+        </div>
+        <div class="gadget-content">
+            <h2 id="gadget-name" class="neon-text"></h2>
+            <div class="gadget-specs" id="gadget-specs"></div>
+            <button class="read-more">Read Full Review →</button>
+        </div>
+    </section>
+
+    <div class="modal" id="gadget-modal">
+        <div class="modal-content">
+            <div class="close-modal" onclick="closeModal()">×</div>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="col-md-9 mx-auto">
+            <table class="table">
+                <tr class="bg-light">
+                    <th>Select Product</th>
+                    <th width="300px">
+                        <select class="form-control" id="select1" onchange="item1(this.value)">
+                            <option value="0">-- Select Anyone --</option>
+                        </select>
+                    </th>
+                    <th width="300px">
+                        <select class="form-control" id="select2" onchange="item2(this.value)">
+                            <option value="0">-- Select Anyone --</option>
+                        </select>
+                    </th>
+                </tr>
+                <tr>
+                    <th>Product Image</th>
+                    <td>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png"
+                            id="img1" alt=" ">
+                    </td>
+                    <td>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png"
+                            id="img2" alt=" ">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Product Price</th>
+                    <td id="price1">N/A</td>
+                    <td id="price2">N/A</td>
+                </tr>
+                <tr>
+                    <th>Product Description</th>
+                    <td id="desc1">N/A</td>
+                    <td id="desc2">N/A</td>
+                </tr>
+                <tr>
+                    <th>Product Brand</th>
+                    <td id="brand1">N/A</td>
+                    <td id="brand2">N/A</td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+    
+
+    <section class="reviews-grid" id="reviews-grid">
+        <!-- Review cards will be dynamically populated -->
+        <video autoplay loop muted playsinline class="background-video">
+            <source src="videos/background.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </section>
+
+    <script>
+        const gadgets = {
+        smartphones: {
+            category: "Smartphones",
+            devices: [
+                {
+                    id: "iphone15",
+                    name: "iPhone 15 Pro",
+                    image: "https://iplanet.one/cdn/shop/files/iPhone_15_Pink_PDP_Image_Position-5__en-IN_3fc22fb7-fe05-426a-82e4-8eaa0f7a67cc.jpg?v=1695428231&width=823",
+                    rating: "9.5/10",
+                    price: "$999",
+                    quickSpecs: ["A17 Pro chip", "48MP Camera", "6.1\" OLED"],
+                    specs: [
+                        { title: "Performance", description: "A17 Pro chip with 6-core CPU" },
+                        { title: "Camera", description: "48MP main, 12MP ultra-wide" },
+                        { title: "Battery", description: "Up to 23 hours video playback" },
+                        { title: "Display", description: "6.1\" Super Retina XDR" }
+                    ],
+                    reviews: [
+                        { title: "Amazing Camera", rating: 5, review: "Incredible night mode photos" },
+                        { title: "Great Battery", rating: 4, review: "Lasts all day easily" }
+                    ]
+                },
+                {
+                    id: "s23ultra",
+                    name: "Samsung Galaxy S23 Ultra",
+                    image: "https://images.samsung.com/in/smartphones/galaxy-s23-ultra/images/galaxy-s23-ultra-highlights-kv.jpg",
+                    rating: "9.4/10",
+                    price: "$1199",
+                    quickSpecs: ["200MP Camera", "S Pen", "6.8\" AMOLED"],
+                    specs: [
+                        { title: "Performance", description: "Snapdragon 8 Gen 2" },
+                        { title: "Camera", description: "200MP main, 10MP telephoto" },
+                        { title: "Battery", description: "5000mAh with 45W charging" },
+                        { title: "Display", description: "6.8\" Dynamic AMOLED 2X" }
+                    ],
+                    reviews: [
+                        { title: "Perfect Package", rating: 5, review: "Best Android experience" },
+                        { title: "Amazing Display", rating: 5, review: "Stunning screen quality" }
+                    ]
+                },
+                {
+                    id: "oneplus12",
+                    name: "OnePlus 12",
+                    image: "https://akm-img-a-in.tosshub.com/businesstoday/images/story/202406/665d6a78afa7b-oneplus-12-glacial-white-03021641-16x9.jpg?size=948:533",
+                    rating: "9.0/10",
+                    price: "$799",
+                    quickSpecs: ["50MP Camera", "Snapdragon 8 Gen 3", "6.82\" AMOLED"],
+                    specs: [
+                        { title: "Performance", description: "Snapdragon 8 Gen 3" },
+                        { title: "Camera", description: "50MP main, 48MP ultra-wide, 64MP telephoto" },
+                        { title: "Battery", description: "5400mAh with 100W fast charging" },
+                        { title: "Display", description: "6.82\" AMOLED, 120Hz" }
+                    ],
+                    reviews: [
+                        { title: "Ultra-Fast Charging", rating: 5, review: "Charges in just 30 minutes!" },
+                        { title: "Premium Build", rating: 4.5, review: "Solid feel and smooth performance." }
+                    ]
+                },
+
+                {
+                    id: "rog8pro",
+                    name: "ASUS ROG Phone 8 Pro",
+                    image: "https://dlcdnwebimgs.asus.com/files/media/E5096393-3043-4257-9117-5785F93F1A2A/v1/features/images/large/1x/kv/phone_right_light.png",
+                    rating: "9.3/10",
+                    price: "$1099",
+                    quickSpecs: ["50MP Camera", "Snapdragon 8 Gen 3", "6.78\" AMOLED, 165Hz"],
+                    specs: [
+                        { title: "Performance", description: "Snapdragon 8 Gen 3 + 24GB RAM" },
+                        { title: "Camera", description: "50MP main, 13MP ultra-wide, 32MP selfie" },
+                        { title: "Battery", description: "6000mAh with 65W fast charging" },
+                        { title: "Display", description: "6.78\" AMOLED, 165Hz refresh rate" }
+                    ],
+                    reviews: [
+                        { title: "Ultimate Gaming Beast", rating: 5, review: "Best gaming phone with insane performance!" },
+                        { title: "High Refresh Rate", rating: 5, review: "165Hz screen makes gaming super smooth." }
+                    ]
+                },
+                {
+                    id: "xiaomi14ultra",
+                    name: "Xiaomi 14 Ultra",
+                    image: "https://i.gadgets360cdn.com/large/xiaomi_14_ultra_xiaomi_2_1708665138551.jpg",
+                    rating: "9.1/10",
+                    price: "$999",
+                    quickSpecs: ["50MP Leica Camera", "Snapdragon 8 Gen 3", "6.73\" LTPO AMOLED"],
+                    specs: [
+                        { title: "Performance", description: "Snapdragon 8 Gen 3 + 16GB RAM" },
+                        { title: "Camera", description: "50MP main, 50MP ultra-wide, 50MP periscope telephoto" },
+                        { title: "Battery", description: "5000mAh with 90W fast charging" },
+                        { title: "Display", description: "6.73\" LTPO AMOLED, 120Hz" }
+                    ],
+                    reviews: [
+                        { title: "Camera Powerhouse", rating: 5, review: "Leica-tuned cameras deliver DSLR-quality photos." },
+                        { title: "Fastest Charging Ever", rating: 5, review: "90W charging gets you from 0 to 100% in minutes!" }
+                    ]
+                },
+                {
+                    id: "pixel8pro",
+                    name: "Google Pixel 8 Pro",
+                    image: "https://www.91-cdn.com/hub/wp-content/uploads/2023/09/google-pixel-8-pro-camera-feat-1200x900.jpg",
+                    rating: "9.3/10",
+                    price: "$999",
+                    quickSpecs: ["Tensor G3", "50MP Camera", "6.7\" LTPO"],
+                    specs: [
+                        { title: "Performance", description: "Google Tensor G3" },
+                        { title: "Camera", description: "50MP main, 48MP ultra-wide" },
+                        { title: "Battery", description: "5050mAh with 23W charging" },
+                        { title: "Display", description: "6.7\" LTPO OLED" }
+                    ],
+                    reviews: [
+                        { title: "AI Features", rating: 5, review: "Amazing AI capabilities" },
+                        { title: "Clean Android", rating: 5, review: "Pure Android experience" }
+                    ]
+                }
+            ]
+        },
+        laptops: {
+            category: "Laptops",
+            devices: [
+                {
+                    id: "macbookpro",
+                    name: "MacBook Pro 14\" M3",
+                    image: "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/mbp14-spacegray-select-202310?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1697311054290",
+                    rating: "9.6/10",
+                    price: "$1599",
+                    quickSpecs: ["M3 Pro chip", "14\" Liquid Retina XDR", "18hr battery"],
+                    specs: [
+                        { title: "Performance", description: "M3 Pro with 11‑core CPU" },
+                        { title: "Display", description: "14.2\" Liquid Retina XDR" },
+                        { title: "Battery", description: "Up to 18 hours" },
+                        { title: "Storage", description: "512GB to 8TB SSD" }
+                    ],
+                    reviews: [
+                        { title: "Powerhouse", rating: 5, review: "Incredible performance" },
+                        { title: "Perfect Display", rating: 5, review: "Best-in-class screen" }
+                    ]
+                },
+                {
+                    id: "spectrex36014",
+                    name: "HP Spectre x360 14 (2024)",
+                    image: "https://bsmedia.business-standard.com/_media/bs/img/article/2018-02/27/full/1519746931-3969.jpg?im=FeatureCrop,size=(826,465)",
+                    rating: "9.1/10",
+                    price: "$1899",
+                    quickSpecs: ["Intel Core Ultra 7", "14\" OLED 2.8K", "2-in-1 Convertible"],
+                    specs: [
+                        { title: "Performance", description: "Intel Core Ultra 7, 16GB RAM" },
+                        { title: "Display", description: "14\" OLED, 2.8K resolution, touch-enabled" },
+                        { title: "Battery", description: "Up to 15 hours battery life" },
+                        { title: "Convertible Design", description: "2-in-1 laptop with stylus support" }
+                    ],
+                    reviews: [
+                        { title: "Perfect for Creators", rating: 5, review: "Best touchscreen 2-in-1 with OLED." },
+                        { title: "Premium Design", rating: 5, review: "Lightweight and elegant with solid battery life." }
+                    ]
+                },
+                {
+                    id: "dellxps17",
+                    name: "Dell XPS 17 (2024)",
+                    image: "https://i.dell.com/is/image/DellContent//content/dam/images/products/laptops-and-2-in-1s/xps/17-9700-non-touch/xs9700nt-cnb-00060lb055-gy.psd?fmt=pjpg&pscan=auto&scl=1&wid=3734&hei=2592&qlt=100,1&resMode=sharp2&size=3734,2592&chrss=full&imwidth=5000",
+                    rating: "9.5/10",
+                    price: "$2599",
+                    quickSpecs: ["Intel Core i9-13980HX", "NVIDIA RTX 4070", "17\" 4K Touch"],
+                    specs: [
+                        { title: "Performance", description: "Intel Core i9-13980HX, up to 64GB RAM" },
+                        { title: "Display", description: "17\" UHD+ (3840x2400) 4K Touch, 500 nits" },
+                        { title: "Battery", description: "97Wh battery, up to 12 hours usage" },
+                        { title: "Graphics", description: "NVIDIA RTX 4070 (8GB GDDR6)" }
+                    ],
+                    reviews: [
+                        { title: "Sleek & Powerful", rating: 5, review: "Premium build with top-tier performance." },
+                        { title: "Brilliant Display", rating: 5, review: "4K touch screen is amazing for work." }
+                    ]
+                },
+                {
+                    id: "rogzephyrusg16",
+                    name: "ASUS ROG Zephyrus G16 (2024)",
+                    image: "https://www.asus.com/media/global/SKU/90NR0IS1-M007T0/o7znwum46nwpq57u.jpg",
+                    rating: "9.3/10",
+                    price: "$2199",
+                    quickSpecs: ["Intel Core i9-14900HX", "NVIDIA RTX 4080", "16\" OLED 240Hz"],
+                    specs: [
+                        { title: "Performance", description: "Intel Core i9-14900HX, up to 32GB RAM" },
+                        { title: "Display", description: "16\" OLED, 240Hz refresh rate, 100% DCI-P3" },
+                        { title: "Battery", description: "90Wh battery, up to 8 hours gaming" },
+                        { title: "Graphics", description: "NVIDIA RTX 4080 (12GB GDDR6)" }
+                    ],
+                    reviews: [
+                        { title: "Ultimate Gaming Laptop", rating: 5, review: "240Hz OLED screen is a game-changer!" },
+                        { title: "Cooling System", rating: 5, review: "Runs cool even under heavy gaming." }
+                    ]
+                },
+                {
+                    id: "legion9i",
+                    name: "Lenovo Legion 9i (2024)",
+                    image: "https://p1-ofp.static.pub//fes/cms/2024/02/13/w3a8a9ai9fpyqm4r6ahwgwwyo300ib722541.jpg",
+                    rating: "9.2/10",
+                    price: "$2899",
+                    quickSpecs: ["Intel Core i9-13980HX", "NVIDIA RTX 4090", "16\" Mini-LED 165Hz"],
+                    specs: [
+                        { title: "Performance", description: "Intel Core i9-13980HX, 32GB DDR5 RAM" },
+                        { title: "Display", description: "16\" Mini-LED, 165Hz refresh rate, 1000 nits" },
+                        { title: "Battery", description: "99.99Wh battery, up to 10 hours usage" },
+                        { title: "Graphics", description: "NVIDIA RTX 4090 (16GB GDDR6)" }
+                    ],
+                    reviews: [
+                        { title: "Liquid-Cooled Power", rating: 5, review: "First laptop with liquid cooling!" },
+                        { title: "Best Gaming Experience", rating: 5, review: "RTX 4090 is overkill for everything!" }
+                    ]
+                },
+                {
+                    id: "zenbook",
+                    name: "Asus Zenbook S13 OLED",
+                    image: "https://cdn.mall.adeptmind.ai/https%3A%2F%2Fmultimedia.bbycastatic.ca%2Fmultimedia%2Fproducts%2F500x500%2F169%2F16941%2F16941723_4.jpg_large.webp",
+                    rating: "9.2/10",
+                    price: "$1299",
+                    quickSpecs: ["Intel Core i7", "13.3\" OLED", "1kg weight"],
+                    specs: [
+                        { title: "Performance", description: "Intel Core i7-1355U" },
+                        { title: "Display", description: "13.3\" 2.8K OLED" },
+                        { title: "Battery", description: "Up to 14 hours" },
+                        { title: "Weight", description: "1kg ultra-light" }
+                    ],
+                    reviews: [
+                        { title: "Ultra Portable", rating: 5, review: "Perfect for travel" },
+                        { title: "Great Screen", rating: 5, review: "Vibrant OLED display" }
+                    ]
+                }
+                // Add more laptops similarly
+            ]
+        },
+
+        wearables: {
+        category: "Wearables",
+        devices: [
+            {
+                id: "applewatch",
+                name: "Apple Watch Ultra",
+                image: "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ultra-case-unselect-gallery-1-202409_GEO_IN_FMT_WHH?wid=752&hei=720&fmt=p-jpg&qlt=80&.v=1725399347133",
+                rating: "9.7/10",
+                price: "$799",
+                quickSpecs: ["Ultra-strong titanium case", "GPS + Cellular", "36-hour battery life"],
+                specs: [
+                    { title: "Design", description: "Titanium case with sapphire crystal" },
+                    { title: "Display", description: "2-inch OLED Retina display" },
+                    { title: "Battery", description: "Up to 36 hours of battery life" },
+                    { title: "Features", description: "Track fitness, health, and outdoor activities" }
+                ],
+                reviews: [
+                    { title: "Durable and Stylish", rating: 5, review: "Perfect for outdoor enthusiasts" },
+                    { title: "Amazing Performance", rating: 5, review: "Works flawlessly even in harsh conditions" }
+                ]
+            },
+            {
+                id: "applewatch9",
+                name: "Apple Watch Series 9",
+                image: "https://www.apple.com/newsroom/images/2023/09/apple-introduces-the-advanced-new-apple-watch-series-9/article/Apple-Watch-S9-carbon-neutral-lineup-230912_big.jpg.large.jpg",
+                rating: "9.5/10",
+                price: "$399",
+                quickSpecs: ["S9 Chip", "Always-On Retina Display", "Blood Oxygen & ECG"],
+                specs: [
+                    { title: "Performance", description: "Apple S9 SiP, 64-bit dual-core processor" },
+                    { title: "Display", description: "LTPO OLED Always-On, up to 2000 nits" },
+                    { title: "Battery", description: "18 hours, fast charging support" },
+                    { title: "Health & Fitness", description: "ECG, Blood Oxygen, Heart Rate Monitor" }
+                ],
+                reviews: [
+                    { title: "Best for iPhone Users", rating: 5, review: "Seamless integration with Apple ecosystem." },
+                    { title: "Bright & Smooth", rating: 5, review: "2000-nit display is gorgeous!" }
+                ]
+            }
+            ,
+            {
+                id: "pixelwatch2",
+                name: "Google Pixel Watch 2",
+                image: "data:image/jpeg;base64,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",
+                rating: "9.2/10",
+                price: "$349",
+                quickSpecs: ["Snapdragon W5", "Fitbit Health Features", "Wear OS 4"],
+                specs: [
+                    { title: "Performance", description: "Qualcomm Snapdragon W5 Gen 1, 2GB RAM" },
+                    { title: "Display", description: "1.2\" AMOLED, Always-On Display" },
+                    { title: "Battery", description: "24 hours, fast charging" },
+                    { title: "Health & Fitness", description: "Fitbit integration, ECG, Stress Tracking" }
+                ],
+                reviews: [
+                    { title: "Sleek & Compact", rating: 5, review: "Perfect size with great design!" },
+                    { title: "Fitbit Features", rating: 5, review: "Best health tracking on a smartwatch." }
+                ]
+            }
+            ,
+            {
+                id: "fitbitsense2",
+                name: "Fitbit Sense 2",
+                image: "https://images-static.nykaa.com/media/catalog/product/e/7/e7a4a0cFB521SRWT_11.jpg?tr=w-500",
+                rating: "9.0/10",
+                price: "$299",
+                quickSpecs: ["EDA Sensor", "Sleep Tracking", "Google Assistant"],
+                specs: [
+                    { title: "Performance", description: "Fitbit Proprietary OS, 512MB RAM" },
+                    { title: "Display", description: "1.58\" AMOLED, Always-On Display" },
+                    { title: "Battery", description: "Up to 6 days battery life" },
+                    { title: "Health & Fitness", description: "ECG, Stress Monitoring, Heart Rate" }
+                ],
+                reviews: [
+                    { title: "Stress & Sleep King", rating: 5, review: "Best stress tracking on any smartwatch." },
+                    { title: "Amazing Battery", rating: 5, review: "Lasts a full week on one charge!" }
+                ]
+            }
+            ,
+            {
+                id: "galaxywatch",
+                name: "Samsung Galaxy Watch 6",
+                image: "https://img.global.news.samsung.com/global/wp-content/uploads/2023/07/UNPK_Watch6-PR_main1.jpg",
+                rating: "9.5/10",
+                price: "$350",
+                quickSpecs: ["Super AMOLED display", "Sleep tracking", "Blood pressure monitoring"],
+                specs: [
+                    { title: "Display", description: "1.5-inch Super AMOLED screen" },
+                    { title: "Battery", description: "Up to 40 hours of battery life" },
+                    { title: "Health", description: "Heart rate, ECG, blood pressure monitoring" }
+                ],
+                reviews: [
+                    { title: "Feature-packed", rating: 5, review: "Great health tracking features" },
+                    { title: "Stylish Design", rating: 4, review: "Sleek and functional" }
+                ]
+            },
+            {
+                id: "garminvenu",
+                name: "Garmin Venu 2",
+                image: "https://www.zdnet.com/a/img/2022/01/03/cb085875-a385-4c8e-81b1-7e51618fe8d7/venu-2-plus-group-shot.jpg",
+                rating: "9.3/10",
+                price: "$399",
+                quickSpecs: ["GPS, Music Storage", "Corning Gorilla Glass 3", "Smart notifications"],
+                specs: [
+                    { title: "Display", description: "1.3-inch AMOLED touchscreen" },
+                    { title: "Battery", description: "Up to 11 days in smartwatch mode" },
+                    { title: "Tracking", description: "Health and fitness tracking" }
+                ],
+                reviews: [
+                    { title: "Solid Performance", rating: 5, review: "Ideal for athletes and fitness enthusiasts" },
+                    { title: "Amazing Screen", rating: 4, review: "Vivid display under sunlight" }
+                ]
+            }
+        ]
+    },
+    smartHome: {
+        category: "Smart Home",
+        devices: [
+            {
+                id: "nestthermostat",
+                name: "Google Nest Learning Thermostat",
+                image: "https://www.alliantenergymarketplace.com/dw/image/v2/BDDP_PRD/on/demandware.static/-/Sites-masterCatalog/default/dw73aa8ca1/Products/I-NST3RDGEN-01-STST-XXXX-V1.jpg?sw=800&sh=800",
+                rating: "9.6/10",
+                price: "$249",
+                quickSpecs: ["Learning AI", "Wi-Fi Connectivity", "Voice-controlled"],
+                specs: [
+                    { title: "Design", description: "Sleek and modern design with a circular display" },
+                    { title: "Connectivity", description: "Works with Wi-Fi and voice assistants" },
+                    { title: "Energy", description: "Energy-efficient and learns your schedule" }
+                ],
+                reviews: [
+                    { title: "Smart and Efficient", rating: 5, review: "Saves energy and is easy to use" },
+                    { title: "Voice Control", rating: 4, review: "Works well with Google Assistant" }
+                ]
+            },
+            {
+                id: "arloPro4",
+                name: "Arlo Pro 4 Wireless Security Camera",
+                image: "https://i.pcmag.com/imagery/reviews/05UemfjYcGmPFktcmEGZOju-1..v1611763913.png",
+                rating: "9.2/10",
+                price: "$199",
+                quickSpecs: ["2K HDR Video", "Night Vision", "Wireless & Weatherproof"],
+                specs: [
+                    { title: "Performance", description: "2K HDR video with 160° wide-angle view" },
+                    { title: "Night Vision", description: "Color night vision for clear images" },
+                    { title: "Smart Home Features", description: "Works with Alexa, Google Assistant & Apple HomeKit" },
+                    { title: "Battery Life", description: "6 months per charge, wireless setup" }
+                ],
+                reviews: [
+                    { title: "Best Security Cam", rating: 5, review: "Super clear video quality!" },
+                    { title: "Easy Install", rating: 5, review: "No wires, just mount & go!" }
+                ]
+            }
+            ,
+            {
+                id: "roombaJ7plus",
+                name: "iRobot Roomba j7+",
+                image: "https://images-cdn.ubuy.co.in/67ad9fe74415fe70d771c5b6-irobot-roomba-combo-j7-robot.jpg",
+                rating: "9.6/10",
+                price: "$799",
+                quickSpecs: ["AI Object Recognition", "Self-Emptying", "Smart Mapping"],
+                specs: [
+                    { title: "Performance", description: "Powerful suction, AI-driven obstacle avoidance" },
+                    { title: "Navigation", description: "Smart mapping with PrecisionVision technology" },
+                    { title: "Smart Home Features", description: "Works with Alexa & Google Assistant" },
+                    { title: "Battery Life", description: "90-minute runtime, auto-recharges & resumes" }
+                ],
+                reviews: [
+                    { title: "Life Saver", rating: 5, review: "Cleans up pet hair like magic!" },
+                    { title: "Smartest Robot Vacuum", rating: 5, review: "Avoids obstacles better than others." }
+                ]
+            }
+            ,
+            {
+                id: "nestHubMax",
+                name: "Google Nest Hub Max",
+                image: "https://90a1c75758623581b3f8-5c119c3de181c9857fcb2784776b17ef.ssl.cf2.rackcdn.com/610139_048033_05_package_comping.jpg",
+                rating: "9.4/10",
+                price: "$229",
+                quickSpecs: ["10\" HD Display", "Google Assistant", "Smart Camera"],
+                specs: [
+                    { title: "Performance", description: "Google AI, Face Match, Gesture Control" },
+                    { title: "Display", description: "10\" HD touchscreen with auto-brightness" },
+                    { title: "Audio", description: "Stereo speakers with deep bass" },
+                    { title: "Smart Home Features", description: "Supports Nest Cameras, Thermostats, Chromecast" }
+                ],
+                reviews: [
+                    { title: "Google Magic", rating: 5, review: "Works flawlessly with my Google smart home setup!" },
+                    { title: "Crystal Clear Calls", rating: 5, review: "Google Duo video calls are amazing!" }
+                ]
+            }
+            ,
+            {
+                id: "philipsbulb",
+                name: "Philips Hue White and Color Ambiance Bulb",
+                image: "https://www.igan-iluminacion.com/43812-zoom_producto/philips-starter-kit-hue-led-bulbs-e27-a60-bridge-switch.jpg",
+                rating: "9.4/10",
+                price: "$49.99",
+                quickSpecs: ["16 million colors", "Smart control", "Energy efficient"],
+                specs: [
+                    { title: "Smart Features", description: "Compatible with Alexa, Google Assistant" },
+                    { title: "Lighting", description: "16 million colors and white tones" },
+                    { title: "Power", description: "Low energy consumption" }
+                ],
+                reviews: [
+                    { title: "Great Customization", rating: 5, review: "A huge variety of colors" },
+                    { title: "Easy Setup", rating: 4, review: "Quick installation and control" }
+                ]
+            },
+            {
+                id: "ringdoorbell",
+                name: "Ring Video Doorbell Pro 2",
+                image: "https://images.ctfassets.net/a3peezndovsu/variant-32148466565209/3697f5fdaadc9ae3945b76e62b7b7608/variant-32148466565209.jpg",
+                rating: "9.8/10",
+                price: "$249",
+                quickSpecs: ["1080p HD video", "Two-way audio", "Motion-activated alerts"],
+                specs: [
+                    { title: "Camera", description: "1080p HD video with HDR" },
+                    { title: "Audio", description: "Two-way audio with noise cancellation" },
+                    { title: "Features", description: "Motion detection and instant alerts" }
+                ],
+                reviews: [
+                    { title: "Excellent Security", rating: 5, review: "Reliable and clear video quality" },
+                    { title: "Easy to Use", rating: 5, review: "Simple installation and control" }
+                ]
+            }
+        ]
+    }
+        // Add more categories similarly
+    };
+
+    // Function to update grid content
+    function updateGridContent(category) {
+        const gridContainer = document.getElementById('gadgets-grid');
+        gridContainer.innerHTML = '';
+        
+        gadgets[category].devices.forEach(device => {
+            const card = document.createElement('div');
+            card.classList.add('gadget-card');
+            card.onclick = () => showDeviceModal(device);
+            
+            card.innerHTML = `
+                <img src="${device.image}" alt="${device.name}">
+                <div class="gadget-card-content">
+                    <h3 class="gadget-card-title">${device.name}</h3>
+                    <span class="gadget-card-rating">${device.rating}</span>
+                    <div class="gadget-card-price">${device.price}</div>
+                    <div class="quick-specs">
+                        ${device.quickSpecs.map(spec => `• ${spec}`).join('<br>')}
+                    </div>
+                </div>
+            `;
+            
+            gridContainer.appendChild(card);
+        });
+    }
+
+    // Function to show device modal
+    function showDeviceModal(device) {
+        const modal = document.getElementById('gadget-modal');
+        const modalContent = document.getElementById('modal-content');
+        
+        modalContent.innerHTML = `
+            <h2 class="neon-text">${device.name}</h2>
+            <div class="gadget-specs">
+                ${device.specs.map(spec => `
+                    <div class="spec-item">
+                        <h4>${spec.title}</h4>
+                        <p>${spec.description}</p>
+                    </div>
+                `).join('')}
+            </div>
+            <div class="reviews-grid">
+                ${device.reviews.map(review => `
+                    <div class="review-card">
+                        <h3>${review.title}</h3>
+                        <div class="rating">
+                            ${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)}
+                        </div>
+                        <p>${review.review}</p>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        
+        modal.style.display = 'block';
+    }
+
+    // Function to close modal
+    function closeModal() {
+        document.getElementById('gadget-modal').style.display = 'none';
+    }
+
+    // Initialize with smartphones
+    window.addEventListener('DOMContentLoaded', () => {
+        updateGridContent('smartphones');
+    });
+
+// Category tab functionality
+const categoryTabs = document.querySelectorAll('.category-tab'); // Add this line
+
+categoryTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        categoryTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        updateGridContent(tab.dataset.category);
+    });
+});
+
+
+    // Search functionality
+    document.getElementById('search-btn').addEventListener('click', () => {
+        const searchTerm = document.getElementById('gadget-search').value.toLowerCase().trim();
+        if (searchTerm) {
+            for (const [category, data] of Object.entries(gadgets)) {
+                const matchingDevice = data.devices.find(device => 
+                    device.name.toLowerCase().includes(searchTerm)
+                );
+                if (matchingDevice) {
+                    const categoryTab = Array.from(categoryTabs).find(
+                        tab => tab.dataset.category === category
+                    );
+                    categoryTab.click();
+                    setTimeout(() => showDeviceModal(matchingDevice), 100);
+                    break;
+                }
+            }
+        }
+    });
+
+    // Close modal when clicking outside
+    window.onclick = (event) => {
+        const modal = document.getElementById('gadget-modal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    };
+    </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js "></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js "></script>
+
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>TechZen</h3>
+                <p>Your daily source for the latest in technology, innovation, and digital transformation.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><img src="img-vid/facebook.png" alt="Facebook"></a>
+                    <a href="#" class="social-link"><img src="img-vid/twitter.png" alt="Twitter"></a>
+                    <a href="#" class="social-link"><img src="img-vid/linkedin.png" alt="LinkedIn"></a>
+                    <a href="#" class="social-link"><img src="img-vid/instagram.png" alt="Instagram"></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+    
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Stay updated with our latest tech news</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter your email">
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 TechZen. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

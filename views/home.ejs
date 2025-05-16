@@ -28,10 +28,10 @@
                 <% }); %>
 
                 <!-- User Profile -->
-                <div class="user-profile">
+                <div class="user-profile" onclick="openProfileModal()">
                     <div id="username-display">
                         <i class="fas fa-user-circle"></i>
-                        <span><%= user ? user.username : 'Guest' %></span>
+                        <span id="username-text"><%= user ? user.username : 'Guest' %></span>
                     </div>
                 </div>
 
@@ -44,19 +44,18 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
-        <video class="hero-video" autoplay loop muted>
-            <source src="<%= heroVideoPath %>" type="video/mp4">
-        </video>
-        <div class="hero-overlay"></div>
-        <center>
-            <div class="hero-content">
-                <h1 class="hero-title"><%= siteName %></h1>
-                <p class="hero-subtitle"><%= heroSubtitle %></p>
-                <button>LET'S GO!</button>
-            </div>
-        </center>
-    </section>
+<section class="hero">
+    <video class="hero-video" autoplay loop muted>
+        <source src="<%= heroVideoPath %>" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1 class="hero-title"><%= siteName %></h1>
+        <p class="hero-subtitle"><%= heroSubtitle %></p>
+        <button>LET'S GO!</button>
+    </div>
+</section>
+
 
     <!-- Chatbot Iframe -->
     <div id="chatbot-container" style="max-width: 2000px; max-height: 1200px;" class="sticky-chat">
@@ -105,6 +104,49 @@
 
     <div class="divider"></div>
 
+
+    <!-- Profile Edit Modal -->
+<div id="profileModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeProfileModal()">&times;</span>
+        <h2>Edit Profile</h2>
+        <form id="profileEditForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="currentPassword">Current Password (required to save changes)</label>
+                <input type="password" id="currentPassword" name="currentPassword" required>
+            </div>
+            <div class="form-group">
+                <label for="newPassword">New Password (leave blank to keep current)</label>
+                <input type="password" id="newPassword" name="newPassword">
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm New Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword">
+            </div>
+            <div class="form-actions">
+                <button type="button" onclick="closeProfileModal()">Cancel</button>
+                <button type="submit">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Success Notification -->
+<div id="successNotification" class="notification">
+    <div class="notification-content">
+        <i class="fas fa-check-circle"></i>
+        <span>Success! Your account information has been updated.</span>
+    </div>
+</div>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
@@ -142,6 +184,150 @@
     </footer>
 
     <script>
+
+
+
+// User profile update
+async function updateUserProfile() {
+  try {
+    const response = await fetch('/api/auth/user', {
+      credentials: 'include'
+    });
+    
+    if (response.ok) {
+      const userData = await response.json();
+      console.log('User data received:', userData);
+      
+      // Update the username in the navbar
+      const usernameElement = document.getElementById('username-text');
+      if (usernameElement && userData.username) {
+        usernameElement.textContent = userData.username;
+        console.log('Username updated to:', userData.username);
+      }
+    } else {
+      console.warn('Failed to fetch user data');
+    }
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+  }
+}
+
+
+// Profile Modal Functions
+function openProfileModal() {
+    const modal = document.getElementById('profileModal');
+    modal.style.display = 'block';
+    
+    // Fetch current user data to populate the form
+    fetchUserDataForEdit();
+}
+
+function closeProfileModal() {
+    const modal = document.getElementById('profileModal');
+    modal.style.display = 'none';
+}
+
+// Close modal if clicked outside
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('profileModal');
+    if (event.target === modal) {
+        closeProfileModal();
+    }
+});
+
+// Fetch user data to populate the edit form
+async function fetchUserDataForEdit() {
+    try {
+        const response = await fetch('/api/auth/user', {
+            credentials: 'include'
+        });
+        
+        if (response.ok) {
+            const userData = await response.json();
+            
+            // Populate the form fields
+            document.getElementById('username').value = userData.username || '';
+            document.getElementById('email').value = userData.email || '';
+            
+            // Password fields are left empty for security
+        } else {
+            console.warn('Failed to fetch user data for editing');
+        }
+    } catch (error) {
+        console.error('Error fetching user data for edit:', error);
+    }
+}
+
+// Handle form submission
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('profileEditForm');
+    if (form) {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Validate passwords match if new password is provided
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (newPassword && newPassword !== confirmPassword) {
+                alert('New passwords do not match');
+                return;
+            }
+            
+            // Gather form data
+            const formData = {
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                currentPassword: document.getElementById('currentPassword').value,
+                newPassword: newPassword || undefined
+            };
+            
+            try {
+                const response = await fetch('/api/auth/update-profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Close modal
+                    closeProfileModal();
+                    
+                    // Show success notification
+                    showSuccessNotification();
+                    
+                    // Update displayed username
+                    updateUserProfile();
+                } else {
+                    console.error('Profile update failed:', data);
+                    alert(data.error || 'Failed to update profile');
+                }
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                alert('An error occurred while updating your profile');
+            }
+        });
+    }
+});
+
+// Show success notification
+function showSuccessNotification() {
+    const notification = document.getElementById('successNotification');
+    notification.classList.add('show');
+    
+    // Remove notification after animation completes
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 4000);
+}
+
+
+
         // Mobile menu toggle
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
         const navLinks = document.querySelector('.nav-links');
@@ -151,40 +337,82 @@
         });
 
         // Logout function
-        async function logout() {
-            console.log('Logout function called');
-            try {
-                const response = await fetch('/api/auth/logout', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include'
-                });
-                console.log('Logout response status:', response.status);
-                localStorage.removeItem('sessionId');
-                localStorage.removeItem('username');
-                window.location.href = '/login';
-            } catch (error) {
-                console.error('Logout error:', error);
-                window.location.href = '/login';
-            }
+ async function logout() {
+    try {
+      console.log('Logging out...');
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        console.log('Logout successful');
+        window.location.href = '/login';
+      } else {
+        console.error('Logout failed');
+        alert('Logout failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+      alert('An error occurred during logout.');
+    }
+  }
+
+    document.addEventListener('DOMContentLoaded', async function() {
+
+            updateUserProfile();
+
+    try {
+      const response = await fetch('/api/auth/user', {
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        const userData = await response.json();
+        console.log('User data:', userData);
+        
+        // Update username in navbar
+        const usernameSpan = document.querySelector('#username-display span');
+        if (usernameSpan && userData.username) {
+          usernameSpan.textContent = userData.username;
         }
+      } else {
+        console.warn('Not authenticated, redirecting to login');
+        window.location.href = '/login';
+      }
+    } catch (error) {
+      console.error('Error checking auth:', error);
+    }
+  });
 
         // Parallax and scroll effects
-        document.addEventListener('DOMContentLoaded', () => {
-            window.addEventListener('scroll', () => {
-                const scroll = window.pageYOffset;
-                document.querySelector('.hero-content').style.transform = `translateY(${scroll * 0.5}px)`;
-                document.querySelector('.hero-video').style.transform = `translateY(${scroll * 0.15}px)`;
-                const categoriesBackground = document.querySelector('.categories-wrapper .section-background');
-                if (categoriesBackground) {
-                    categoriesBackground.style.transform = `translateY(${scroll * 0.05}px)`;
-                }
-                const newsBackground = document.querySelector('.news-wrapper .section-background');
-                if (newsBackground) {
-                    newsBackground.style.transform = `translateY(${scroll * 0.03}px)`;
-                }
-            });
-        });
+window.addEventListener('scroll', () => {
+    const scroll = window.pageYOffset;
+    const heroContent = document.querySelector('.hero-content');
+    const heroVideo = document.querySelector('.hero-video');
+    
+    // Apply subtle parallax effect that keeps content centered
+    if (heroContent) {
+        heroContent.style.transform = `translateY(${scroll * 0.3}px)`;
+        heroContent.style.opacity = 1 - (scroll * 0.003);
+    }
+    
+    if (heroVideo) {
+        heroVideo.style.transform = `translateY(${scroll * 0.15}px)`;
+    }
+    
+    // Other scroll effects remain the same
+    const categoriesBackground = document.querySelector('.categories-wrapper .section-background');
+    if (categoriesBackground) {
+        categoriesBackground.style.transform = `translateY(${scroll * 0.05}px)`;
+    }
+    
+    const newsBackground = document.querySelector('.news-wrapper .section-background');
+    if (newsBackground) {
+        newsBackground.style.transform = `translateY(${scroll * 0.03}px)`;
+    }
+});
 
         // Card animations
         document.addEventListener('DOMContentLoaded', () => {
@@ -291,27 +519,50 @@
         });
 
         // Navigation with auth check
-        function setupNavigation() {
-            const navigationTargets = document.querySelectorAll('.read-more, .nav-btn');
-            navigationTargets.forEach(link => {
-                link.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    const path = link.getAttribute('href') || 
-                                 link.getAttribute('onclick').match(/'([^']*)'/)[1];
-                    try {
-                        const response = await fetch('/api/user');
-                        if (response.ok) {
-                            window.location.href = path;
-                        } else {
-                            window.location.href = '/login';
-                        }
-                    } catch (error) {
-                        console.error('Navigation error:', error);
-                        window.location.href = '/login';
-                    }
-                });
-            });
-        }
+function setupNavigation() {
+    const navigationTargets = document.querySelectorAll('.nav-btn');
+    navigationTargets.forEach(btn => {
+        // Store the original onclick handler if it exists
+        const originalOnclick = btn.getAttribute('onclick');
+        
+        // Override the onclick
+        btn.onclick = async function(e) {
+            e.preventDefault();
+            
+            // Get the target path from the original onclick or href
+            let path;
+            if (originalOnclick && originalOnclick.includes('location.href')) {
+                const match = originalOnclick.match(/location\.href\s*=\s*['"]([^'"]*)['"]/);
+                path = match ? match[1] : '/';
+            } else {
+                path = btn.getAttribute('href') || '/';
+            }
+            
+            // Check authentication before navigation
+            try {
+                const response = await fetch('/api/auth/user');
+                if (response.ok) {
+                    window.location.href = path;
+                } else {
+                    console.log('User not authenticated, redirecting to login');
+                    window.location.href = '/login';
+                }
+            } catch (error) {
+                console.error('Navigation error:', error);
+                window.location.href = '/login';
+            }
+        };
+    });
+    
+    // Handle read-more links separately
+    document.querySelectorAll('.read-more').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const path = this.getAttribute('href') || '/';
+            window.location.href = path; // These links don't need auth check
+        });
+    });
+}
         document.addEventListener('DOMContentLoaded', setupNavigation);
     </script>
 </body>

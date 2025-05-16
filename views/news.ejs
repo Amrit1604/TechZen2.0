@@ -1,0 +1,642 @@
+<!-- filepath: c:\Users\Amrit Joshi\OneDrive\Desktop\TechZen2.0\TechZen2.0\views\news.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/stylenews.css">
+    <link rel="icon" href="<%= faviconPath %>" type="image/x-icon">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="nav-header">
+        <div class="nav-container">
+            <nav class="nav-links" style="margin-left: -90px;">
+                <div class="logo">
+                    <a href="/home"><img src="<%= logoPath %>" alt="<%= siteName %>" style="width: 100px; border-radius: 50%;"></a>
+                </div>
+                <% navLinks.forEach(link => { %>
+                    <button class="nav-btn <%= link.href === '/news' ? 'active' : '' %>" onclick="location.href='<%= link.href %>'"><%= link.text %></button>
+                <% }); %>
+
+                <!-- User Profile -->
+                <div class="user-profile" onclick="openProfileModal()">
+                    <div id="username-display">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="username-text"><%= user ? user.username : 'Guest' %></span>
+                    </div>
+                </div>
+
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </nav>
+            <button class="mobile-menu-btn" title="btnn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <div class="page-title">
+                <h1><%= siteName %><span style="color: var(--accent-color);"> Chronicles</span></h1>
+                <p>Unveiling the Mysteries of Modern Innovation</p>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search news..." />
+                <button id="searchBtn" class="search-btn">Search</button>
+ <button id="clearSearchBtn" class="clear-search-btn" onclick="clearSearch()">
+     <i class="fas fa-times"></i>
+ </button>
+            </div>
+
+
+            <div class="filters">
+                <button class="filter-btn active" data-category="all">All Chronicles</button>
+                <button class="filter-btn" data-category="AI">Artificial Intelligence</button>
+                <button class="filter-btn" data-category="Startups">Ventures & Startups</button>
+                <button class="filter-btn" data-category="Innovation">Innovations</button>
+                <button class="filter-btn" data-category="Research">Research</button>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div class="loader" id="loader">
+                <div class="spinner"></div>
+                <p>Loading news...</p>
+            </div>
+
+            <!-- No Results Message -->
+            <div class="no-results" id="no-results">
+                <p>No news articles found. Try a different search.</p>
+            </div>
+
+            <div class="blogs" id="cards-container">
+                <!-- News cards will be dynamically added here -->
+            </div>
+
+            <button class="load-more-btn" id="load-more-btn">Load More</button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><%= siteName %></h3>
+                <p><%= footerDescription %></p>
+                <div class="social-links">
+                    <% socialLinks.forEach(link => { %>
+                        <a href="<%= link.href %>"><img src="<%= link.icon %>" alt="<%= link.name %>"></a>
+                    <% }); %>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <% footerLinks.forEach(link => { %>
+                        <li><a href="<%= link.href %>"><%= link.text %></a></li>
+                    <% }); %>
+                </ul>
+            </div>
+    
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Stay updated with our latest tech news</p>
+                <form class="newsletter-form" action="<%= newsletterAction %>">
+                    <input type="email" placeholder="Enter your email">
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© <%= currentYear %> <%= siteName %>. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Profile Edit Modal -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeProfileModal()">&times;</span>
+            <h2>Edit Profile</h2>
+            <form id="profileEditForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="currentPassword">Current Password (required to save changes)</label>
+                    <input type="password" id="currentPassword" name="currentPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password (leave blank to keep current)</label>
+                    <input type="password" id="newPassword" name="newPassword">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword">
+                </div>
+                <div class="form-actions">
+                    <button type="button" onclick="closeProfileModal()">Cancel</button>
+                    <button type="submit">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Notification -->
+    <div id="successNotification" class="notification">
+        <div class="notification-content">
+            <i class="fas fa-check-circle"></i>
+            <span>Success! Your account information has been updated.</span>
+        </div>
+    </div>
+
+    <!-- News API Script -->
+    <script>
+        // API Configuration
+        const API_KEY = "08aa64d2c8b241afbf10e47fe7146210"; // Your NewsAPI key
+        const BASE_URL = "https://newsapi.org/v2/";
+
+        // Set up elements and variables
+        const cardsContainer = document.getElementById("cards-container");
+        const loadMoreBtn = document.getElementById("load-more-btn");
+        const filterButtons = document.querySelectorAll(".filter-btn");
+        const searchInput = document.getElementById("searchInput");
+        const searchBtn = document.getElementById("searchBtn");
+        const loader = document.getElementById("loader");
+        const noResults = document.getElementById("no-results");
+
+        let articles = [];
+        let currentPage = 1;
+        let currentCategory = "all";
+        let searchQuery = "";
+        let isLoading = false;
+        let totalResults = 0;
+
+        // Category to search query mapping
+const categoryQueries = {
+    "all": "technology OR tech innovation OR digital transformation",
+    "AI": "artificial intelligence OR machine learning OR neural networks OR GPT OR large language models",
+    "Startups": "tech startup OR venture capital OR tech entrepreneurship OR startup funding OR tech incubator OR Y Combinator",
+    "Innovation": "technology innovation OR tech breakthrough OR new invention OR tech development OR technological advancement",
+    "Research": "scientific research OR tech research OR research breakthrough OR science discovery OR technology science"
+};
+        // Load news on page load
+        window.addEventListener("load", () => {
+            fetchNews(categoryQueries[currentCategory], true);
+        });
+
+        // Function to show loading state
+        function showLoader() {
+            loader.style.display = "block";
+            loadMoreBtn.style.display = "none";
+            isLoading = true;
+        }
+
+
+        // Determine category based on article content
+function determineCategory(article) {
+    const title = (article.title || "").toLowerCase();
+    const description = (article.description || "").toLowerCase();
+    const content = title + " " + description;
+    
+    if (content.includes("artificial intelligence") || content.includes(" ai ") || 
+        content.includes("machine learning") || content.includes("neural network")) {
+        return "AI";
+    } else if (content.includes("startup") || content.includes("venture") || 
+               content.includes("funding") || content.includes("investment")) {
+        return "Startups";
+    } else if (content.includes("innovation") || content.includes("breakthrough") || 
+               content.includes("invention") || content.includes("develop")) {
+        return "Innovation";
+    } else if (content.includes("research") || content.includes("study") || 
+               content.includes("discovery") || content.includes("scientists")) {
+        return "Research";
+    } else {
+        return "Technology";
+    }
+}
+
+
+// Bind data to HTML elements
+function bindData(isNewSearch) {
+    if (isNewSearch) {
+        cardsContainer.innerHTML = "";
+    }
+    
+    if (articles.length === 0) {
+        noResults.style.display = "block";
+        return;
+    }
+    
+    articles.forEach(article => {
+        const cardClone = createNewsCard(article);
+        cardsContainer.appendChild(cardClone);
+    });
+}
+
+
+// Create a news card element
+function createNewsCard(article) {
+    const card = document.createElement("div");
+    card.classList.add("news-card");
+    
+    // Format the date
+    const publishedDate = new Date(article.date);
+    const formattedDate = publishedDate.toLocaleDateString('en-US', { 
+        day: 'numeric', 
+        month: 'long', 
+        year: 'numeric' 
+    });
+    
+    // Use placeholder image if none is available
+    const imageUrl = article.image || "https://via.placeholder.com/400x200?text=Tech+News";
+    
+    card.innerHTML = `
+        <div class="card-header">
+            <img src="${imageUrl}" alt="${article.title}" onerror="this.src='https://via.placeholder.com/400x200?text=Image+Not+Available';">
+            <span class="card-category">${article.category}</span>
+        </div>
+        <div class="card-content">
+            <h3 class="card-title">${article.title}</h3>
+            <p class="card-description">${article.description || "No description available"}</p>
+            <div class="card-footer">
+                <span class="card-date">${formattedDate}</span>
+                <a href="${article.url}" target="_blank" class="card-link">Read More <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    `;
+    
+    return card;
+} 
+
+
+// Load sample data when API fails
+function loadSampleData(isNewSearch) {
+    const sampleArticles = [
+        {
+            title: "Latest Advancements in Quantum Computing",
+            description: "Researchers have made significant breakthroughs in quantum computing technology, paving the way for more powerful and efficient systems.",
+            date: new Date().toISOString(),
+            category: "Research",
+            image: "https://via.placeholder.com/400x200?text=Quantum+Computing",
+            url: "#"
+        },
+        {
+            title: "AI Startup Secures $50 Million in Funding",
+            description: "A promising artificial intelligence startup has secured significant funding to develop next-generation machine learning solutions.",
+            date: new Date().toISOString(),
+            category: "Startups",
+            image: "https://via.placeholder.com/400x200?text=AI+Startup",
+            url: "#"
+        },
+        {
+            title: "Revolutionary New Smartphone Technology Unveiled",
+            description: "Leading tech company reveals innovative smartphone features that could change the mobile industry landscape.",
+            date: new Date().toISOString(),
+            category: "Innovation",
+            image: "https://via.placeholder.com/400x200?text=Smartphone+Tech",
+            url: "#"
+        }
+    ];
+    
+    articles = isNewSearch ? sampleArticles : [...articles, ...sampleArticles];
+    bindData(isNewSearch);
+    noResults.style.display = "none";
+}
+
+// Add event listeners for filter buttons
+filterButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        // Update active button
+        filterButtons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+        
+        // Get selected category
+        currentCategory = button.dataset.category;
+        console.log("Category selected:", currentCategory);
+        
+        // Reset search when changing categories
+        if (searchInput.value.trim() !== searchQuery) {
+            searchQuery = searchInput.value.trim();
+        }
+        
+        // Fetch news with appropriate query
+        if (searchQuery) {
+            fetchNews(`${searchQuery} ${categoryQueries[currentCategory]}`, true);
+        } else {
+            fetchNews(categoryQueries[currentCategory], true);
+        }
+    });
+});
+
+
+// Add event listener for search
+searchBtn.addEventListener("click", () => {
+    searchQuery = searchInput.value.trim();
+    if (searchQuery === "") {
+        // If search is cleared, just show the current category
+        searchQuery = "";
+        fetchNews(categoryQueries[currentCategory], true);
+    } else {
+        // Now we combine with category, just like the Enter key handler
+        fetchNews(`${searchQuery} ${categoryQueries[currentCategory]}`, true);
+    }
+});
+
+function clearSearch() {
+    searchQuery = "";
+    searchInput.value = "";
+    fetchNews(categoryQueries[currentCategory], true);
+}
+
+// Also handle Enter key in search input
+searchInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        searchQuery = searchInput.value.trim();
+        if (searchQuery) {
+            fetchNews(`${searchQuery} ${categoryQueries[currentCategory]}`, true);
+        } else {
+            fetchNews(categoryQueries[currentCategory], true);
+        }
+    }
+});
+
+// Add load more functionality
+loadMoreBtn.addEventListener("click", () => {
+    if (!isLoading) {
+        currentPage++;
+        if (searchQuery) {
+            fetchNews(`${searchQuery} ${categoryQueries[currentCategory]}`, false);
+        } else {
+            fetchNews(categoryQueries[currentCategory], false);
+        }
+    }
+});
+
+
+// Update the default search to "new technologies in market"
+categoryQueries.all = "new technologies in market";
+
+// Initialize with the updated default search
+fetchNews(categoryQueries[currentCategory], true);
+
+
+
+        // Function to hide loading state
+        function hideLoader() {
+            loader.style.display = "none";
+            isLoading = false;
+        }
+
+        // Fetch news from API
+async function fetchNews(query, isNewSearch = false) {
+    console.log("Fetch news called with query:", query, "isNewSearch:", isNewSearch);
+    
+    showLoader();
+    
+    // Reset page for new searches
+    if (isNewSearch) {
+        currentPage = 1;
+        cardsContainer.innerHTML = "";
+        articles = [];
+    }
+
+    try {
+        // Special handling for Startups category which sometimes returns fewer results
+        if (currentCategory === "Startups") {
+            query = "(tech startup OR venture capital OR tech entrepreneurship OR tech funding OR seed funding OR tech incubator)";
+        }
+        
+        // Build the API URL with pagination
+        const endpoint = "everything"; // Using everything for more comprehensive results
+        const sortBy = "&sortBy=publishedAt"; // Sort by newest first
+        const language = "&language=en";
+        const pageSize = 10;
+        
+        // Build the query based on search or category
+        let searchTerm;
+        
+        if (searchQuery && currentCategory !== "all") {
+            // If there's a search query and specific category
+            searchTerm = `${searchQuery} AND (${categoryQueries[currentCategory]})`;
+        } else if (searchQuery) {
+            // If there's only search query
+            searchTerm = searchQuery;
+        } else {
+            // If only category filter
+            searchTerm = categoryQueries[currentCategory];
+        }
+        
+        // Encode the search term to handle special characters
+        const encodedSearchTerm = encodeURIComponent(searchTerm);
+        
+        const url = `${BASE_URL}${endpoint}?q=${encodedSearchTerm}${language}${sortBy}&pageSize=${pageSize}&page=${currentPage}&apiKey=${API_KEY}`;
+        
+        console.log("Fetching news from API URL:", url);
+        
+        const res = await fetch(url);
+        const data = await res.json();
+        
+        console.log("API Response:", data);
+        
+        // Check if API returned successfully
+        if (data.status === "ok") {
+            totalResults = data.totalResults;
+            
+            // Check if there are any articles
+            if (data.articles && Array.isArray(data.articles) && data.articles.length > 0) {
+                // Process articles and add categories
+                const newArticles = data.articles.map(article => {
+                    let category = determineCategory(article);
+                    
+                    return {
+                        title: article.title || "Untitled",
+                        description: article.description || "No description available",
+                        date: article.publishedAt || new Date().toISOString(),
+                        category: category,
+                        image: article.urlToImage,
+                        url: article.url
+                    };
+                });
+                
+                // Add new articles to existing ones
+                articles = [...articles, ...newArticles];
+                
+                // Display articles
+                bindData(isNewSearch);
+                noResults.style.display = "none";
+            } else {
+                // No articles found - try alternative query for the category
+                if (isNewSearch) {
+                    console.log("No articles found with primary query, trying alternative approach");
+                    
+                    // Try a different approach for this category
+                    const alternativeQueries = {
+                        "all": "technology news",
+                        "AI": "artificial intelligence news",
+                        "Startups": "tech startups news",
+                        "Innovation": "technology innovation",
+                        "Research": "scientific research technology"
+                    };
+                    
+                    // Fetch with alternative query
+                    const altSearchTerm = encodeURIComponent(alternativeQueries[currentCategory]);
+                    const altUrl = `${BASE_URL}${endpoint}?q=${altSearchTerm}${language}${sortBy}&pageSize=${pageSize}&page=${currentPage}&apiKey=${API_KEY}`;
+                    
+                    console.log("Trying alternative query:", altUrl);
+                    
+                    const altRes = await fetch(altUrl);
+                    const altData = await altRes.json();
+                    
+                    if (altData.status === "ok" && altData.articles && altData.articles.length > 0) {
+                        totalResults = altData.totalResults;
+                        
+                        const altArticles = altData.articles.map(article => {
+                            return {
+                                title: article.title || "Untitled",
+                                description: article.description || "No description available",
+                                date: article.publishedAt || new Date().toISOString(),
+                                category: currentCategory,
+                                image: article.urlToImage,
+                                url: article.url
+                            };
+                        });
+                        
+                        articles = altArticles;
+                        bindData(true);
+                        noResults.style.display = "none";
+                    } else {
+                        noResults.style.display = "block";
+                        loadMoreBtn.style.display = "none";
+                    }
+                } else {
+                    // No more articles to load for pagination
+                    loadMoreBtn.style.display = "none";
+                }
+            }
+        } else {
+            console.error("API Error:", data.message);
+            // If we hit API limits, try another approach
+            tryAlternativeNewsSource();
+        }
+    } catch (error) {
+        console.error("Error fetching news:", error);
+        // If API fails completely, try another news source
+        tryAlternativeNewsSource();
+    } finally {
+        hideLoader();
+        // Show load more button if there are more articles to fetch
+        if (articles.length < totalResults) {
+            loadMoreBtn.style.display = "block";
+        } else {
+            loadMoreBtn.style.display = "none";
+        }
+    }
+}        
+        // User profile functions
+        async function updateUserProfile() {
+          try {
+            const response = await fetch('/api/auth/user', {
+              credentials: 'include'
+            });
+            
+            if (response.ok) {
+              const userData = await response.json();
+              console.log('User data received:', userData);
+              
+              // Update the username in the navbar
+              const usernameElement = document.getElementById('username-text');
+              if (usernameElement && userData.username) {
+                usernameElement.textContent = userData.username;
+              }
+            } else {
+              console.warn('Failed to fetch user data');
+            }
+          } catch (error) {
+            console.error('Error fetching user data:', error);
+          }
+        }
+        
+        // Profile Modal Functions
+        function openProfileModal() {
+            const modal = document.getElementById('profileModal');
+            modal.style.display = 'block';
+            
+            // Fetch current user data to populate the form
+            fetchUserDataForEdit();
+        }
+
+        function closeProfileModal() {
+            const modal = document.getElementById('profileModal');
+            modal.style.display = 'none';
+        }
+        
+        // Rest of your user profile functions
+        
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            updateUserProfile();
+            // Other initialization code
+        });
+        
+        // Logout function
+        async function logout() {
+          try {
+            console.log('Logging out...');
+            const response = await fetch('/api/auth/logout', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include'
+            });
+            
+            if (response.ok) {
+              console.log('Logout successful');
+              window.location.href = '/login';
+            } else {
+              console.error('Logout failed');
+              alert('Logout failed. Please try again.');
+            }
+          } catch (error) {
+            console.error('Error during logout:', error);
+            alert('An error occurred during logout.');
+          }
+        }
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM fully loaded");
+    console.log("Cards container:", document.getElementById("cards-container"));
+    console.log("Search input:", document.getElementById("searchInput"));
+    console.log("Current category:", currentCategory);
+    console.log("Category queries:", categoryQueries);
+    
+    // Force load sample data if nothing is showing
+    setTimeout(function() {
+        if (articles.length === 0) {
+            console.log("No articles loaded after 3s, loading samples");
+            loadSampleData(true);
+        }
+    }, 3000);
+});
+
+
+
+
+    </script>
+</body>
+</html>
